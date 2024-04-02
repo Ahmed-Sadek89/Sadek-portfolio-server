@@ -1,0 +1,108 @@
+datasource db {
+    provider = "mysql"
+    url      = env("DATABASE_URL")
+}
+
+model Awner_info {
+    id          Int    @id @default(autoincrement())
+    name        String @unique @db.VarChar(30)
+    email       String @unique @db.VarChar(40)
+    description String @unique
+    image       String @unique
+}
+
+model Links {
+    id    Int    @id @default(autoincrement())
+    title String @unique @db.VarChar(30)
+    link  String @unique
+    icon  String
+    type  String @db.VarChar(40)
+}
+
+model phones {
+    id    Int    @id @default(autoincrement())
+    phone String @db.VarChar(30)
+}
+
+model job_titles {
+    id    Int    @id @default(autoincrement())
+    title String @db.VarChar(30)
+}
+
+model colors_setting {
+    id         Int    @id @default(autoincrement())
+    main_color String @unique @db.VarChar(20)
+    color1     String @unique @db.VarChar(20)
+    color2     String @unique @db.VarChar(20)
+}
+
+// (<) one to many
+
+// Category_skills < Skills
+model Category_skills {
+    id            Int      @id @default(autoincrement())
+    category_name String   @unique @db.VarChar(50)
+    skills        Skills[]
+}
+
+model Skills {
+    id          Int             @id @default(autoincrement())
+    title       String          @db.VarChar(20)
+    icon        String
+    category    Category_skills @relation(fields: [category_id], references: [id])
+    category_id Int
+}
+
+// projects < project_nots
+// category_projects < projects
+// visitor < project_nots
+// visitor < messages
+
+model Category_projects {
+    id            Int        @id @default(autoincrement())
+    category_name String     @unique @db.VarChar(60)
+    projects      Projects[]
+}
+
+model Projects {
+    id                  Int               @id @default(autoincrement())
+    title               String            @db.VarChar(30)
+    description         String
+    live_url            String
+    repo_url            String
+    status              String            @db.VarChar(20)
+    created_at          DateTime
+    ended_at            DateTime
+    attachment          String
+    category_project    Category_projects @relation(fields: [category_project_id], references: [id])
+    category_project_id Int
+    project_notes       Project_notes[]
+}
+
+model Project_notes {
+    id         Int      @id @default(autoincrement())
+    notes      String
+    react      String   @db.VarChar(10)
+    projects   Projects @relation(fields: [project_id], references: [id])
+    project_id Int
+    vistor     Visitor  @relation(fields: [visitor_id], references: [id])
+    visitor_id Int
+}
+
+model Visitor {
+    id            Int             @id @default(autoincrement())
+    name          String          @db.VarChar(30)
+    email         String          @unique @db.VarChar(40)
+    image         String
+    login_by      String          @db.VarChar(20)
+    project_notes Project_notes[]
+    messages      Messages[]
+}
+
+model Messages {
+    id        Int     @id @default(autoincrement())
+    subject   String  @db.VarChar(70)
+    message   String
+    visitor   Visitor @relation(fields: [vistor_id], references: [id])
+    vistor_id Int
+}
