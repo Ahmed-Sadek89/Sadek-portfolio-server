@@ -18,10 +18,10 @@ export const postAwnerService = async ({ email, password }: Prisma.AwnerCreateIn
 export const findAllAwnersService = async () => {
     const awners = await prisma.awner.findMany();
     let result: { id: number, email: string }[] = [];
-    awners && awners.map((index) => {
+    awners.map((index) => {
         result.push({ id: index.id, email: index.email });
     })
-    return result.length > 0 ? result : "no awners"
+    return result
 }
 
 export const findAwnerById = async (id: number) => {
@@ -35,5 +35,5 @@ export const findAwnerById = async (id: number) => {
         email: awner.email
     } : "no awner in this ID"
 
-    return result
+    return
 }

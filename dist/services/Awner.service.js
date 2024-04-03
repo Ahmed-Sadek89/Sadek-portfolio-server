@@ -28,10 +28,10 @@ exports.postAwnerService = postAwnerService;
 const findAllAwnersService = () => __awaiter(void 0, void 0, void 0, function* () {
     const awners = yield prisma.awner.findMany();
     let result = [];
-    awners && awners.map((index) => {
+    awners.map((index) => {
         result.push({ id: index.id, email: index.email });
     });
-    return result.length > 0 ? result : "no awners";
+    return result;
 });
 exports.findAllAwnersService = findAllAwnersService;
 const findAwnerById = (id) => __awaiter(void 0, void 0, void 0, function* () {
@@ -44,6 +44,6 @@ const findAwnerById = (id) => __awaiter(void 0, void 0, void 0, function* () {
         id: Number(id),
         email: awner.email
     } : "no awner in this ID";
-    return result;
+    return;
 });
 exports.findAwnerById = findAwnerById;
