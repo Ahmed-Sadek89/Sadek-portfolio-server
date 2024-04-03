@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const Awner_controllers_1 = require("../controllers/Awner.controllers");
+const router = (0, express_1.Router)();
+router.post('/', Awner_controllers_1.postAwnerController);
+router.get('/getAll', Awner_controllers_1.getAllAwners);
+router.get('/:id', Awner_controllers_1.getAwnerById);
+router.put('/:id', (req, res) => { });
+router.delete('/:id', (req, res) => { });
+router.delete('/deleteAll', (req, res) => { });
+exports.default = router;

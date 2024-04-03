@@ -1,6 +1,16 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
 datasource db {
     provider = "mysql"
     url      = env("DATABASE_URL")
+}
+
+model Awner {
+    id       Int    @id @default(autoincrement())
+    email    String @unique
+    password String
 }
 
 model Awner_info {
