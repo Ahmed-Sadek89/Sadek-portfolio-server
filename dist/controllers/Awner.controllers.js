@@ -9,54 +9,151 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAwnerById = exports.getAllAwners = exports.postAwnerController = void 0;
+exports.AwnerController = void 0;
 const Awner_service_1 = require("../services/Awner.service");
-const postAwnerController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        yield (0, Awner_service_1.postAwnerService)(req.body);
-        res.status(200).json({
-            status: 200,
-            result: "new awner inserted successfully"
+const awnerServices = new Awner_service_1.AwnerServices();
+class AwnerController {
+    registerAwnerController(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                yield awnerServices.postAwnerService(req.body);
+                res.status(200).json({
+                    status: 200,
+                    result: "new awner added successfully"
+                });
+            }
+            catch (error) {
+                console.log(error.message);
+                res.status(500).json({
+                    status: 500,
+                    message: "something went wrong!"
+                });
+            }
         });
     }
-    catch (error) {
-        res.status(500).json({
-            status: 500,
-            message: "something went wrong!"
+    loginAwnerController(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const awner = yield awnerServices.loginAwnerService(req.body);
+                if (awner) {
+                    res.status(200).json({
+                        status: 200,
+                        awner
+                    });
+                }
+                else {
+                    res.status(404).json({
+                        status: 404,
+                        message: "invalid email or password"
+                    });
+                }
+            }
+            catch (error) {
+            }
         });
     }
-});
-exports.postAwnerController = postAwnerController;
-const getAllAwners = (_, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const awners = yield (0, Awner_service_1.findAllAwnersService)();
-        res.status(200).json({
-            status: 200,
-            awners
+    getAllAwners(_, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const awners = yield awnerServices.findAllAwnersService();
+                let result = [];
+                awners.map((index) => {
+                    result.push({ id: index.id, email: index.email });
+                });
+                res.status(200).json({
+                    status: 200,
+                    awners: result
+                });
+            }
+            catch (error) {
+                res.status(500).json({
+                    status: 500,
+                    message: "something went wrong!"
+                });
+            }
         });
     }
-    catch (error) {
-        res.status(500).json({
-            status: 500,
-            message: "something went wrong!"
+    getAwnerById(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { id } = req.params;
+            try {
+                const awner = yield awnerServices.findAwnerById(Number(id));
+                if (awner) {
+                    res.status(200).json({
+                        status: 200,
+                        awner: {
+                            id: awner.id,
+                            email: awner.email
+                        }
+                    });
+                }
+                else {
+                    res.status(404).json({
+                        status: 404,
+                        awner: null
+                    });
+                }
+            }
+            catch (error) {
+                res.status(500).json({
+                    status: 500,
+                    message: "something went wrong!"
+                });
+            }
         });
     }
-});
-exports.getAllAwners = getAllAwners;
-const getAwnerById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = req.params;
-    try {
-        const awner = yield (0, Awner_service_1.findAwnerById)(Number(id));
-        res.status(200).json({
-            status: 200,
-            awner
+    deleteAllAwnersController(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                yield awnerServices.deleteAllAwnersService();
+                res.status(200).json({
+                    status: 200,
+                    awner: "All awners deleted successfully"
+                });
+            }
+            catch (error) {
+                res.status(500).json({
+                    status: 500,
+                    message: "something went wrong!"
+                });
+            }
         });
     }
-    catch (error) {
-        res.status(500).json({
-            status: 500,
-            message: "something went wrong!"
+    deleteAwnerByIdController(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { id } = req.params;
+                yield awnerServices.deleteAwnerByIdService(Number(id));
+                res.status(200).json({
+                    status: 200,
+                    awner: `Awner number ${id} id deleted successfully`
+                });
+            }
+            catch (error) {
+                res.status(500).json({
+                    status: 500,
+                    message: "something went wrong!"
+                });
+            }
         });
     }
-});
-exports.getAwnerById = getAwnerById;
+    updateAwnerById(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { id } = req.params;
+            try {
+                yield awnerServices.updateAwnerByIdService(Number(id), req.body);
+                res.status(200).json({
+                    status: 200,
+                    awner: `Awner number ${id} id updated successfully`
+                });
+            }
+            catch (error) {
+                res.status(500).json({
+                    status: 500,
+                    message: "something went wrong!"
+                });
+            }
+        });
+    }
+}
+exports.AwnerController = AwnerController;

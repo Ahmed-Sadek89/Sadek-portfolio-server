@@ -1,13 +1,17 @@
 import { Router } from "express";
-import { getAllAwners, getAwnerById, postAwnerController } from "../controllers/Awner.controllers";
+import { AwnerController } from "../controllers/Awner.controllers";
+import { checkAuth } from "../guards/checkAuth.guard";
 
 const router = Router();
+const awnerController = new AwnerController();
 
-router.post('/', postAwnerController)
-router.get('/getAll', getAllAwners)
-router.get('/:id', getAwnerById)
-router.put('/:id', (req, res) => { })
-router.delete('/:id', (req, res) => { })
-router.delete('/deleteAll', (req, res) => { })
+router.post('/register', awnerController.registerAwnerController)
+router.post('/login', awnerController.loginAwnerController)
+router.get('/getAll', checkAuth, awnerController.getAllAwners)
+router.get('/:id', checkAuth, awnerController.getAwnerById)
+router.delete('/distroy', checkAuth, awnerController.deleteAllAwnersController)
+router.delete('/:id', checkAuth, awnerController.deleteAwnerByIdController)
+router.put('/:id', checkAuth, awnerController.updateAwnerById)
+
 
 export default router
