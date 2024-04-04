@@ -1,1 +1,12 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const checkAuth_guard_1 = require("../guards/checkAuth.guard");
+const Colors_setting_controllers_1 = require("../controllers/Colors_setting.controllers");
+const router = (0, express_1.Router)();
+const colorSettingController = new Colors_setting_controllers_1.ColorSettingController();
+router.get('/', colorSettingController.getColorSetting);
+router.use(checkAuth_guard_1.checkAuth);
+router.post('/', colorSettingController.insertColorSetting);
+router.put('/', colorSettingController.updateColorSetting);
+exports.default = router;

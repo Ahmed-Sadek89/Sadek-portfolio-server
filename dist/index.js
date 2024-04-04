@@ -7,6 +7,8 @@ const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const cors_1 = __importDefault(require("cors"));
 const Awner_routes_1 = __importDefault(require("./routes/Awner.routes"));
+const Awner_info_routes_1 = __importDefault(require("./routes/Awner_info.routes"));
+const Colors_setting_routes_1 = __importDefault(require("./routes/Colors_setting.routes"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
@@ -18,6 +20,12 @@ app.get('/', (_, res) => {
     });
 });
 app.use('/api/awner', Awner_routes_1.default);
+app.use('/api/awner_info', Awner_info_routes_1.default);
+app.use('/api/colors_setting', Colors_setting_routes_1.default);
+// multer
+// links, 
+// jobs_title, 
+// phones
 app.listen(process.env.PORT, () => {
     console.log(`SERVER IS WORKED ON PORT ${process.env.PORT}`);
 });

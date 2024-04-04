@@ -7,11 +7,12 @@ const awnerController = new AwnerController();
 
 router.post('/register', awnerController.registerAwnerController)
 router.post('/login', awnerController.loginAwnerController)
-router.get('/getAll', checkAuth, awnerController.getAllAwners)
-router.get('/:id', checkAuth, awnerController.getAwnerById)
-router.delete('/distroy', checkAuth, awnerController.deleteAllAwnersController)
-router.delete('/:id', checkAuth, awnerController.deleteAwnerByIdController)
-router.put('/:id', checkAuth, awnerController.updateAwnerById)
+router.use(checkAuth);
+router.get('/getAll', awnerController.getAllAwners)
+router.get('/:id', awnerController.getAwnerById)
+router.delete('/distroy', awnerController.deleteAllAwnersController)
+router.delete('/:id', awnerController.deleteAwnerByIdController)
+router.put('/:id', awnerController.updateAwnerById)
 
 
 export default router

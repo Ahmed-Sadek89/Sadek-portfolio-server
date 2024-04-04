@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
@@ -17,15 +17,15 @@ model Awner_info {
     id          Int    @id @default(autoincrement())
     name        String @unique @db.VarChar(30)
     email       String @unique @db.VarChar(40)
-    description String @unique
-    image       String @unique
+    description String @unique @db.VarChar(255)
+    image       String @unique @db.VarChar(255)
 }
 
 model Links {
     id    Int    @id @default(autoincrement())
     title String @unique @db.VarChar(30)
-    link  String @unique
-    icon  String
+    link  String @unique @db.VarChar(255)
+    icon  String @db.VarChar(255)
     type  String @db.VarChar(40)
 }
 
@@ -58,7 +58,7 @@ model Category_skills {
 model Skills {
     id          Int             @id @default(autoincrement())
     title       String          @db.VarChar(20)
-    icon        String
+    icon        String          @db.VarChar(255)
     category    Category_skills @relation(fields: [category_id], references: [id])
     category_id Int
 }
@@ -77,13 +77,13 @@ model Category_projects {
 model Projects {
     id                  Int               @id @default(autoincrement())
     title               String            @db.VarChar(30)
-    description         String
-    live_url            String
-    repo_url            String
+    description         String            @db.VarChar(255)
+    live_url            String            @db.VarChar(255)
+    repo_url            String            @db.VarChar(255)
     status              String            @db.VarChar(20)
     created_at          DateTime
     ended_at            DateTime
-    attachment          String
+    attachment          String            @db.VarChar(255)
     category_project    Category_projects @relation(fields: [category_project_id], references: [id])
     category_project_id Int
     project_notes       Project_notes[]
@@ -91,7 +91,7 @@ model Projects {
 
 model Project_notes {
     id         Int      @id @default(autoincrement())
-    notes      String
+    notes      String   @db.VarChar(255)
     react      String   @db.VarChar(10)
     projects   Projects @relation(fields: [project_id], references: [id])
     project_id Int
@@ -103,7 +103,7 @@ model Visitor {
     id            Int             @id @default(autoincrement())
     name          String          @db.VarChar(30)
     email         String          @unique @db.VarChar(40)
-    image         String
+    image         String          @db.VarChar(255)
     login_by      String          @db.VarChar(20)
     project_notes Project_notes[]
     messages      Messages[]
@@ -112,7 +112,7 @@ model Visitor {
 model Messages {
     id        Int     @id @default(autoincrement())
     subject   String  @db.VarChar(70)
-    message   String
+    message   String  @db.VarChar(255)
     visitor   Visitor @relation(fields: [vistor_id], references: [id])
     vistor_id Int
 }

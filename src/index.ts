@@ -2,6 +2,8 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import AwnerRouters from './routes/Awner.routes'
+import AwnerInfoRouters from './routes/Awner_info.routes';
+import ColorsSettingRouters from './routes/Colors_setting.routes'
 
 dotenv.config()
 const app = express();
@@ -17,6 +19,12 @@ app.get('/', (_, res) => {
 })
 
 app.use('/api/awner', AwnerRouters)
+app.use('/api/awner_info', AwnerInfoRouters)
+app.use('/api/colors_setting', ColorsSettingRouters)
+// multer
+// links, 
+// jobs_title, 
+// phones
 
 app.listen(process.env.PORT, () => {
     console.log(`SERVER IS WORKED ON PORT ${process.env.PORT}`, )
