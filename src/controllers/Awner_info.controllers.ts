@@ -1,16 +1,24 @@
 import { Request, Response } from "express";
 import { AwnerInfoService } from "../services/Awner_info.service";
+import dotenv from 'dotenv';
+
 
 const awnerInfoService = new AwnerInfoService();
 
 export class AwnerInfoController {
-
+    constructor() {
+        dotenv.config()
+    }
     async getAwnerInfo(req: Request, res: Response) {
         try {
             const awner_info = await awnerInfoService.getAwnerInfo();
+            const imagePath = awner_info ? `${process.env.BACKEND_LINK}/uploads/${awner_info?.image}` : ""
             res.status(200).json({
                 status: 200,
-                awner_info
+                awner_info: {
+                    ...awner_info,
+                    image: imagePath
+                }
             })
         } catch (error) {
             res.status(500).json({
@@ -29,7 +37,8 @@ export class AwnerInfoController {
                     message: "you have already your awner info"
                 })
             } else {
-                await awnerInfoService.insertAwnerInfo(req.body)
+                const image = req.file?.filename;
+                await awnerInfoService.insertAwnerInfo({ ...req.body, image })
                 res.status(200).json({
                     status: 200,
                     message: "your awner info is added successfully"
@@ -46,7 +55,8 @@ export class AwnerInfoController {
 
     async updateAwnerInfo(req: Request, res: Response) {
         try {
-            await awnerInfoService.updateAwnerInfo(req.body);
+            const image = req.file?.filename;
+            await awnerInfoService.updateAwnerInfo({ ...req.body, image });
             res.status(200).json({
                 status: 200,
                 message: "Awner_info is updated successfully"

@@ -6,9 +6,14 @@ import AwnerInfoRouters from './routes/Awner_info.routes';
 import ColorsSettingRouters from './routes/Colors_setting.routes'
 
 dotenv.config()
+
 const app = express();
 
 app.use(express.json())
+
+app.use(express.urlencoded({ extended: true }));
+app.use('/uploads', express.static('uploads'))
+
 app.use(cors());
 
 app.get('/', (_, res) => {
@@ -27,5 +32,5 @@ app.use('/api/colors_setting', ColorsSettingRouters)
 // phones
 
 app.listen(process.env.PORT, () => {
-    console.log(`SERVER IS WORKED ON PORT ${process.env.PORT}`, )
+    console.log(`SERVER IS WORKED ON PORT ${process.env.PORT}`,)
 })
