@@ -1,21 +1,20 @@
 import { Request, Response } from "express";
 import { AwnerInfoService } from "../services/Awner_info.service";
-import dotenv from 'dotenv';
+import { generateImagePath } from "../config/ImagePath.config";
+
 
 
 const awnerInfoService = new AwnerInfoService();
 
 export class AwnerInfoController {
-    constructor() {
-        dotenv.config()
-    }
+
     async getAwnerInfo(req: Request, res: Response) {
         try {
             const awner_info = await awnerInfoService.getAwnerInfo();
-            const imagePath = awner_info ? `${process.env.BACKEND_LINK}/uploads/${awner_info?.image}` : ""
+            const imagePath = awner_info ? generateImagePath(awner_info?.image) : ""
             res.status(200).json({
                 status: 200,
-                awner_info: {
+                awner_info: awner_info && {
                     ...awner_info,
                     image: imagePath
                 }
