@@ -9,43 +9,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LinksController = void 0;
-const Links_service_1 = require("../services/Links.service");
-const ImagePath_config_1 = require("../config/ImagePath.config");
-const linksServices = new Links_service_1.LinksServices();
-class LinksController {
+exports.JobTitlesController = void 0;
+const Job_titles_service_1 = require("../services/Job_titles.service");
+const jobTitleServices = new Job_titles_service_1.JobTitlesServices();
+class JobTitlesController {
     getAll(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const links = yield linksServices.getAll();
-                links === null || links === void 0 ? void 0 : links.map((index) => {
-                    index.icon = (0, ImagePath_config_1.generateImagePath)(index.icon);
-                });
+                const job_titles = yield jobTitleServices.getAll();
                 res.status(200).json({
                     status: 200,
-                    links
-                });
-            }
-            catch (error) {
-                console.log(error.message);
-                res.status(500).json({
-                    status: 500,
-                    message: "something went wrong"
-                });
-            }
-        });
-    }
-    getByLinkType(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const { type } = req.query;
-                const links = yield linksServices.getByLinkType(type);
-                links === null || links === void 0 ? void 0 : links.map((index) => {
-                    index.icon = (0, ImagePath_config_1.generateImagePath)(index.icon);
-                });
-                res.status(200).json({
-                    status: 200,
-                    links
+                    job_titles
                 });
             }
             catch (error) {
@@ -61,11 +35,10 @@ class LinksController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { id } = req.params;
-                const link = yield linksServices.getById(Number(id));
-                const ImagePath = link ? (0, ImagePath_config_1.generateImagePath)(link.icon) : "";
+                const link = yield jobTitleServices.getById(Number(id));
                 res.status(200).json({
                     status: 200,
-                    link: link && Object.assign(Object.assign({}, link), { icon: ImagePath })
+                    link
                 });
             }
             catch (error) {
@@ -76,15 +49,13 @@ class LinksController {
             }
         });
     }
-    insertNewLink(req, res) {
+    insertNewJobTitle(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            var _a;
             try {
-                const icon = (_a = req.file) === null || _a === void 0 ? void 0 : _a.filename;
-                yield linksServices.insertNewLink(Object.assign(Object.assign({}, req.body), { icon }));
+                yield jobTitleServices.insertNewJobTitle(req.body);
                 res.status(200).json({
                     status: 200,
-                    message: "new link inserted successfully"
+                    message: "new job title inserted successfully"
                 });
             }
             catch (error) {
@@ -96,16 +67,14 @@ class LinksController {
             }
         });
     }
-    updateLink(req, res) {
+    updateJobTitle(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            var _a;
             try {
                 const { id } = req.params;
-                const icon = (_a = req.file) === null || _a === void 0 ? void 0 : _a.filename;
-                yield linksServices.updateLink(Number(id), Object.assign(Object.assign({}, req.body), { icon }));
+                yield jobTitleServices.updateJobTitle(Number(id), req.body);
                 res.status(200).json({
                     status: 200,
-                    message: `the link number ${id} updated successfully`
+                    message: `the job title number ${id} updated successfully`
                 });
             }
             catch (error) {
@@ -120,10 +89,10 @@ class LinksController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { id } = req.params;
-                yield linksServices.deleteById(Number(id));
+                yield jobTitleServices.deleteById(Number(id));
                 res.status(200).json({
                     status: 200,
-                    message: `the link number ${id} deleted successfully`
+                    message: `the job title number ${id} deleted successfully`
                 });
             }
             catch (error) {
@@ -137,10 +106,10 @@ class LinksController {
     deleteAll(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield linksServices.deleteAll();
+                yield jobTitleServices.deleteAll();
                 res.status(200).json({
                     status: 200,
-                    message: `all links are deleted`
+                    message: `all job titles are deleted`
                 });
             }
             catch (error) {
@@ -152,4 +121,4 @@ class LinksController {
         });
     }
 }
-exports.LinksController = LinksController;
+exports.JobTitlesController = JobTitlesController;

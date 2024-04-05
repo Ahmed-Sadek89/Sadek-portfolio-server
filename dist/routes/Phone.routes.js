@@ -1,5 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
+const checkAuth_guard_1 = require("../guards/checkAuth.guard");
+const Phones_controller_1 = require("../controllers/Phones.controller");
 const router = (0, express_1.Router)();
+const phonesController = new Phones_controller_1.PhonesController();
+router.get('/getAll', phonesController.getAll);
+router.use(checkAuth_guard_1.checkAuth);
+router.get('/:id', phonesController.getById);
+router.delete('/deleteAll', phonesController.deleteAll);
+router.delete('/:id', phonesController.deleteById);
+router.post('/', phonesController.insertNewPhone);
+router.put('/:id', phonesController.updatePhone);
 exports.default = router;

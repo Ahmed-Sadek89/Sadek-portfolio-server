@@ -1,40 +1,16 @@
 import { Request, Response } from "express";
-import { LinksServices } from "../services/Links.service";
-import { generateImagePath } from "../config/ImagePath.config";
+import { JobTitlesServices } from "../services/Job_titles.service";
 
-const linksServices = new LinksServices();
+const jobTitleServices = new JobTitlesServices();
 
-export class LinksController {
+export class JobTitlesController {
 
     async getAll(req: Request, res: Response) {
         try {
-            const links = await linksServices.getAll();
-            links?.map((index) => {
-                index.icon = generateImagePath(index.icon);
-            })
+            const job_titles = await jobTitleServices.getAll();
             res.status(200).json({
                 status: 200,
-                links
-            })
-        } catch (error: any) {
-            console.log(error.message)
-            res.status(500).json({
-                status: 500,
-                message: "something went wrong"
-            })
-        }
-    }
-
-    async getByLinkType(req: Request, res: Response) {
-        try {
-            const { type } = req.query
-            const links = await linksServices.getByLinkType(type as string);
-            links?.map((index) => {
-                index.icon = generateImagePath(index.icon);
-            })
-            res.status(200).json({
-                status: 200,
-                links
+                job_titles
             })
         } catch (error: any) {
             console.log(error.message)
@@ -48,14 +24,10 @@ export class LinksController {
     async getById(req: Request, res: Response) {
         try {
             const { id } = req.params;
-            const link = await linksServices.getById(Number(id));
-            const ImagePath = link ? generateImagePath(link.icon) : "";
+            const link = await jobTitleServices.getById(Number(id));
             res.status(200).json({
                 status: 200,
-                link: link && {
-                    ...link,
-                    icon: ImagePath
-                }
+                link
             })
         } catch (error: any) {
             res.status(500).json({
@@ -65,13 +37,12 @@ export class LinksController {
         }
     }
 
-    async insertNewLink(req: Request, res: Response) {
+    async insertNewJobTitle(req: Request, res: Response) {
         try {
-            const icon = req.file?.filename
-            await linksServices.insertNewLink({ ...req.body, icon })
+            await jobTitleServices.insertNewJobTitle(req.body)
             res.status(200).json({
                 status: 200,
-                message: "new link inserted successfully"
+                message: "new job title inserted successfully"
             })
         } catch (error: any) {
             console.log({ error: error.message })
@@ -82,14 +53,13 @@ export class LinksController {
         }
     }
 
-    async updateLink(req: Request, res: Response) {
+    async updateJobTitle(req: Request, res: Response) {
         try {
             const { id } = req.params
-            const icon = req.file?.filename
-            await linksServices.updateLink(Number(id), { ...req.body, icon })
+            await jobTitleServices.updateJobTitle(Number(id), req.body)
             res.status(200).json({
                 status: 200,
-                message: `the link number ${id} updated successfully`
+                message: `the job title number ${id} updated successfully`
             })
         } catch (error: any) {
             res.status(500).json({
@@ -102,10 +72,10 @@ export class LinksController {
     async deleteById(req: Request, res: Response) {
         try {
             const { id } = req.params
-            await linksServices.deleteById(Number(id))
+            await jobTitleServices.deleteById(Number(id))
             res.status(200).json({
                 status: 200,
-                message: `the link number ${id} deleted successfully`
+                message: `the job title number ${id} deleted successfully`
             })
         } catch (error: any) {
             res.status(500).json({
@@ -117,10 +87,10 @@ export class LinksController {
 
     async deleteAll(req: Request, res: Response) {
         try {
-            await linksServices.deleteAll()
+            await jobTitleServices.deleteAll()
             res.status(200).json({
                 status: 200,
-                message: `all links are deleted`
+                message: `all job titles are deleted`
             })
         } catch (error: any) {
             res.status(500).json({

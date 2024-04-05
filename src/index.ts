@@ -31,9 +31,7 @@ app.use('/api/awner', AwnerRouters)
 app.use('/api/awner_info', AwnerInfoRouters)
 app.use('/api/colors_setting', ColorsSettingRouters)
 app.use('/api/links', LinksRouters)
-// jobs_title, 
-app.use('/api/jobs_title', jobTitleRouters)
-// phones
+app.use('/api/job_titles', jobTitleRouters)
 app.use('/api/phones', phonesRouters)
 
 app.listen(process.env.PORT, () => {

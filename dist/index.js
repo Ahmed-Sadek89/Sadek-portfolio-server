@@ -28,9 +28,7 @@ app.use('/api/awner', Awner_routes_1.default);
 app.use('/api/awner_info', Awner_info_routes_1.default);
 app.use('/api/colors_setting', Colors_setting_routes_1.default);
 app.use('/api/links', Links_routes_1.default);
-// jobs_title, 
-app.use('/api/jobs_title', Job_title_routes_1.default);
-// phones
+app.use('/api/job_titles', Job_title_routes_1.default);
 app.use('/api/phones', Phone_routes_1.default);
 app.listen(process.env.PORT, () => {
     console.log(`SERVER IS WORKED ON PORT ${process.env.PORT}`);
