@@ -33,6 +33,7 @@ app.use('/api/colors_setting', ColorsSettingRouters)
 app.use('/api/links', LinksRouters)
 app.use('/api/job_titles', jobTitleRouters)
 app.use('/api/phones', phonesRouters)
+// Skills, Category_skills
 
 app.listen(process.env.PORT, () => {
     console.log(`SERVER IS WORKED ON PORT ${process.env.PORT}`,)

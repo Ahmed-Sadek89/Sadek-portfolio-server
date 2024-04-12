@@ -30,6 +30,7 @@ app.use('/api/colors_setting', Colors_setting_routes_1.default);
 app.use('/api/links', Links_routes_1.default);
 app.use('/api/job_titles', Job_title_routes_1.default);
 app.use('/api/phones', Phone_routes_1.default);
+// Skills, Category_skills
 app.listen(process.env.PORT, () => {
     console.log(`SERVER IS WORKED ON PORT ${process.env.PORT}`);
 });
