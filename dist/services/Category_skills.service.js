@@ -9,9 +9,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Category_skills = void 0;
+exports.CategorySkillsServices = void 0;
 const client_1 = require("@prisma/client");
-class Category_skills {
+class CategorySkillsServices {
     constructor() {
         this.prisma = new client_1.PrismaClient();
     }
@@ -63,4 +63,4 @@ class Category_skills {
         });
     }
 }
-exports.Category_skills = Category_skills;
+exports.CategorySkillsServices = CategorySkillsServices;

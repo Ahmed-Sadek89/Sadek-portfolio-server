@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const client_1 = require("@prisma/client");
 const Category_skills_service_1 = require("../../../services/Category_skills.service");
 const prisma = new client_1.PrismaClient();
-const categorySkills = new Category_skills_service_1.Category_skills();
+const categorySkills = new Category_skills_service_1.CategorySkillsServices();
 beforeAll(() => __awaiter(void 0, void 0, void 0, function* () {
     return yield prisma.$connect();
 }));

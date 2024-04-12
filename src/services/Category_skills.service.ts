@@ -1,6 +1,6 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 
-export class Category_skills {
+export class CategorySkillsServices {
     private prisma: PrismaClient;
 
     constructor() {

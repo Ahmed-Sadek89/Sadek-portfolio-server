@@ -1,8 +1,8 @@
 import { PrismaClient } from "@prisma/client";
-import { Category_skills } from "../../../services/Category_skills.service";
+import { CategorySkillsServices } from "../../../services/Category_skills.service";
 
 const prisma = new PrismaClient();
-const categorySkills = new Category_skills()
+const categorySkills = new CategorySkillsServices()
 
 beforeAll(async () => {
   return await prisma.$connect()
