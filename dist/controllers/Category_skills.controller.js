@@ -17,10 +17,19 @@ class CategorySkillsController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const category_skills = yield categorySkillsServices.getAll();
-                res.status(200).json({
-                    status: 200,
-                    category_skills
-                });
+                if (category_skills.length > 0) {
+                    res.status(200).json({
+                        status: 200,
+                        category_skills
+                    });
+                }
+                else {
+                    res.status(404).json({
+                        status: 404,
+                        category_skills: [],
+                        message: "empty category skills"
+                    });
+                }
             }
             catch (error) {
                 res.status(500).json({
@@ -35,10 +44,19 @@ class CategorySkillsController {
             const { id } = req.params;
             try {
                 const category_skills = yield categorySkillsServices.getById(Number(id));
-                res.status(200).json({
-                    status: 200,
-                    category_skills
-                });
+                if (category_skills) {
+                    res.status(200).json({
+                        status: 200,
+                        category_skills
+                    });
+                }
+                else {
+                    res.status(404).json({
+                        status: 404,
+                        category_skills: {},
+                        message: `no category skills has number ${req.params.id}`
+                    });
+                }
             }
             catch (error) {
                 res.status(500).json({
@@ -62,7 +80,8 @@ class CategorySkillsController {
                 else {
                     res.status(404).json({
                         status: 404,
-                        category_skills
+                        category_skills: {},
+                        message: `no category and no skills has number ${id}`
                     });
                 }
             }
@@ -94,11 +113,20 @@ class CategorySkillsController {
     updateById(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield categorySkillsServices.updateById(Number(req.params.id), req.body);
-                res.status(200).json({
-                    status: 200,
-                    result: `Category_skills number ${req.params.id} updated successfully`
-                });
+                const category_skills = yield categorySkillsServices.getById(Number(req.params.id));
+                if (category_skills) {
+                    yield categorySkillsServices.updateById(category_skills.id, req.body);
+                    res.status(200).json({
+                        status: 200,
+                        result: `Category_skills number ${req.params.id} updated successfully`
+                    });
+                }
+                else {
+                    res.status(404).json({
+                        status: 404,
+                        result: `Category_skills number ${req.params.id} is not found`
+                    });
+                }
             }
             catch (error) {
                 res.status(500).json({
@@ -112,11 +140,20 @@ class CategorySkillsController {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
             try {
-                yield categorySkillsServices.deleteById(Number(id));
-                res.status(200).json({
-                    status: 200,
-                    result: `Category_skills number ${id} deleted successfully`
-                });
+                const category_skills = yield categorySkillsServices.getById(Number(id));
+                if (category_skills) {
+                    yield categorySkillsServices.deleteById(category_skills.id);
+                    res.status(200).json({
+                        status: 200,
+                        result: `Category_skills number ${id} is deleted successfully`
+                    });
+                }
+                else {
+                    res.status(404).json({
+                        status: 404,
+                        result: `Category_skills number ${id} is not found`
+                    });
+                }
             }
             catch (error) {
                 res.status(500).json({

@@ -37,8 +37,8 @@ app.use('/api/phones', phonesRouters)
 app.use('/api/category_skills', categorySkillsRouters)
 // Skills, 
 
-const server = app.listen(process.env.PORT, () => {
-    console.log(`SERVER IS WORKED ON PORT ${process.env.PORT}`,)
+const server = app.listen(process.env.PORT || 5000, () => {
+    console.log(`SERVER IS WORKED ON PORT ${process.env.PORT}`)
 })
 
 export default server

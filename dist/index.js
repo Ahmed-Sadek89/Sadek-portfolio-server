@@ -33,7 +33,7 @@ app.use('/api/job_titles', Job_title_routes_1.default);
 app.use('/api/phones', Phone_routes_1.default);
 app.use('/api/category_skills', Category_skills_routes_1.default);
 // Skills, 
-const server = app.listen(process.env.PORT, () => {
+const server = app.listen(process.env.PORT || 5000, () => {
     console.log(`SERVER IS WORKED ON PORT ${process.env.PORT}`);
 });
 exports.default = server;

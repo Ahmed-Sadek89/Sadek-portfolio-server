@@ -2,28 +2,19 @@ import Router from 'express';
 import { CategorySkillsController } from '../controllers/Category_skills.controller';
 import { checkAuth } from '../guards/checkAuth.guard';
 
-const categorySkillsRouter = Router();
+const router = Router();
 const categorySkillsController = new CategorySkillsController();
 
-categorySkillsRouter
-    .route('/:id/withItsSkills')
-    .get(categorySkillsController.getByIdWithSkills);
 
-categorySkillsRouter.use(checkAuth)
+router.get('/all', checkAuth, categorySkillsController.getAll)
+router.delete('/all', checkAuth, categorySkillsController.deleteAll);
 
-categorySkillsRouter
-    .route('/all')
-    .get(categorySkillsController.getAll)
-    .delete(categorySkillsController.deleteAll);
+router.post('/', checkAuth, categorySkillsController.insert);
 
-categorySkillsRouter
-    .route('/')
-    .post(categorySkillsController.insert);
+router.get('/:id', checkAuth, categorySkillsController.getById)
+router.put('/:id', checkAuth, categorySkillsController.updateById)
+router.delete('/:id', checkAuth, categorySkillsController.deleteById);
 
-categorySkillsRouter
-    .route('/:id')
-    .get(categorySkillsController.getById)
-    .put(categorySkillsController.updateById)
-    .delete(categorySkillsController.deleteById);
+router.get('/withItsSkills/:id', categorySkillsController.getByIdWithSkills);
 
-export default categorySkillsRouter
+export default router
