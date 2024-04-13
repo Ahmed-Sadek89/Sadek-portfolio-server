@@ -14,10 +14,4 @@ router.delete('/distroy', awnerController.deleteAllAwnersController)
 router.delete('/:id', awnerController.deleteAwnerByIdController)
 router.put('/:id', awnerController.updateAwnerById)
 
-// router
-//     .route("/:id" => here, this path is for all those HTTP request pips)
-//     .get(yourGetControllerFunction)
-//     .post(yourPostControllerFunction)
-
-
 export default router

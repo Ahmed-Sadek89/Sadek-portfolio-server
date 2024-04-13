@@ -1,21 +1,25 @@
 import { PrismaClient } from "@prisma/client";
 import { CategorySkillsServices } from "../../../src/services/Category_skills.service";
+import { SkillsServices } from "../../../src/services/Skills.service";
 
 let prisma: PrismaClient
 let categorySkills: CategorySkillsServices
-
+let skillsServices: SkillsServices
 
 beforeAll(() => {
   prisma = new PrismaClient();
   categorySkills = new CategorySkillsServices()
+  skillsServices = new SkillsServices()
 })
 
 afterAll(async () => {
   await prisma.category_skills.deleteMany({})
+  await prisma.skills.deleteMany({})
   await prisma.$disconnect()
 })
 
 beforeEach(async () => {
+  await prisma.skills.deleteMany({})
   await prisma.category_skills.deleteMany({})
 })
 
@@ -55,8 +59,12 @@ test("get category_skills by id", async () => {
 })
 
 test("get category_skills and its skills", async () => {
-  const getAllWithSkills = await categorySkills.getByIdWithSkills(2);
-  expect(getAllWithSkills).toBeNull()
+  const newOne = await categorySkills.insert({ category_name: "programming skills" });
+  await skillsServices.insert({title: "angular", icon: "logo.ong", category_id: newOne.id })
+  await skillsServices.insert({title: "react", icon: "logo2.ong", category_id: newOne.id })
+  const getAllWithSkills = await categorySkills.getByIdWithSkills(newOne.id);
+  
+  expect(getAllWithSkills?.skills.length).toBe(2)
 })
 
 
