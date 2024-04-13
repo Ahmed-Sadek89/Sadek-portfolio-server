@@ -53,10 +53,18 @@ class CategorySkillsController {
             const { id } = req.params;
             try {
                 const category_skills = yield categorySkillsServices.getByIdWithSkills(Number(id));
-                res.status(200).json({
-                    status: 200,
-                    category_skills
-                });
+                if (category_skills) {
+                    res.status(200).json({
+                        status: 200,
+                        category_skills
+                    });
+                }
+                else {
+                    res.status(404).json({
+                        status: 404,
+                        category_skills
+                    });
+                }
             }
             catch (error) {
                 res.status(500).json({

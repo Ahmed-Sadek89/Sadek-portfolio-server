@@ -12,6 +12,7 @@ const Colors_setting_routes_1 = __importDefault(require("./routes/Colors_setting
 const Links_routes_1 = __importDefault(require("./routes/Links.routes"));
 const Job_title_routes_1 = __importDefault(require("./routes/Job_title.routes"));
 const Phone_routes_1 = __importDefault(require("./routes/Phone.routes"));
+const Category_skills_routes_1 = __importDefault(require("./routes/Category_skills.routes"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
@@ -30,7 +31,9 @@ app.use('/api/colors_setting', Colors_setting_routes_1.default);
 app.use('/api/links', Links_routes_1.default);
 app.use('/api/job_titles', Job_title_routes_1.default);
 app.use('/api/phones', Phone_routes_1.default);
-// Skills, Category_skills
-app.listen(process.env.PORT, () => {
+app.use('/api/category_skills', Category_skills_routes_1.default);
+// Skills, 
+const server = app.listen(process.env.PORT, () => {
     console.log(`SERVER IS WORKED ON PORT ${process.env.PORT}`);
 });
+exports.default = server;

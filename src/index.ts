@@ -7,6 +7,7 @@ import ColorsSettingRouters from './routes/Colors_setting.routes'
 import LinksRouters from './routes/Links.routes';
 import jobTitleRouters from './routes/Job_title.routes';
 import phonesRouters from './routes/Phone.routes';
+import categorySkillsRouters from './routes/Category_skills.routes';
 
 
 dotenv.config()
@@ -33,8 +34,11 @@ app.use('/api/colors_setting', ColorsSettingRouters)
 app.use('/api/links', LinksRouters)
 app.use('/api/job_titles', jobTitleRouters)
 app.use('/api/phones', phonesRouters)
-// Skills, Category_skills
+app.use('/api/category_skills', categorySkillsRouters)
+// Skills, 
 
-app.listen(process.env.PORT, () => {
+const server = app.listen(process.env.PORT, () => {
     console.log(`SERVER IS WORKED ON PORT ${process.env.PORT}`,)
 })
+
+export default server
