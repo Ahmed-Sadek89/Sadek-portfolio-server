@@ -29,10 +29,14 @@ class SkillsServices {
             });
         });
     }
-    insert(_a) {
-        return __awaiter(this, arguments, void 0, function* ({ title, icon, category_id }) {
+    insert(data) {
+        return __awaiter(this, void 0, void 0, function* () {
             const newSkill = yield this.prisma.skills.create({
-                data: { title, icon, category_id }
+                data: {
+                    title: data.title,
+                    icon: data.icon || '',
+                    category_id: data.category_id
+                }
             });
             return newSkill;
         });

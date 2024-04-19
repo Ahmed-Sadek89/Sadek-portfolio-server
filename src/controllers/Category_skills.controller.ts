@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import { CategorySkillsServices } from "../services/Category_skills.service";
+import path from "path";
+import { generateImagePath } from "../config/ImagePath.config";
 
 const categorySkillsServices = new CategorySkillsServices();
 
@@ -57,6 +59,9 @@ export class CategorySkillsController {
         try {
             const category_skills = await categorySkillsServices.getByIdWithSkills(Number(id));
             if (category_skills) {
+                category_skills.skills.map((index) => {
+                    index.icon = generateImagePath(index.icon)
+                })
                 res.status(200).json({
                     status: 200,
                     category_skills

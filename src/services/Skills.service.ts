@@ -1,5 +1,7 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 
+type data = { title: string, icon: string | undefined, category_id: number }
+
 export class SkillsServices {
     private prisma: PrismaClient;
 
@@ -19,14 +21,18 @@ export class SkillsServices {
         })
     }
 
-    async insert({ title, icon, category_id }: { title: string, icon: string, category_id: number }) {
+    async insert(data: data) {
         const newSkill = await this.prisma.skills.create({
-            data: { title, icon, category_id }
+            data: {
+                title: data.title,
+                icon: data.icon || '',
+                category_id: data.category_id
+            }
         })
         return newSkill;
     }
 
-    async updateById(id: number, data: Prisma.SkillsUpdateInput) {
+    async updateById(id: number, data: data) {
         return await this.prisma.skills.update({
             where: { id },
             data

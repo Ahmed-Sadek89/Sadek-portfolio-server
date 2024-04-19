@@ -35,6 +35,7 @@ class SkillsController {
                 }
             }
             catch (error) {
+                console.log(error.message);
                 res.status(500).json({
                     status: 500,
                     message: "something went wrong"
@@ -45,15 +46,18 @@ class SkillsController {
     insert(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             var _a;
+            const title = req.body.title;
+            const icon = (_a = req.file) === null || _a === void 0 ? void 0 : _a.filename;
+            const category_id = Number(req.body.category_id);
             try {
-                const icon = (_a = req.file) === null || _a === void 0 ? void 0 : _a.filename;
-                yield skillsServices.insert(Object.assign(Object.assign({}, req.body), { icon }));
+                yield skillsServices.insert({ title, icon, category_id });
                 res.status(200).json({
                     status: 200,
                     result: `new skill added successfully`
                 });
             }
             catch (error) {
+                console.log(error.message);
                 res.status(500).json({
                     status: 500,
                     message: "something went wrong"
@@ -64,11 +68,13 @@ class SkillsController {
     updateById(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             var _a;
+            const title = req.body.title;
+            const icon = (_a = req.file) === null || _a === void 0 ? void 0 : _a.filename;
+            const category_id = Number(req.body.category_id);
             try {
                 const skill = yield skillsServices.getById(Number(req.params.id));
                 if (skill) {
-                    const icon = (_a = req.file) === null || _a === void 0 ? void 0 : _a.filename;
-                    yield skillsServices.updateById(skill.id, Object.assign(Object.assign({}, req.body), { icon }));
+                    yield skillsServices.updateById(skill.id, { title, icon, category_id });
                     res.status(200).json({
                         status: 200,
                         result: `skill number ${req.params.id} is updated successfully`
@@ -82,6 +88,7 @@ class SkillsController {
                 }
             }
             catch (error) {
+                console.log(error.message);
                 res.status(500).json({
                     status: 500,
                     message: "something went wrong"
@@ -120,10 +127,10 @@ class SkillsController {
             try {
                 const categoryskills = yield categoryskillsServices.getById(Number(req.params.category_id));
                 if (categoryskills) {
-                    yield skillsServices.deleteByCategoryId(categoryskills.id);
+                    yield skillsServices.deleteByCategoryId(Number(categoryskills.id));
                     res.status(200).json({
                         status: 200,
-                        result: `all skills related to category number ${req.params.category_id} is deleted successfully`
+                        result: `all skills related to category number ${categoryskills.id} is deleted successfully`
                     });
                 }
                 else {

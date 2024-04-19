@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CategorySkillsController = void 0;
 const Category_skills_service_1 = require("../services/Category_skills.service");
+const ImagePath_config_1 = require("../config/ImagePath.config");
 const categorySkillsServices = new Category_skills_service_1.CategorySkillsServices();
 class CategorySkillsController {
     getAll(req, res) {
@@ -72,6 +73,9 @@ class CategorySkillsController {
             try {
                 const category_skills = yield categorySkillsServices.getByIdWithSkills(Number(id));
                 if (category_skills) {
+                    category_skills.skills.map((index) => {
+                        index.icon = (0, ImagePath_config_1.generateImagePath)(index.icon);
+                    });
                     res.status(200).json({
                         status: 200,
                         category_skills

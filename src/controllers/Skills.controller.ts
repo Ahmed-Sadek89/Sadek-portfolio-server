@@ -26,7 +26,8 @@ export class SkillsController {
                     skill: null
                 })
             }
-        } catch (error) {
+        } catch (error: any) {
+            console.log(error.message)
             res.status(500).json({
                 status: 500,
                 message: "something went wrong"
@@ -35,15 +36,18 @@ export class SkillsController {
     }
 
     async insert(req: Request, res: Response) {
+        const title = req.body.title
+        const icon = req.file?.filename
+        const category_id = Number(req.body.category_id);
         try {
-            const icon = req.file?.filename
-            await skillsServices.insert({...req.body, icon});
+            await skillsServices.insert({ title, icon, category_id });
             res.status(200).json({
                 status: 200,
                 result: `new skill added successfully`
             })
 
-        } catch (error) {
+        } catch (error: any) {
+            console.log(error.message)
             res.status(500).json({
                 status: 500,
                 message: "something went wrong"
@@ -52,11 +56,13 @@ export class SkillsController {
     }
 
     async updateById(req: Request, res: Response) {
+        const title = req.body.title
+        const icon = req.file?.filename
+        const category_id = Number(req.body.category_id);
         try {
             const skill = await skillsServices.getById(Number(req.params.id));
             if (skill) {
-                const icon = req.file?.filename
-                await skillsServices.updateById(skill.id, {...req.body, icon})
+                await skillsServices.updateById(skill.id, { title, icon, category_id })
                 res.status(200).json({
                     status: 200,
                     result: `skill number ${req.params.id} is updated successfully`
@@ -67,7 +73,8 @@ export class SkillsController {
                     skill: `skill number ${req.params.id} is not found`
                 })
             }
-        } catch (error) {
+        } catch (error: any) {
+            console.log(error.message)
             res.status(500).json({
                 status: 500,
                 message: "something went wrong"
@@ -102,10 +109,10 @@ export class SkillsController {
         try {
             const categoryskills = await categoryskillsServices.getById(Number(req.params.category_id));
             if (categoryskills) {
-                await skillsServices.deleteByCategoryId(categoryskills.id)
+                await skillsServices.deleteByCategoryId(Number(categoryskills.id))
                 res.status(200).json({
                     status: 200,
-                    result: `all skills related to category number ${req.params.category_id} is deleted successfully`
+                    result: `all skills related to category number ${categoryskills.id} is deleted successfully`
                 })
             } else {
                 res.status(404).json({
