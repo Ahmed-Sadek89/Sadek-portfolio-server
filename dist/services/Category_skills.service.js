@@ -17,7 +17,11 @@ class CategorySkillsServices {
     }
     getAll() {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield this.prisma.category_skills.findMany({});
+            return (yield this.prisma.category_skills.findMany({
+                orderBy: {
+                    id: 'asc'
+                }
+            }));
         });
     }
     deleteAll() {

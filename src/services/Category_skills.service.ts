@@ -8,7 +8,11 @@ export class CategorySkillsServices {
     }
 
     async getAll() {
-        return await this.prisma.category_skills.findMany({});
+        return (await this.prisma.category_skills.findMany({
+            orderBy: {
+                id: 'asc'
+            }
+        }));
     }
 
     async deleteAll() {

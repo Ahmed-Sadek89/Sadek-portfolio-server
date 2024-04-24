@@ -1,22 +1,20 @@
 import { Request, Response } from "express";
 import { AwnerInfoService } from "../services/Awner_info.service";
-import { generateImagePath } from "../config/ImagePath.config";
-
-
+import uploadToCloudinary from "../config/cloudinaryUpload.config";
 
 const awnerInfoService = new AwnerInfoService();
+
 
 export class AwnerInfoController {
 
     async getAwnerInfo(req: Request, res: Response) {
         try {
             const awner_info = await awnerInfoService.getAwnerInfo();
-            const imagePath = awner_info ? generateImagePath(awner_info?.image) : ""
+
             res.status(200).json({
                 status: 200,
                 awner_info: awner_info && {
                     ...awner_info,
-                    image: imagePath
                 }
             })
         } catch (error) {
@@ -36,8 +34,14 @@ export class AwnerInfoController {
                     message: "you have already your awner info"
                 })
             } else {
-                const image = req.file?.filename;
-                await awnerInfoService.insertAwnerInfo({ ...req.body, image })
+                if (!req.file) {
+                    throw new Error('No file uploaded');
+                }
+                const uploadedImageToCloudiary = await uploadToCloudinary(req.file.path)
+                await awnerInfoService.insertAwnerInfo({
+                    ...req.body,
+                    image: uploadedImageToCloudiary.secure_url
+                })
                 res.status(200).json({
                     status: 200,
                     message: "your awner info is added successfully"
@@ -54,8 +58,11 @@ export class AwnerInfoController {
 
     async updateAwnerInfo(req: Request, res: Response) {
         try {
-            const image = req.file?.filename;
-            await awnerInfoService.updateAwnerInfo({ ...req.body, image });
+            if (!req.file) {
+                throw new Error('No file uploaded');
+            }
+            const uploadedImageToCloudiary = await uploadToCloudinary(req.file.path)
+            await awnerInfoService.updateAwnerInfo({ ...req.body, image: uploadedImageToCloudiary.secure_url });
             res.status(200).json({
                 status: 200,
                 message: "Awner_info is updated successfully"
