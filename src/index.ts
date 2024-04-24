@@ -24,7 +24,7 @@ app.use(cors());
 app.get('/', (_, res) => {
     res.status(200).json({
         status: 200,
-        message: "welcome to server"
+        message: "welcome to Nodejs server"
     })
 })
 

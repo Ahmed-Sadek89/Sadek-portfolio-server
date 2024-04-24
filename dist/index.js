@@ -23,7 +23,7 @@ app.use((0, cors_1.default)());
 app.get('/', (_, res) => {
     res.status(200).json({
         status: 200,
-        message: "welcome to server"
+        message: "welcome to Nodejs server"
     });
 });
 app.use('/api/awner', Awner_routes_1.default);
