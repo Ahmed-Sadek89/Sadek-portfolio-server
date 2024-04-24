@@ -13,7 +13,7 @@ async function convertToWebp(path: string) {
     return webpDataString
 }
 
-async function uploadToCloudinary(path: string) {
+export async function uploadToCloudinary(path: string) {
     const webpDataString = await convertToWebp(path);
     return await cloudinary.uploader.upload(`data:image/webp;base64,${webpDataString}`, {
         resource_type: "image",
@@ -21,4 +21,10 @@ async function uploadToCloudinary(path: string) {
     });
 }
 
-export default uploadToCloudinary
+export async function removeFromCloudinary(imgLink: string) {
+    const ImgFolderName = imgLink.split('/')[7]
+    let imgId = imgLink.split('/')[8]
+    imgId = imgId.split('.')[0]
+    const publicId = `${ImgFolderName}/${imgId}`
+    return await cloudinary.uploader.destroy(publicId)
+}

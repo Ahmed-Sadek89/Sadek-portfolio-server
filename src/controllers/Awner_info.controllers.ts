@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { AwnerInfoService } from "../services/Awner_info.service";
-import uploadToCloudinary from "../config/cloudinaryUpload.config";
+import { uploadToCloudinary } from "../config/cloudinaryFunctions.config";
 
 const awnerInfoService = new AwnerInfoService();
 

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { LinksServices } from "../services/Links.service";
-import { generateImagePath } from "../config/ImagePath.config";
+import { removeFromCloudinary, uploadToCloudinary } from "../config/cloudinaryFunctions.config";
 
 const linksServices = new LinksServices();
 
@@ -9,9 +9,6 @@ export class LinksController {
     async getAll(req: Request, res: Response) {
         try {
             const links = await linksServices.getAll();
-            links?.map((index) => {
-                index.icon = generateImagePath(index.icon);
-            })
             res.status(200).json({
                 status: 200,
                 links
@@ -29,9 +26,7 @@ export class LinksController {
         try {
             const { type } = req.query
             const links = await linksServices.getByLinkType(type as string);
-            links?.map((index) => {
-                index.icon = generateImagePath(index.icon);
-            })
+
             res.status(200).json({
                 status: 200,
                 links
@@ -49,12 +44,10 @@ export class LinksController {
         try {
             const { id } = req.params;
             const link = await linksServices.getById(Number(id));
-            const ImagePath = link ? generateImagePath(link.icon) : "";
             res.status(200).json({
                 status: 200,
                 link: link && {
                     ...link,
-                    icon: ImagePath
                 }
             })
         } catch (error: any) {
@@ -67,8 +60,11 @@ export class LinksController {
 
     async insertNewLink(req: Request, res: Response) {
         try {
-            const icon = req.file?.filename
-            await linksServices.insertNewLink({ ...req.body, icon })
+            if (!req.file) {
+                throw new Error("path not found")
+            }
+            const uploadedImage = await uploadToCloudinary(req.file?.path)
+            await linksServices.insertNewLink({ ...req.body, icon: uploadedImage.secure_url })
             res.status(200).json({
                 status: 200,
                 message: "new link inserted successfully"
@@ -85,13 +81,17 @@ export class LinksController {
     async updateLink(req: Request, res: Response) {
         try {
             const { id } = req.params
-            const icon = req.file?.filename
-            await linksServices.updateLink(Number(id), { ...req.body, icon })
+            if (!req.file) {
+                throw new Error("path not found")
+            }
+            const uploadedImage = await uploadToCloudinary(req.file?.path)
+            await linksServices.updateLink(Number(id), { ...req.body, icon: uploadedImage.secure_url })
             res.status(200).json({
                 status: 200,
                 message: `the link number ${id} updated successfully`
             })
         } catch (error: any) {
+            console.log(error.message)
             res.status(500).json({
                 status: 500,
                 message: "something went wrong"
@@ -101,13 +101,23 @@ export class LinksController {
 
     async deleteById(req: Request, res: Response) {
         try {
-            const { id } = req.params
-            await linksServices.deleteById(Number(id))
-            res.status(200).json({
-                status: 200,
-                message: `the link number ${id} deleted successfully`
-            })
+            const { id } = req.params;
+            const link = await linksServices.getById(Number(id));
+            if (link) {
+                await removeFromCloudinary(link.icon)
+                await linksServices.deleteById(Number(id))
+                res.status(200).json({
+                    status: 200,
+                    message: `the link number ${id} deleted successfully`
+                })
+            } else {
+                res.status(404).json({
+                    status: 404,
+                    message: `the link number ${id} is not found to deleted`
+                })
+            }
         } catch (error: any) {
+            console.log(error.message)
             res.status(500).json({
                 status: 500,
                 message: "something went wrong"
@@ -117,11 +127,17 @@ export class LinksController {
 
     async deleteAll(req: Request, res: Response) {
         try {
-            await linksServices.deleteAll()
-            res.status(200).json({
-                status: 200,
-                message: `all links are deleted`
-            })
+            const links = await linksServices.getAll();
+            if (links.length > 0) {
+                links.map(index => {
+                    return removeFromCloudinary(index.icon)
+                })
+                await linksServices.deleteAll()
+                res.status(200).json({
+                    status: 200,
+                    message: `all links are deleted`
+                })
+            }
         } catch (error: any) {
             res.status(500).json({
                 status: 500,

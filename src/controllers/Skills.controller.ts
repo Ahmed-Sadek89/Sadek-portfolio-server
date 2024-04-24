@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { SkillsServices } from "../services/Skills.service";
 import { CategorySkillsServices } from "../services/Category_skills.service";
-import { generateImagePath } from "../config/ImagePath.config";
+import { removeFromCloudinary, uploadToCloudinary } from "../config/cloudinaryFunctions.config";
 
 const skillsServices = new SkillsServices();
 const categoryskillsServices = new CategorySkillsServices()
@@ -12,13 +12,9 @@ export class SkillsController {
         try {
             const skill = await skillsServices.getById(Number(req.params.id));
             if (skill) {
-                const iconPath = generateImagePath(skill.icon)
                 res.status(200).json({
                     status: 200,
-                    skill: {
-                        ...skill,
-                        icon: iconPath
-                    }
+                    skill
                 })
             } else {
                 res.status(404).json({
@@ -37,10 +33,13 @@ export class SkillsController {
 
     async insert(req: Request, res: Response) {
         const title = req.body.title
-        const icon = req.file?.filename
         const category_id = Number(req.body.category_id);
         try {
-            await skillsServices.insert({ title, icon, category_id });
+            if (!req.file) {
+                throw new Error("path not found")
+            }
+            const uploadedImage = await uploadToCloudinary(req.file?.path)
+            await skillsServices.insert({ title, icon: uploadedImage.secure_url, category_id });
             res.status(200).json({
                 status: 200,
                 result: `new skill added successfully`
@@ -57,12 +56,15 @@ export class SkillsController {
 
     async updateById(req: Request, res: Response) {
         const title = req.body.title
-        const icon = req.file?.filename
         const category_id = Number(req.body.category_id);
         try {
             const skill = await skillsServices.getById(Number(req.params.id));
             if (skill) {
-                await skillsServices.updateById(skill.id, { title, icon, category_id })
+                if (!req.file) {
+                    throw new Error("path not found")
+                }
+                const uploadedImage = await uploadToCloudinary(req.file?.path)
+                await skillsServices.updateById(skill.id, { title, icon: uploadedImage.secure_url, category_id })
                 res.status(200).json({
                     status: 200,
                     result: `skill number ${req.params.id} is updated successfully`
@@ -86,6 +88,7 @@ export class SkillsController {
         try {
             const skill = await skillsServices.getById(Number(req.params.id));
             if (skill) {
+                await removeFromCloudinary(skill.icon)
                 await skillsServices.deleteById(skill.id)
                 res.status(200).json({
                     status: 200,
@@ -107,8 +110,11 @@ export class SkillsController {
 
     async deleteByCategoryId(req: Request, res: Response) {
         try {
-            const categoryskills = await categoryskillsServices.getById(Number(req.params.category_id));
+            const categoryskills = await categoryskillsServices.getByIdWithSkills(Number(req.params.category_id));
             if (categoryskills) {
+                categoryskills.skills.map(index => {
+                    return removeFromCloudinary(index.icon)
+                })
                 await skillsServices.deleteByCategoryId(Number(categoryskills.id))
                 res.status(200).json({
                     status: 200,
