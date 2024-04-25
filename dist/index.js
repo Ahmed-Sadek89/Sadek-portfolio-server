@@ -38,6 +38,8 @@ app.use('/api/category_skills', Category_skills_routes_1.default);
 app.use('/api/skills', Skills_routes_1.default);
 app.use('/api/category_projects', Category_projects_routes_1.default);
 app.use('/api/projects', Projects_routes_1.default);
+// visitors
+// messages
 // project_notes
 app.listen(process.env.PORT || 5000, () => {
     console.log(`SERVER IS WORKED ON PORT ${process.env.PORT}`);

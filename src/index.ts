@@ -41,6 +41,8 @@ app.use('/api/category_skills', categorySkillsRouters)
 app.use('/api/skills', skillsRouters)
 app.use('/api/category_projects', categoryProjectsRouters)
 app.use('/api/projects', projectsRouters)
+// visitors
+// messages
 // project_notes
 
 app.listen(process.env.PORT || 5000, () => {
