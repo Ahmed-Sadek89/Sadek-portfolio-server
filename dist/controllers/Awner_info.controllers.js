@@ -8,13 +8,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AwnerInfoController = void 0;
 const Awner_info_service_1 = require("../services/Awner_info.service");
-const cloudinaryUpload_config_1 = __importDefault(require("../config/cloudinaryUpload.config"));
+const cloudinaryFunctions_config_1 = require("../config/cloudinaryFunctions.config");
 const awnerInfoService = new Awner_info_service_1.AwnerInfoService();
 class AwnerInfoController {
     getAwnerInfo(req, res) {
@@ -48,7 +45,7 @@ class AwnerInfoController {
                     if (!req.file) {
                         throw new Error('No file uploaded');
                     }
-                    const uploadedImageToCloudiary = yield (0, cloudinaryUpload_config_1.default)(req.file.path);
+                    const uploadedImageToCloudiary = yield (0, cloudinaryFunctions_config_1.uploadToCloudinary)(req.file.path);
                     yield awnerInfoService.insertAwnerInfo(Object.assign(Object.assign({}, req.body), { image: uploadedImageToCloudiary.secure_url }));
                     res.status(200).json({
                         status: 200,
@@ -71,7 +68,7 @@ class AwnerInfoController {
                 if (!req.file) {
                     throw new Error('No file uploaded');
                 }
-                const uploadedImageToCloudiary = yield (0, cloudinaryUpload_config_1.default)(req.file.path);
+                const uploadedImageToCloudiary = yield (0, cloudinaryFunctions_config_1.uploadToCloudinary)(req.file.path);
                 yield awnerInfoService.updateAwnerInfo(Object.assign(Object.assign({}, req.body), { image: uploadedImageToCloudiary.secure_url }));
                 res.status(200).json({
                     status: 200,

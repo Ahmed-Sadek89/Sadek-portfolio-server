@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SkillsController = void 0;
 const Skills_service_1 = require("../services/Skills.service");
 const Category_skills_service_1 = require("../services/Category_skills.service");
-const ImagePath_config_1 = require("../config/ImagePath.config");
+const cloudinaryFunctions_config_1 = require("../config/cloudinaryFunctions.config");
 const skillsServices = new Skills_service_1.SkillsServices();
 const categoryskillsServices = new Category_skills_service_1.CategorySkillsServices();
 class SkillsController {
@@ -21,10 +21,9 @@ class SkillsController {
             try {
                 const skill = yield skillsServices.getById(Number(req.params.id));
                 if (skill) {
-                    const iconPath = (0, ImagePath_config_1.generateImagePath)(skill.icon);
                     res.status(200).json({
                         status: 200,
-                        skill: Object.assign(Object.assign({}, skill), { icon: iconPath })
+                        skill
                     });
                 }
                 else {
@@ -47,10 +46,13 @@ class SkillsController {
         return __awaiter(this, void 0, void 0, function* () {
             var _a;
             const title = req.body.title;
-            const icon = (_a = req.file) === null || _a === void 0 ? void 0 : _a.filename;
             const category_id = Number(req.body.category_id);
             try {
-                yield skillsServices.insert({ title, icon, category_id });
+                if (!req.file) {
+                    throw new Error("path not found");
+                }
+                const uploadedImage = yield (0, cloudinaryFunctions_config_1.uploadToCloudinary)((_a = req.file) === null || _a === void 0 ? void 0 : _a.path);
+                yield skillsServices.insert({ title, icon: uploadedImage.secure_url, category_id });
                 res.status(200).json({
                     status: 200,
                     result: `new skill added successfully`
@@ -69,12 +71,15 @@ class SkillsController {
         return __awaiter(this, void 0, void 0, function* () {
             var _a;
             const title = req.body.title;
-            const icon = (_a = req.file) === null || _a === void 0 ? void 0 : _a.filename;
             const category_id = Number(req.body.category_id);
             try {
                 const skill = yield skillsServices.getById(Number(req.params.id));
                 if (skill) {
-                    yield skillsServices.updateById(skill.id, { title, icon, category_id });
+                    if (!req.file) {
+                        throw new Error("path not found");
+                    }
+                    const uploadedImage = yield (0, cloudinaryFunctions_config_1.uploadToCloudinary)((_a = req.file) === null || _a === void 0 ? void 0 : _a.path);
+                    yield skillsServices.updateById(skill.id, { title, icon: uploadedImage.secure_url, category_id });
                     res.status(200).json({
                         status: 200,
                         result: `skill number ${req.params.id} is updated successfully`
@@ -101,6 +106,7 @@ class SkillsController {
             try {
                 const skill = yield skillsServices.getById(Number(req.params.id));
                 if (skill) {
+                    yield (0, cloudinaryFunctions_config_1.removeFromCloudinary)(skill.icon);
                     yield skillsServices.deleteById(skill.id);
                     res.status(200).json({
                         status: 200,
@@ -125,8 +131,11 @@ class SkillsController {
     deleteByCategoryId(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const categoryskills = yield categoryskillsServices.getById(Number(req.params.category_id));
+                const categoryskills = yield categoryskillsServices.getByIdWithSkills(Number(req.params.category_id));
                 if (categoryskills) {
+                    categoryskills.skills.map(index => {
+                        return (0, cloudinaryFunctions_config_1.removeFromCloudinary)(index.icon);
+                    });
                     yield skillsServices.deleteByCategoryId(Number(categoryskills.id));
                     res.status(200).json({
                         status: 200,

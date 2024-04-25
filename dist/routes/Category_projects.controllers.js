@@ -9,86 +9,85 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CategorySkillsController = void 0;
-const Category_skills_service_1 = require("../services/Category_skills.service");
-const categorySkillsServices = new Category_skills_service_1.CategorySkillsServices();
-class CategorySkillsController {
+exports.categoryProjectsController = void 0;
+const Category_projects_service_1 = require("../services/Category_projects.service");
+const categoryProjectsServices = new Category_projects_service_1.CategoryProjectsServices();
+class categoryProjectsController {
     getAll(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const category_skills = yield categorySkillsServices.getAll();
-                if (category_skills.length > 0) {
+                const category_projects = yield categoryProjectsServices.getAll();
+                if (category_projects.length > 0) {
                     res.status(200).json({
                         status: 200,
-                        category_skills
+                        category_projects
                     });
                 }
                 else {
                     res.status(404).json({
                         status: 404,
-                        category_skills: [],
-                        message: "empty category skills"
+                        category_projects: []
                     });
                 }
             }
             catch (error) {
+                console.log(error.message);
                 res.status(500).json({
                     status: 500,
-                    message: "something went wrong"
+                    message: "Enternet services error"
                 });
             }
         });
     }
     getById(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { id } = req.params;
             try {
-                const category_skills = yield categorySkillsServices.getById(Number(id));
-                if (category_skills) {
+                const category_project = yield categoryProjectsServices.getById(Number(req.params.id));
+                if (category_project) {
                     res.status(200).json({
                         status: 200,
-                        category_skills
+                        category_project
                     });
                 }
                 else {
                     res.status(404).json({
                         status: 404,
-                        category_skills: {},
-                        message: `no category skills has number ${req.params.id}`
+                        category_project: {}
                     });
                 }
             }
             catch (error) {
+                console.log(error.message);
                 res.status(500).json({
                     status: 500,
-                    message: "something went wrong"
+                    message: "Enternet Services Error"
                 });
             }
         });
     }
-    getByIdWithSkills(req, res) {
+    getWithProjects(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { id } = req.params;
             try {
-                const category_skills = yield categorySkillsServices.getByIdWithSkills(Number(id));
-                if (category_skills) {
+                const category_project = yield categoryProjectsServices.getById(Number(req.params.id));
+                if (category_project) {
+                    const projectsByCategory = yield categoryProjectsServices.getWithProjects(category_project.id);
                     res.status(200).json({
                         status: 200,
-                        category_skills
+                        projectsByCategory
                     });
                 }
                 else {
                     res.status(404).json({
                         status: 404,
-                        category_skills: {},
-                        message: `no category and no skills has number ${id}`
+                        category_project: {}
                     });
                 }
             }
             catch (error) {
+                console.log(error.message);
                 res.status(500).json({
                     status: 500,
-                    message: "something went wrong"
+                    message: "Enternet Services Error"
                 });
             }
         });
@@ -96,16 +95,17 @@ class CategorySkillsController {
     insert(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield categorySkillsServices.insert(req.body);
+                yield categoryProjectsServices.insert(req.body);
                 res.status(200).json({
                     status: 200,
-                    result: "new category_skills created successfully"
+                    result: "new category_projects created successfully"
                 });
             }
             catch (error) {
+                console.log(error.message);
                 res.status(500).json({
                     status: 500,
-                    message: "something went wrong"
+                    message: "Enternet Services Error"
                 });
             }
         });
@@ -113,52 +113,53 @@ class CategorySkillsController {
     updateById(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const category_skills = yield categorySkillsServices.getById(Number(req.params.id));
-                if (category_skills) {
-                    yield categorySkillsServices.updateById(category_skills.id, req.body);
+                const category_project = yield categoryProjectsServices.getById(Number(req.params.id));
+                if (category_project) {
+                    yield categoryProjectsServices.updateById(req.body, category_project.id);
                     res.status(200).json({
                         status: 200,
-                        result: `Category_skills number ${category_skills.id} updated successfully`
+                        result: `Category_projects number ${category_project.id} updated successfully`
                     });
                 }
                 else {
                     res.status(404).json({
                         status: 404,
-                        result: `Category_skills number ${req.params.id} is not found`
+                        result: `Category_projects number ${req.params.id} is not found`
                     });
                 }
             }
             catch (error) {
+                console.log(error.message);
                 res.status(500).json({
                     status: 500,
-                    message: "something went wrong"
+                    message: "Enternet Services Error"
                 });
             }
         });
     }
     deleteById(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { id } = req.params;
             try {
-                const category_skills = yield categorySkillsServices.getById(Number(id));
-                if (category_skills) {
-                    yield categorySkillsServices.deleteById(category_skills.id);
+                const category_project = yield categoryProjectsServices.getById(Number(req.params.id));
+                if (category_project) {
+                    yield categoryProjectsServices.deleteById(category_project.id);
                     res.status(200).json({
                         status: 200,
-                        result: `Category_skills number ${id} is deleted successfully`
+                        result: `category_project number ${category_project.id} is deleted successfully`
                     });
                 }
                 else {
                     res.status(404).json({
                         status: 404,
-                        result: `Category_skills number ${id} is not found`
+                        result: `category_project number ${req.params.id} is not found`
                     });
                 }
             }
             catch (error) {
+                console.log(error.message);
                 res.status(500).json({
                     status: 500,
-                    message: "something went wrong"
+                    message: "Enternet Services Error"
                 });
             }
         });
@@ -166,19 +167,20 @@ class CategorySkillsController {
     deleteAll(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield categorySkillsServices.deleteAll();
+                yield categoryProjectsServices.deleteAll();
                 res.status(200).json({
                     status: 200,
-                    result: `All category_skills deleted successfully`
+                    result: `All category_project deleted successfully`
                 });
             }
             catch (error) {
+                console.log(error.message);
                 res.status(500).json({
                     status: 500,
-                    message: "something went wrong"
+                    message: "Enternet Services Error"
                 });
             }
         });
     }
 }
-exports.CategorySkillsController = CategorySkillsController;
+exports.categoryProjectsController = categoryProjectsController;

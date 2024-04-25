@@ -9,6 +9,7 @@ import jobTitleRouters from './routes/Job_title.routes';
 import phonesRouters from './routes/Phone.routes';
 import categorySkillsRouters from './routes/Category_skills.routes';
 import skillsRouters from './routes/Skills.routes'
+import categoryProjectsRouters from './routes/Category_projects.routes';
 
 dotenv.config()
 
@@ -36,6 +37,9 @@ app.use('/api/job_titles', jobTitleRouters)
 app.use('/api/phones', phonesRouters)
 app.use('/api/category_skills', categorySkillsRouters)
 app.use('/api/skills', skillsRouters)
+app.use('/api/category_projects', categoryProjectsRouters)
+// projects
+// project_notes
 
 app.listen(process.env.PORT || 5000, () => {
     console.log(`SERVER IS WORKED ON PORT ${process.env.PORT}`)

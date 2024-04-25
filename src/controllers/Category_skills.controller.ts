@@ -98,7 +98,7 @@ export class CategorySkillsController {
                 await categorySkillsServices.updateById(category_skills.id, req.body);
                 res.status(200).json({
                     status: 200,
-                    result: `Category_skills number ${req.params.id} updated successfully`
+                    result: `Category_skills number ${category_skills.id} updated successfully`
                 })
             } else {
                 res.status(404).json({
