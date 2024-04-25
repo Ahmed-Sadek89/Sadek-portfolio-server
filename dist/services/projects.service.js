@@ -59,6 +59,7 @@ class ProjectServices {
     }
     getProjectNotesByProjectId(id) {
         return __awaiter(this, void 0, void 0, function* () {
+            // 
             return yield this.prisma.projects.findUnique({
                 where: { id },
                 include: { project_notes: true }

@@ -11,8 +11,9 @@ export class ProjectController {
 
 
     async getAll(req: Request, res: Response) {
+        // hello world
         try {
-            const projects = await projectServices.getAll();
+            const projects = await projectServices.getAll()
             if (projects.length > 0) {
                 res.status(200).json({
                     status: 200,

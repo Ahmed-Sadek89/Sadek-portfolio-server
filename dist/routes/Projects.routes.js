@@ -9,6 +9,7 @@ const multer_config_1 = require("../config/multer.config");
 const Projects_controller_1 = require("../controllers/Projects.controller");
 const router = (0, express_1.default)();
 const projectController = new Projects_controller_1.ProjectController();
+//
 router.get('/', projectController.getAll);
 router.get('/:id', projectController.getById);
 router.use(checkAuth_guard_1.checkAuth);

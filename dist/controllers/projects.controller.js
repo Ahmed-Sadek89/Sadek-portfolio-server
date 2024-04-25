@@ -18,6 +18,7 @@ const categoryprojectsServices = new Category_projects_service_1.CategoryProject
 class ProjectController {
     getAll(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
+            // hello world
             try {
                 const projects = yield projectServices.getAll();
                 if (projects.length > 0) {

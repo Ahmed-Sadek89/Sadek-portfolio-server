@@ -57,6 +57,7 @@ export class ProjectServices {
     }
 
     async getProjectNotesByProjectId(id: number) {
+        // 
         return await this.prisma.projects.findUnique({
             where: { id },
             include: { project_notes: true }
