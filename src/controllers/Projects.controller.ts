@@ -20,6 +20,7 @@ export class ProjectController {
                     projects
                 })
             } else {
+                
                 res.status(404).json({
                     status: 404,
                     projects: [],

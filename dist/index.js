@@ -43,4 +43,4 @@ app.use('/api/projects', Projects_routes_1.default);
 // project_notes
 app.listen(process.env.PORT || 5000, () => {
     console.log(`SERVER IS WORKED ON PORT ${process.env.PORT}`);
-})
+});

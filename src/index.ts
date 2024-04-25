@@ -12,7 +12,6 @@ import skillsRouters from './routes/Skills.routes'
 import categoryProjectsRouters from './routes/Category_projects.routes';
 import projectsRouters from './routes/Projects.routes';
 
-
 dotenv.config()
 
 const app = express();
