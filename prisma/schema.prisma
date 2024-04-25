@@ -96,11 +96,11 @@ model Project_notes {
     projects   Projects @relation(fields: [project_id], references: [id])
     project_id Int
     vistor     Visitor  @relation(fields: [visitor_id], references: [id])
-    visitor_id Int
+    visitor_id String
 }
 
 model Visitor {
-    id            Int             @id @default(autoincrement())
+    id            String          @id 
     name          String          @db.VarChar(30)
     email         String          @unique @db.VarChar(40)
     image         String          @db.VarChar(255)
@@ -114,5 +114,5 @@ model Messages {
     subject   String  @db.VarChar(70)
     message   String  @db.VarChar(255)
     visitor   Visitor @relation(fields: [vistor_id], references: [id])
-    vistor_id Int
+    vistor_id String
 }

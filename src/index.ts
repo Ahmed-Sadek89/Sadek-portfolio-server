@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import session from 'express-session';
 import AwnerRouters from './routes/Awner.routes'
 import AwnerInfoRouters from './routes/Awner_info.routes';
 import ColorsSettingRouters from './routes/Colors_setting.routes'
@@ -11,6 +12,8 @@ import categorySkillsRouters from './routes/Category_skills.routes';
 import skillsRouters from './routes/Skills.routes'
 import categoryProjectsRouters from './routes/Category_projects.routes';
 import projectsRouters from './routes/Projects.routes';
+import visitorRoutes from './routes/Visitors.routes';
+import setPassportConfigration from './config/passport.config';
 
 dotenv.config()
 
@@ -20,6 +23,19 @@ app.use(express.json())
 
 app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static('uploads'))
+app.use(
+    session({
+        secret: "secretcode",
+        resave: true,
+        saveUninitialized: true,
+        cookie: { // for HTTPS
+            sameSite: "none",
+            secure: true,
+            maxAge: 1000 * 60 * 60 * 24 * 7 // One Week
+        }
+    }))
+
+setPassportConfigration(app);
 
 app.use(cors());
 
@@ -40,7 +56,7 @@ app.use('/api/category_skills', categorySkillsRouters)
 app.use('/api/skills', skillsRouters)
 app.use('/api/category_projects', categoryProjectsRouters)
 app.use('/api/projects', projectsRouters)
-// visitors
+app.use('/api/visitors', visitorRoutes)
 // messages
 // project_notes
 
