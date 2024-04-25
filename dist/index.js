@@ -15,7 +15,6 @@ const Phone_routes_1 = __importDefault(require("./routes/Phone.routes"));
 const Category_skills_routes_1 = __importDefault(require("./routes/Category_skills.routes"));
 const Skills_routes_1 = __importDefault(require("./routes/Skills.routes"));
 const Category_projects_routes_1 = __importDefault(require("./routes/Category_projects.routes"));
-const Projects_routes_1 = __importDefault(require("./routes/Projects.routes"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
@@ -37,7 +36,7 @@ app.use('/api/phones', Phone_routes_1.default);
 app.use('/api/category_skills', Category_skills_routes_1.default);
 app.use('/api/skills', Skills_routes_1.default);
 app.use('/api/category_projects', Category_projects_routes_1.default);
-app.use('/api/projects', Projects_routes_1.default);
+// app.use('/api/projects', projectsRouters)
 // visitors
 // messages
 // project_notes
