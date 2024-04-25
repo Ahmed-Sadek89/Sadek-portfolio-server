@@ -81,8 +81,8 @@ model Projects {
     live_url            String            @db.VarChar(255)
     repo_url            String            @db.VarChar(255)
     status              String            @db.VarChar(20)
-    created_at          DateTime
-    ended_at            DateTime
+    created_at          DateTime          @default(now())
+    ended_at            String            @db.VarChar(30)
     attachment          String            @db.VarChar(255)
     category_project    Category_projects @relation(fields: [category_project_id], references: [id])
     category_project_id Int

@@ -18,7 +18,7 @@ export class CategoryProjectsServices {
     }
 
     async getWithProjects(id: number) {
-        return await this.prisma.category_projects.findMany({
+        return await this.prisma.category_projects.findUnique({
             where: { id },
             include: { projects: true }
         })

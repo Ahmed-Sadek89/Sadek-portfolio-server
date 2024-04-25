@@ -9,42 +9,34 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CategoryProjectsServices = void 0;
+exports.ProjectServices = void 0;
 const client_1 = require("@prisma/client");
-class CategoryProjectsServices {
+class ProjectServices {
     constructor() {
         this.prisma = new client_1.PrismaClient();
     }
     getAll() {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield this.prisma.category_projects.findMany({});
+            return yield this.prisma.projects.findMany({});
         });
     }
     getById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield this.prisma.category_projects.findUnique({
+            return yield this.prisma.projects.findUnique({
                 where: { id }
-            });
-        });
-    }
-    getWithProjects(id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return yield this.prisma.category_projects.findUnique({
-                where: { id },
-                include: { projects: true }
             });
         });
     }
     insert(data) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield this.prisma.category_projects.create({
+            return yield this.prisma.projects.create({
                 data
             });
         });
     }
-    updateById(data, id) {
+    updateById(id, data) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield this.prisma.category_projects.update({
+            return yield this.prisma.projects.update({
                 where: { id },
                 data
             });
@@ -52,15 +44,26 @@ class CategoryProjectsServices {
     }
     deleteById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield this.prisma.category_projects.delete({
+            return yield this.prisma.projects.delete({
                 where: { id }
             });
         });
     }
-    deleteAll() {
+    // join
+    deleteAllByCategoryId(category_project_id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield this.prisma.category_projects.deleteMany({});
+            return yield this.prisma.projects.deleteMany({
+                where: { category_project_id }
+            });
+        });
+    }
+    getProjectNotesByProjectId(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.prisma.projects.findUnique({
+                where: { id },
+                include: { project_notes: true }
+            });
         });
     }
 }
-exports.CategoryProjectsServices = CategoryProjectsServices;
+exports.ProjectServices = ProjectServices;

@@ -10,6 +10,8 @@ import phonesRouters from './routes/Phone.routes';
 import categorySkillsRouters from './routes/Category_skills.routes';
 import skillsRouters from './routes/Skills.routes'
 import categoryProjectsRouters from './routes/Category_projects.routes';
+import projectsRouters from './routes/Projects.routes';
+
 
 dotenv.config()
 
@@ -38,7 +40,7 @@ app.use('/api/phones', phonesRouters)
 app.use('/api/category_skills', categorySkillsRouters)
 app.use('/api/skills', skillsRouters)
 app.use('/api/category_projects', categoryProjectsRouters)
-// projects
+app.use('/api/projects', projectsRouters)
 // project_notes
 
 app.listen(process.env.PORT || 5000, () => {
