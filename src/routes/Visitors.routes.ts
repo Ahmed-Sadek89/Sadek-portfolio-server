@@ -1,10 +1,11 @@
 import Router from 'express';
-import passport from 'passport';
-import dotenv from 'dotenv';
+import googleRoutes from './google.routes'
+import facebookRoutes from './facebook.routes'
+import githubRoutes from './github.routes'
 import { VisitorController } from '../controllers/Visitors.controllers';
+
 import { checkAuth } from '../guards/checkAuth.guard';
 
-dotenv.config()
 
 const router = Router()
 const visitorController = new VisitorController();
@@ -15,22 +16,13 @@ router.get("/login/failed", visitorController.getLoginFailed);
 router.get("/logout", visitorController.getLogout);
 
 // google strategy
-router.get("/google", passport.authenticate("google", { scope: ["profile", 'email'] }));
-router.get(
-    "/google/callback",
-    passport.authenticate("google", {
-        successRedirect: process.env.PASSPORT_FRONTEND_REDIRECT_URL || "/",
-        failureRedirect: "/login/failed",
-        session: true
-    }),
-    function (req, res) {
-        res.redirect(process.env.PASSPORT_FRONTEND_REDIRECT_URL || "/");
-    }
-);
+router.use("/google", googleRoutes)
 
 // github strategy
+router.use("/github", githubRoutes);
 
 // facebook strategy
+router.use("/facebook", facebookRoutes)
 
 
 // other main routes related to CRUD and JOIN

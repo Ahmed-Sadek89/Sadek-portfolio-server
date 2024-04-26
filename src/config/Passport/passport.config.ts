@@ -1,10 +1,14 @@
 import { Express } from 'express';
 import passport from 'passport';
-import { passportGoogle } from './passportStrategies.config';
+import { googleStrategy } from './googleStrategy.config';
+import { facebookStrategy } from './facebookStrategy.config';
+import { githubStrategy } from './githubStrategy.config';
 
 
 const setPassportConfigration = (app: Express) => {
-    passportGoogle();
+    googleStrategy();
+    facebookStrategy();
+    // githubStrategy()
     passport.serializeUser((user, done) => {
         done(null, user);
     });

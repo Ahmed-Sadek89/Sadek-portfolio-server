@@ -24,6 +24,13 @@ export class VisitorService {
         })
     }
 
+    async updateById(id: string, data: Prisma.VisitorUpdateInput) {
+        return await this.prisma.visitor.update({
+            where: { id },
+            data
+        })
+    }
+
     async deleteAll() {
         return await this.prisma.visitor.deleteMany({})
     }

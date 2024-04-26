@@ -13,7 +13,7 @@ import skillsRouters from './routes/Skills.routes'
 import categoryProjectsRouters from './routes/Category_projects.routes';
 import projectsRouters from './routes/Projects.routes';
 import visitorRoutes from './routes/Visitors.routes';
-import setPassportConfigration from './config/passport.config';
+import setPassportConfigration from './config/Passport/passport.config';
 
 dotenv.config()
 
