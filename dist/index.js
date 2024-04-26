@@ -18,7 +18,7 @@ const Skills_routes_1 = __importDefault(require("./routes/Skills.routes"));
 const Category_projects_routes_1 = __importDefault(require("./routes/Category_projects.routes"));
 const Projects_routes_1 = __importDefault(require("./routes/Projects.routes"));
 const Visitors_routes_1 = __importDefault(require("./routes/Visitors.routes"));
-const passport_config_1 = __importDefault(require("./config/passport.config"));
+const passport_config_1 = __importDefault(require("./config/Passport/passport.config"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 app.use(express_1.default.json());

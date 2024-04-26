@@ -34,6 +34,14 @@ class VisitorService {
             });
         });
     }
+    updateById(id, data) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.prisma.visitor.update({
+                where: { id },
+                data
+            });
+        });
+    }
     deleteAll() {
         return __awaiter(this, void 0, void 0, function* () {
             return yield this.prisma.visitor.deleteMany({});
