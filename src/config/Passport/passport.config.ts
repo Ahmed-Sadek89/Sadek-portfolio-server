@@ -8,7 +8,7 @@ import { githubStrategy } from './githubStrategy.config';
 const setPassportConfigration = (app: Express) => {
     googleStrategy();
     facebookStrategy();
-    // githubStrategy()
+    githubStrategy()
     passport.serializeUser((user, done) => {
         done(null, user);
     });
