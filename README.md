@@ -53,3 +53,6 @@ and he is responsible for maneging the website that visitors can see.
 
 ## Deployment
 onrender
+
+## API DOCUMENTATION
+https://documenter.getpostman.com/view/18043505/2sA3BszosV#c2a6c47b-42e3-40f3-b885-110a05b09ee3
