@@ -113,6 +113,6 @@ model Messages {
     id        Int     @id @default(autoincrement())
     subject   String  @db.VarChar(70)
     message   String  @db.VarChar(255)
-    visitor   Visitor @relation(fields: [vistor_id], references: [id])
-    vistor_id String
+    visitor   Visitor @relation(fields: [visitor_id], references: [id])
+    visitor_id String
 }

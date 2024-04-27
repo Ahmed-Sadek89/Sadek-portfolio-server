@@ -2,6 +2,8 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import session from 'express-session';
+import setPassportConfigration from './config/Passport/passport.config';
+// routes
 import AwnerRouters from './routes/Awner.routes'
 import AwnerInfoRouters from './routes/Awner_info.routes';
 import ColorsSettingRouters from './routes/Colors_setting.routes'
@@ -13,7 +15,7 @@ import skillsRouters from './routes/Skills.routes'
 import categoryProjectsRouters from './routes/Category_projects.routes';
 import projectsRouters from './routes/Projects.routes';
 import visitorRoutes from './routes/Visitors.routes';
-import setPassportConfigration from './config/Passport/passport.config';
+import messageRoutes from './routes/Message.routes'
 
 dotenv.config()
 
@@ -57,7 +59,7 @@ app.use('/api/skills', skillsRouters)
 app.use('/api/category_projects', categoryProjectsRouters)
 app.use('/api/projects', projectsRouters)
 app.use('/api/visitors', visitorRoutes)
-// messages
+app.use('/api/messages', messageRoutes)
 // project_notes
 
 app.listen(process.env.PORT || 5000, () => {

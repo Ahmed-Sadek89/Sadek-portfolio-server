@@ -136,7 +136,7 @@ CREATE TABLE `Messages` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `subject` VARCHAR(70) NOT NULL,
     `message` VARCHAR(255) NOT NULL,
-    `vistor_id` VARCHAR(191) NOT NULL,
+    `visitor_id` VARCHAR(191) NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -154,4 +154,4 @@ ALTER TABLE `Project_notes` ADD CONSTRAINT `Project_notes_project_id_fkey` FOREI
 ALTER TABLE `Project_notes` ADD CONSTRAINT `Project_notes_visitor_id_fkey` FOREIGN KEY (`visitor_id`) REFERENCES `Visitor`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Messages` ADD CONSTRAINT `Messages_vistor_id_fkey` FOREIGN KEY (`vistor_id`) REFERENCES `Visitor`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Messages` ADD CONSTRAINT `Messages_visitor_id_fkey` FOREIGN KEY (`visitor_id`) REFERENCES `Visitor`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
