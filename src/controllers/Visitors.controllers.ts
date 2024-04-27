@@ -35,6 +35,7 @@ export class VisitorController extends OAuthController {
             if (visitors.length > 0) {
                 res.status(200).json({
                     status: 200,
+                    count: visitors.length,
                     visitors
                 })
             } else {

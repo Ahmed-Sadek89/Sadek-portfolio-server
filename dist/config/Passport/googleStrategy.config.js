@@ -34,6 +34,7 @@ const googleStrategy = () => {
                     image: profile.photos ? profile.photos[0].value : "",
                     login_by: "Gmail"
                 };
+                console.log({ profile });
                 if (!visitor) {
                     const newVisitor = yield visitorService.insert(data);
                     return done(null, newVisitor);

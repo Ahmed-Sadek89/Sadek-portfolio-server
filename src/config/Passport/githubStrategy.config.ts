@@ -23,6 +23,7 @@ export const githubStrategy = () => {
                         image: profile.photos ? profile.photos[0].value : "",
                         login_by: "GitHub"
                     }
+                    console.log({profile})
                     if (!visitor) {
                         const newVisitor = await visitorService.insert(data)
                         return done(null, newVisitor);

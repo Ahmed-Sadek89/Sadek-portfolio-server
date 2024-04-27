@@ -35,6 +35,7 @@ const facebookStrategy = () => {
                     image: profile.photos ? profile.photos[0].value : "",
                     login_by: "Facebook"
                 };
+                console.log({ profile });
                 if (!visitor) {
                     const newVisitor = yield visitorService.insert(data);
                     return done(null, newVisitor);

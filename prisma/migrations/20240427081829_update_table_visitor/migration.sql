@@ -128,7 +128,6 @@ CREATE TABLE `Visitor` (
     `image` VARCHAR(255) NOT NULL,
     `login_by` VARCHAR(20) NOT NULL,
 
-    UNIQUE INDEX `Visitor_email_key`(`email`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
