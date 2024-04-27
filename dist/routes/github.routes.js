@@ -10,7 +10,7 @@ dotenv_1.default.config();
 const router = (0, express_1.default)();
 router.get("/", passport_1.default.authenticate("github", { scope: ["profile"] }));
 router.get("/callback", passport_1.default.authenticate("github", {
-    successRedirect: process.env.PASSPORT_FRONTEND_REDIRECT_URL || "/",
+    successRedirect: process.env.PASSPORT_FRONTEND_REDIRECT_URL,
     failureRedirect: "/login/failed",
     session: true
 }), function (req, res) {

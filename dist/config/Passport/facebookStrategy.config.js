@@ -22,7 +22,7 @@ const facebookStrategy = () => {
     return passport_1.default.use(new passport_facebook_1.Strategy({
         clientID: env_config_1.facebookEnv.FACEBOOK_CLIENT_ID,
         clientSecret: env_config_1.facebookEnv.FACEBOOK_CLIENT_SECRET,
-        callbackURL: env_config_1.PASSPORT_CALLBACK_URL,
+        callbackURL: env_config_1.facebookEnv.FACEBOOK_CALLBACK_URL,
         profileFields: ['id', 'displayName', 'photos', 'email']
     }, function (accessToken, refreshToken, profile, done) {
         return __awaiter(this, void 0, void 0, function* () {

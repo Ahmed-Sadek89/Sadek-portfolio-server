@@ -22,7 +22,7 @@ const googleStrategy = () => {
     return passport_1.default.use(new passport_google_oauth20_1.Strategy({
         clientID: env_config_1.googleEnv.GOOGLE_CLIENT_ID || '',
         clientSecret: env_config_1.googleEnv.GOOGLE_CLIENT_SECRET || '',
-        callbackURL: env_config_1.PASSPORT_CALLBACK_URL
+        callbackURL: env_config_1.googleEnv.GOOGLE_CALLBACK_URL || ""
     }, function (accessToken, refreshToken, profile, done) {
         return __awaiter(this, void 0, void 0, function* () {
             try {

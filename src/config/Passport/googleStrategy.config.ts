@@ -10,9 +10,9 @@ export const googleStrategy = () => {
     return passport.use(
         new GoogleStrategy(
             {
-                clientID: googleEnv.GOOGLE_CLIENT_ID ,
-                clientSecret: googleEnv.GOOGLE_CLIENT_SECRET ,
-                callbackURL: googleEnv.GOOGLE_CALLBACK_URL
+                clientID: googleEnv.GOOGLE_CLIENT_ID || '',
+                clientSecret: googleEnv.GOOGLE_CLIENT_SECRET || '',
+                callbackURL: googleEnv.GOOGLE_CALLBACK_URL || ""
             },
             async function (accessToken, refreshToken, profile, done) {
                 try {

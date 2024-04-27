@@ -22,7 +22,7 @@ const githubStrategy = () => {
     return passport_1.default.use(new passport_github2_1.Strategy({
         clientID: env_config_1.githubEnv.GITHUB_CLIENT_ID,
         clientSecret: env_config_1.githubEnv.GITHUB_CLIENT_SECRET,
-        callbackURL: env_config_1.PASSPORT_CALLBACK_URL
+        callbackURL: env_config_1.githubEnv.GITHUB_CALLBACK_URL
     }, function (accessToken, refreshToken, profile, done) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
