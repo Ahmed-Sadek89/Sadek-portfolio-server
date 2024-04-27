@@ -5,7 +5,7 @@ dotenv.config();
 
 const router = Router();
 
-router.get("/", passport.authenticate("facebook"));
+router.get("/", passport.authenticate("facebook", { scope: ["profile", "email"] }));
 router.get(
     "/callback",
     passport.authenticate("facebook", {
