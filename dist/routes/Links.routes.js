@@ -1,0 +1,18 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const Links_controller_1 = require("../controllers/Links.controller");
+const checkAuth_guard_1 = require("../guards/checkAuth.guard");
+const multer_config_1 = require("../config/multer.config");
+const router = (0, express_1.Router)();
+const linksController = new Links_controller_1.LinksController();
+router.get('/getAll', linksController.getAll);
+router.get('/getByType', linksController.getByLinkType);
+router.use(checkAuth_guard_1.checkAuth);
+router.get('/:id', linksController.getById);
+router.delete('/deleteAll', linksController.deleteAll);
+router.delete('/:id', linksController.deleteById);
+router.use(multer_config_1.upload.single('icon'));
+router.post('/', linksController.insertNewLink);
+router.put('/:id', linksController.updateLink);
+exports.default = router;
