@@ -10,7 +10,7 @@ router.get("/", passport.authenticate("google", { scope: ["profile", 'email'] })
 router.get(
     "/callback",
     passport.authenticate("google", {
-        successRedirect: process.env.PASSPORT_FRONTEND_REDIRECT_URL || "/",
+        successRedirect: process.env.PASSPORT_FRONTEND_REDIRECT_URL,
         failureRedirect: "/login/failed",
         session: true
     }),

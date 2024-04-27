@@ -9,7 +9,7 @@ router.get("/", passport.authenticate("facebook"));
 router.get(
     "/callback",
     passport.authenticate("facebook", {
-        successRedirect: process.env.PASSPORT_FRONTEND_REDIRECT_URL || "/",
+        successRedirect: process.env.PASSPORT_FRONTEND_REDIRECT_URL,
         failureRedirect: "/login/failed",
         session: true
     }),
