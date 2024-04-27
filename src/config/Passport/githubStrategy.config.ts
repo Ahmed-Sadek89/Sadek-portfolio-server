@@ -1,7 +1,7 @@
 import passport, { Profile } from "passport";
 import { Strategy as GithubStrategy } from 'passport-github2';
 import { VisitorService } from "../../services/Visitor.service";
-import { githubEnv, PASSPORT_CALLBACK_URL } from "./env.config";
+import { githubEnv } from "./env.config";
 
 const visitorService = new VisitorService();
 
@@ -11,7 +11,7 @@ export const githubStrategy = () => {
             {
                 clientID: githubEnv.GITHUB_CLIENT_ID,
                 clientSecret: githubEnv.GITHUB_CLIENT_SECRET,
-                callbackURL: PASSPORT_CALLBACK_URL
+                callbackURL: githubEnv.GITHUB_CALLBACK_URL
             },
             async function (accessToken: string, refreshToken: string, profile: Profile, done: (error: any, user?: any, info?: any) => void) {
                 try {

@@ -1,7 +1,7 @@
 import passport from "passport";
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import { VisitorService } from "../../services/Visitor.service";
-import { googleEnv, PASSPORT_CALLBACK_URL } from "./env.config";
+import { googleEnv } from "./env.config";
 
 const visitorService = new VisitorService();
 
@@ -10,9 +10,9 @@ export const googleStrategy = () => {
     return passport.use(
         new GoogleStrategy(
             {
-                clientID: googleEnv.GOOGLE_CLIENT_ID || '',
-                clientSecret: googleEnv.GOOGLE_CLIENT_SECRET || '',
-                callbackURL: PASSPORT_CALLBACK_URL
+                clientID: googleEnv.GOOGLE_CLIENT_ID ,
+                clientSecret: googleEnv.GOOGLE_CLIENT_SECRET ,
+                callbackURL: googleEnv.GOOGLE_CALLBACK_URL
             },
             async function (accessToken, refreshToken, profile, done) {
                 try {

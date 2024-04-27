@@ -1,6 +1,6 @@
 import passport from "passport";
 import { VisitorService } from "../../services/Visitor.service";
-import { facebookEnv, PASSPORT_CALLBACK_URL } from "./env.config";
+import { facebookEnv } from "./env.config";
 import { Strategy as FacebookStrategy } from 'passport-facebook';
 
 const visitorService = new VisitorService();
@@ -11,7 +11,7 @@ export const facebookStrategy = () => {
             {
                 clientID: facebookEnv.FACEBOOK_CLIENT_ID,
                 clientSecret: facebookEnv.FACEBOOK_CLIENT_SECRET,
-                callbackURL: PASSPORT_CALLBACK_URL,
+                callbackURL: facebookEnv.FACEBOOK_CALLBACK_URL,
                 profileFields: ['id', 'displayName', 'photos', 'email']
             },
             async function (accessToken, refreshToken, profile, done) {
