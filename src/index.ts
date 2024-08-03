@@ -11,23 +11,23 @@ const app = express();
 
 app.use(express.json())
 
-app.use(express.urlencoded({ extended: true }));
-app.use('/uploads', express.static('uploads'))
-app.use(
-    session({
-        secret: "secretcode",
-        resave: true,
-        saveUninitialized: true,
-        cookie: { // for HTTPS
-            sameSite: "none",
-            secure: true,
-            maxAge: 1000 * 60 * 60 * 24 * 7 // One Week
-        }
-    }))
+// app.use(express.urlencoded({ extended: true }));
+// app.use('/uploads', express.static('uploads'))
+// app.use(
+//     session({
+//         secret: "secretcode",
+//         resave: true,
+//         saveUninitialized: true,
+//         cookie: { // for HTTPS
+//             sameSite: "none",
+//             secure: true,
+//             maxAge: 1000 * 60 * 60 * 24 * 7 // One Week
+//         }
+//     }))
 
-setPassportConfigration(app);
+// setPassportConfigration(app);
 
-app.use(cors());
+// app.use(cors());
 
 app.get('/', (_, res) => {
     res.status(200).json({
@@ -38,6 +38,6 @@ app.get('/', (_, res) => {
 
 // app.use("/api", root)
 
-app.listen(process.env.PORT || 5000, () => {
+app.listen(process.env.PORT, () => {
     console.log(`SERVER IS WORKED ON PORT ${process.env.PORT}`)
 })
