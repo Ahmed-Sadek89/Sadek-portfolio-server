@@ -58,7 +58,7 @@ class VisitorService {
         return __awaiter(this, void 0, void 0, function* () {
             return yield this.prisma.visitor.findUnique({
                 where: { id },
-                include: { messages: true }
+                include: { Messages: true }
             });
         });
     }
@@ -66,7 +66,7 @@ class VisitorService {
         return __awaiter(this, void 0, void 0, function* () {
             return yield this.prisma.visitor.findUnique({
                 where: { id },
-                include: { project_notes: true }
+                include: { Project_notes: true }
             });
         });
     }

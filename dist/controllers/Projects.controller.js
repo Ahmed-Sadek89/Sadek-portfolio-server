@@ -159,7 +159,7 @@ class ProjectController {
             try {
                 const projectsByCategoryId = yield categoryprojectsServices.getWithProjects(Number(req.params.categoryId));
                 if (projectsByCategoryId) {
-                    projectsByCategoryId.projects.map(index => {
+                    projectsByCategoryId.Projects.map(index => {
                         return (0, cloudinaryFunctions_config_1.removeFromCloudinary)(index.attachment);
                     });
                     yield projectServices.deleteAllByCategoryId(projectsByCategoryId.id);

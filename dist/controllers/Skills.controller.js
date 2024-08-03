@@ -133,7 +133,7 @@ class SkillsController {
             try {
                 const categoryskills = yield categoryskillsServices.getByIdWithSkills(Number(req.params.category_id));
                 if (categoryskills) {
-                    categoryskills.skills.map(index => {
+                    categoryskills.Skills.map(index => {
                         return (0, cloudinaryFunctions_config_1.removeFromCloudinary)(index.icon);
                     });
                     yield skillsServices.deleteByCategoryId(Number(categoryskills.id));

@@ -31,7 +31,7 @@ class CategoryProjectsServices {
         return __awaiter(this, void 0, void 0, function* () {
             return yield this.prisma.category_projects.findUnique({
                 where: { id },
-                include: { projects: true }
+                include: { Projects: true }
             });
         });
     }

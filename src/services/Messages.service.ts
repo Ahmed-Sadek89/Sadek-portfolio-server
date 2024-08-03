@@ -23,7 +23,7 @@ export class MessageService {
         })
     }
 
-    async insert(data: Prisma.messagesCreateInput) {
+    async insert(data: Prisma.MessagesCreateInput) {
         return await this.prisma.messages.create({
             data
         })

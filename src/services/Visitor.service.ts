@@ -8,7 +8,7 @@ export class VisitorService {
         this.prisma = new PrismaClient();
     }
 
-    async insert(data: Prisma.visitorCreateInput) {
+    async insert(data: Prisma.VisitorCreateInput) {
         return await this.prisma.visitor.create({
             data
         })
@@ -24,7 +24,7 @@ export class VisitorService {
         })
     }
 
-    async updateById(id: string, data: Prisma.visitorUpdateInput) {
+    async updateById(id: string, data: Prisma.VisitorUpdateInput) {
         return await this.prisma.visitor.update({
             where: { id },
             data
@@ -44,14 +44,14 @@ export class VisitorService {
     async getMessagesByVisitorId(id: string) {
         return await this.prisma.visitor.findUnique({
             where: { id },
-            include: { messages: true }
+            include: { Messages: true }
         })
     }
 
     async getNotesByVisitorId(id: string) {
         return await this.prisma.visitor.findUnique({
             where: { id },
-            include: { project_notes: true }
+            include: { Project_notes: true }
         })
     }
 }

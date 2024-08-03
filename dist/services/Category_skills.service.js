@@ -62,7 +62,7 @@ class CategorySkillsServices {
         return __awaiter(this, void 0, void 0, function* () {
             return yield this.prisma.category_skills.findUnique({
                 where: { id },
-                include: { skills: true }
+                include: { Skills: true }
             });
         });
     }

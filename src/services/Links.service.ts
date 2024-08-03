@@ -30,14 +30,14 @@ export class LinksServices {
         return link
     }
 
-    async insertNewLink(data: Prisma.linksCreateInput) {
+    async insertNewLink(data: Prisma.LinksCreateInput) {
         const link = await this.prisma.links.create({
             data
         })
         return link
     }
 
-    async updateLink(id: number, data: Prisma.linksUpdateInput) {
+    async updateLink(id: number, data: Prisma.LinksUpdateInput) {
         return await this.prisma.links.update({
             where: { id },
             data

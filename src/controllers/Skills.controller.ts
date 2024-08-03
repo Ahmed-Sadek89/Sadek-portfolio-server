@@ -112,7 +112,7 @@ export class SkillsController {
         try {
             const categoryskills = await categoryskillsServices.getByIdWithSkills(Number(req.params.category_id));
             if (categoryskills) {
-                categoryskills.skills.map(index => {
+                categoryskills.Skills.map(index => {
                     return removeFromCloudinary(index.icon)
                 })
                 await skillsServices.deleteByCategoryId(Number(categoryskills.id))

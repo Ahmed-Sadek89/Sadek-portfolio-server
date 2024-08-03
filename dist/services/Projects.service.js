@@ -62,7 +62,7 @@ class ProjectServices {
             // 
             return yield this.prisma.projects.findUnique({
                 where: { id },
-                include: { project_notes: true }
+                include: { Project_notes: true }
             });
         });
     }
