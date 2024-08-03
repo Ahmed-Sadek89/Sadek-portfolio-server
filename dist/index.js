@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const express_session_1 = __importDefault(require("express-session"));
+const main_routes_1 = __importDefault(require("./main.routes"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
@@ -29,7 +30,7 @@ app.get('/', (_, res) => {
         message: "welcome to Nodejs server"
     });
 });
-// app.use("/api", root)
+app.use("/api", main_routes_1.default);
 app.listen(process.env.PORT, () => {
     console.log(`SERVER IS WORKED ON PORT ${process.env.PORT}`);
 });
