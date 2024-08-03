@@ -19,7 +19,7 @@ export class CategorySkillsServices {
         return await this.prisma.category_skills.deleteMany({});
     }
 
-    async insert(data: Prisma.Category_skillsCreateInput) {
+    async insert(data: Prisma.category_skillsCreateInput) {
         return await this.prisma.category_skills.create({
             data
         })
@@ -37,7 +37,7 @@ export class CategorySkillsServices {
         })
     }
 
-    async updateById(id: number, data: Prisma.Category_skillsUpdateInput) {
+    async updateById(id: number, data: Prisma.category_skillsUpdateInput) {
         return await this.prisma.category_skills.update({
             where: { id },
             data

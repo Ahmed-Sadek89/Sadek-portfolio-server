@@ -24,13 +24,13 @@ export class CategoryProjectsServices {
         })
     }
 
-    async insert(data: Prisma.Category_projectsCreateInput) {
+    async insert(data: Prisma.category_projectsCreateInput) {
         return await this.prisma.category_projects.create({
             data
         })
     }
 
-    async updateById(data: Prisma.Category_projectsUpdateInput, id: number) {
+    async updateById(data: Prisma.category_projectsUpdateInput, id: number) {
         return await this.prisma.category_projects.update({
             where: { id },
             data

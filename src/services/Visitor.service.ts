@@ -8,7 +8,7 @@ export class VisitorService {
         this.prisma = new PrismaClient();
     }
 
-    async insert(data: Prisma.VisitorCreateInput) {
+    async insert(data: Prisma.visitorCreateInput) {
         return await this.prisma.visitor.create({
             data
         })
@@ -24,7 +24,7 @@ export class VisitorService {
         })
     }
 
-    async updateById(id: string, data: Prisma.VisitorUpdateInput) {
+    async updateById(id: string, data: Prisma.visitorUpdateInput) {
         return await this.prisma.visitor.update({
             where: { id },
             data

@@ -7,7 +7,7 @@ export class ProjectNoteService {
         this.prisma = new PrismaClient();
     }
 
-    async insert(data: Prisma.Project_notesCreateInput) {
+    async insert(data: Prisma.project_notesCreateInput) {
         return await this.prisma.project_notes.create({
             data
         })
