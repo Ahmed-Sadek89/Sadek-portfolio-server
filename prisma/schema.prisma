@@ -3,18 +3,34 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-model phones {
-  id    Int    @id @default(autoincrement())
-  phone String @db.VarChar(30)
+model awner {
+  id       Int    @id @default(autoincrement())
+  email    String @unique(map: "Awner_email_key")
+  password String
 }
 
-model job_titles {
-  id    Int    @id @default(autoincrement())
-  title String @db.VarChar(30)
+model awner_info {
+  id          Int    @id @default(autoincrement())
+  name        String @unique(map: "Awner_info_name_key") @db.VarChar(30)
+  email       String @unique(map: "Awner_info_email_key") @db.VarChar(40)
+  description String @unique(map: "Awner_info_description_key") @db.VarChar(255)
+  image       String @unique(map: "Awner_info_image_key") @db.VarChar(255)
+}
+
+model category_projects {
+  id            Int        @id @default(autoincrement())
+  category_name String     @unique(map: "Category_projects_category_name_key") @db.VarChar(60)
+  projects      projects[]
+}
+
+model category_skills {
+  id            Int      @id @default(autoincrement())
+  category_name String   @unique(map: "Category_skills_category_name_key") @db.VarChar(50)
+  skills        skills[]
 }
 
 model colors_setting {
@@ -24,64 +40,48 @@ model colors_setting {
   color2     String @unique @db.VarChar(20)
 }
 
-model Awner {
-  id       Int    @id @default(autoincrement())
-  email    String @unique
-  password String
-}
-
-model Awner_info {
-  id          Int    @id @default(autoincrement())
-  name        String @unique @db.VarChar(30)
-  email       String @unique @db.VarChar(40)
-  description String @unique @db.VarChar(255)
-  image       String @unique @db.VarChar(255)
-}
-
-model Category_projects {
-  id            Int        @id @default(autoincrement())
-  category_name String     @unique @db.VarChar(60)
-  Projects      Projects[]
-}
-
-model Category_skills {
-  id            Int      @id @default(autoincrement())
-  category_name String   @unique @db.VarChar(50)
-  Skills        Skills[]
-}
-
-model Links {
+model job_titles {
   id    Int    @id @default(autoincrement())
-  title String @unique @db.VarChar(30)
-  link  String @unique @db.VarChar(255)
+  title String @db.VarChar(30)
+}
+
+model links {
+  id    Int    @id @default(autoincrement())
+  title String @unique(map: "Links_title_key") @db.VarChar(30)
+  link  String @unique(map: "Links_link_key") @db.VarChar(255)
   icon  String @db.VarChar(255)
   type  String @db.VarChar(40)
 }
 
-model Messages {
+model messages {
   id         Int     @id @default(autoincrement())
   subject    String  @db.VarChar(70)
   message    String  @db.VarChar(255)
   visitor_id String
-  Visitor    Visitor @relation(fields: [visitor_id], references: [id])
+  visitor    visitor @relation(fields: [visitor_id], references: [id])
 
-  @@index([visitor_id], map: "Messages_visitor_id_fkey")
+  @@index([visitor_id])
 }
 
-model Project_notes {
+model phones {
+  id    Int    @id @default(autoincrement())
+  phone String @db.VarChar(30)
+}
+
+model project_notes {
   id         Int      @id @default(autoincrement())
   notes      String   @db.VarChar(255)
   react      String   @db.VarChar(10)
   project_id Int
   visitor_id String
-  Projects   Projects @relation(fields: [project_id], references: [id])
-  Visitor    Visitor  @relation(fields: [visitor_id], references: [id])
+  projects   projects @relation(fields: [project_id], references: [id])
+  visitor    visitor  @relation(fields: [visitor_id], references: [id])
 
-  @@index([project_id], map: "Project_notes_project_id_fkey")
   @@index([visitor_id], map: "Project_notes_visitor_id_fkey")
+  @@index([project_id])
 }
 
-model Projects {
+model projects {
   id                  Int               @id @default(autoincrement())
   title               String            @db.VarChar(30)
   description         String            @db.VarChar(255)
@@ -92,28 +92,28 @@ model Projects {
   ended_at            String            @db.VarChar(30)
   attachment          String            @db.VarChar(255)
   category_project_id Int
-  Project_notes       Project_notes[]
-  Category_projects   Category_projects @relation(fields: [category_project_id], references: [id])
+  project_notes       project_notes[]
+  category_projects   category_projects @relation(fields: [category_project_id], references: [id])
 
-  @@index([category_project_id], map: "Projects_category_project_id_fkey")
+  @@index([category_project_id])
 }
 
-model Skills {
+model skills {
   id              Int             @id @default(autoincrement())
   title           String          @db.VarChar(20)
   icon            String          @db.VarChar(255)
   category_id     Int
-  Category_skills Category_skills @relation(fields: [category_id], references: [id])
+  category_skills category_skills @relation(fields: [category_id], references: [id])
 
-  @@index([category_id], map: "Skills_category_id_fkey")
+  @@index([category_id])
 }
 
-model Visitor {
+model visitor {
   id            String          @id
   name          String          @db.VarChar(30)
   email         String          @db.VarChar(40)
   image         String          @db.VarChar(255)
   login_by      String          @db.VarChar(20)
-  Messages      Messages[]
-  Project_notes Project_notes[]
+  messages      messages[]
+  project_notes project_notes[]
 }

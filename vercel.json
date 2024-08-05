@@ -2,14 +2,18 @@
     "version": 2,
     "builds": [
         {
-            "src": "./dist/index.js",
+            "src": "src/index.ts",
             "use": "@vercel/node"
         }
     ],
     "routes": [
         {
             "src": "/(.*)",
-            "dest": "/dist"
+            "dest": "src/index.ts"
         }
-    ]
+    ],
+    "regions": [
+        "iad1"
+    ],
+    "public": false
 }
