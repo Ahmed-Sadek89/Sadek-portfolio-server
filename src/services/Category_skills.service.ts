@@ -1,14 +1,10 @@
-import { Prisma, PrismaClient } from "@prisma/client";
+import { Prisma } from "@prisma/client";
+import prisma from "../libs/prisma";
 
 export class CategorySkillsServices {
-    private prisma: PrismaClient;
-
-    constructor() {
-        this.prisma = new PrismaClient()
-    }
 
     async getAll() {
-        return (await this.prisma.category_skills.findMany({
+        return (await prisma.category_skills.findMany({
             orderBy: {
                 id: 'asc'
             }
@@ -16,38 +12,38 @@ export class CategorySkillsServices {
     }
 
     async deleteAll() {
-        return await this.prisma.category_skills.deleteMany({});
+        return await prisma.category_skills.deleteMany({});
     }
 
-    async insert(data: Prisma.Category_skillsCreateInput) {
-        return await this.prisma.category_skills.create({
+    async insert(data: Prisma.category_skillsCreateInput) {
+        return await prisma.category_skills.create({
             data
         })
     }
 
     async getById(id: number) {
-        return await this.prisma.category_skills.findUnique({
+        return await prisma.category_skills.findUnique({
             where: { id }
         })
     }
 
     async deleteById(id: number) {
-        return await this.prisma.category_skills.delete({
+        return await prisma.category_skills.delete({
             where: { id }
         })
     }
 
-    async updateById(id: number, data: Prisma.Category_skillsUpdateInput) {
-        return await this.prisma.category_skills.update({
+    async updateById(id: number, data: Prisma.category_skillsUpdateInput) {
+        return await prisma.category_skills.update({
             where: { id },
             data
         })
     }
 
     async getByIdWithSkills(id: number) {
-        return await this.prisma.category_skills.findUnique({
+        return await prisma.category_skills.findUnique({
             where: { id },
-            include: { Skills: true }
+            include: { skills: true }
         })
     }
 }

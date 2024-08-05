@@ -1,46 +1,42 @@
-import { Prisma, PrismaClient } from "@prisma/client";
+import { Prisma } from "@prisma/client";
+import prisma from "../libs/prisma";
 
 export class MessageService {
-    private prisma: PrismaClient;
-
-    constructor() {
-        this.prisma = new PrismaClient()
-    }
-
+    
     async getAll() {
-        return await this.prisma.messages.findMany({})
+        return await prisma.messages.findMany({})
     }
 
     async getById(id: number) {
-        return await this.prisma.messages.findUnique({
+        return await prisma.messages.findUnique({
             where: { id }
         })
     }
 
     async getAllByVisitorId(visitor_id: string) {
-        return await this.prisma.messages.findMany({
+        return await prisma.messages.findMany({
             where: { visitor_id }
         })
     }
 
-    async insert(data: Prisma.MessagesCreateInput) {
-        return await this.prisma.messages.create({
+    async insert(data: Prisma.messagesCreateInput) {
+        return await prisma.messages.create({
             data
         })
     }
 
     async deleteById(id: number) {
-        return await this.prisma.messages.delete({
+        return await prisma.messages.delete({
             where: { id }
         })
     }
 
     async deleteAll() {
-        return await this.prisma.messages.deleteMany({})
+        return await prisma.messages.deleteMany({})
     }
 
     async deleteByVisitorId(visitor_id: string) {
-        return await this.prisma.messages.deleteMany({
+        return await prisma.messages.deleteMany({
             where: { visitor_id }
         })
     }

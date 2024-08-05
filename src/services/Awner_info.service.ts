@@ -1,25 +1,22 @@
-import { Prisma, PrismaClient } from "@prisma/client";
+import { Prisma } from "@prisma/client";
+import prisma from "../libs/prisma";
 
 export class AwnerInfoService {
-    private readonly prisma: PrismaClient
-    constructor() {
-        this.prisma = new PrismaClient();
-    }
-
-    async insertAwnerInfo(data: Prisma.Awner_infoCreateInput) {
-        const awner_info = await this.prisma.awner_info.create({
+    
+    async insertAwnerInfo(data: Prisma.awner_infoCreateInput) {
+        const awner_info = await prisma.awner_info.create({
             data
         })
         return awner_info
     }
 
     async getAwnerInfo() {
-        const awner_info = await this.prisma.awner_info.findFirst({});
+        const awner_info = await prisma.awner_info.findFirst({});
         return awner_info;
     }
 
-    async updateAwnerInfo(data: Prisma.Awner_infoUpdateInput) {
-        return await this.prisma.awner_info.update({
+    async updateAwnerInfo(data: Prisma.awner_infoUpdateInput) {
+        return await prisma.awner_info.update({
             where: {id: 1},
             data
         })

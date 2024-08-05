@@ -1,19 +1,15 @@
-import { Prisma, PrismaClient } from "@prisma/client";
+import { Prisma } from "@prisma/client";
+import prisma from "../libs/prisma";
 
 export class PhonesServices {
-    private prisma: PrismaClient;
-
-    constructor() {
-        this.prisma = new PrismaClient()
-    }
-
+    
     async getAll() {
-        const phones = await this.prisma.phones.findMany({});
+        const phones = await prisma.phones.findMany({});
         return phones
     }
 
     async getById(id: number) {
-        const phone = await this.prisma.phones.findUnique({
+        const phone = await prisma.phones.findUnique({
             where: {
                 id
             }
@@ -22,27 +18,27 @@ export class PhonesServices {
     }
 
     async insertNewPhone(data: Prisma.phonesCreateInput) {
-        const phone = await this.prisma.phones.create({
+        const phone = await prisma.phones.create({
             data
         })
         return phone
     }
 
     async updatePhone(id: number, data: Prisma.phonesUpdateInput) {
-        return await this.prisma.phones.update({
+        return await prisma.phones.update({
             where: { id },
             data
         })
     }
 
     async deleteById(id: number) {
-        return await this.prisma.phones.delete({
+        return await prisma.phones.delete({
             where: { id }
         })
     }
 
     async deleteAll() {
-        return await this.prisma.phones.deleteMany({})
+        return await prisma.phones.deleteMany({})
     }
 
 }

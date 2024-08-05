@@ -1,50 +1,47 @@
-import { Prisma, PrismaClient } from "@prisma/client";
+import { Prisma } from "@prisma/client";
+import prisma from "../libs/prisma";
 
 export class CategoryProjectsServices {
-    private prisma: PrismaClient;
-
-    constructor() {
-        this.prisma = new PrismaClient();
-    }
+    
 
     async getAll() {
-        return await this.prisma.category_projects.findMany({})
+        return await prisma.category_projects.findMany({})
     }
 
     async getById(id: number) {
-        return await this.prisma.category_projects.findUnique({
+        return await prisma.category_projects.findUnique({
             where: { id }
         })
     }
 
     async getWithProjects(id: number) {
-        return await this.prisma.category_projects.findUnique({
+        return await prisma.category_projects.findUnique({
             where: { id },
-            include: { Projects: true }
+            include: { projects: true }
         })
     }
 
-    async insert(data: Prisma.Category_projectsCreateInput) {
-        return await this.prisma.category_projects.create({
+    async insert(data: Prisma.category_projectsCreateInput) {
+        return await prisma.category_projects.create({
             data
         })
     }
 
-    async updateById(data: Prisma.Category_projectsUpdateInput, id: number) {
-        return await this.prisma.category_projects.update({
+    async updateById(data: Prisma.category_projectsUpdateInput, id: number) {
+        return await prisma.category_projects.update({
             where: { id },
             data
         })
     }
 
     async deleteById(id: number) {
-        return await this.prisma.category_projects.delete({
+        return await prisma.category_projects.delete({
             where: { id }
         })
     }
 
     async deleteAll() {
-        return await this.prisma.category_projects.deleteMany({})
+        return await prisma.category_projects.deleteMany({})
     }
 
 }

@@ -147,10 +147,10 @@ export class ProjectController {
         try {
             const projectsByCategoryId = await categoryprojectsServices.getWithProjects(Number(req.params.categoryId));
             if (projectsByCategoryId) {
-                projectsByCategoryId.Projects.map(index => {
+                projectsByCategoryId.projects.map(index => {
                     return removeFromCloudinary(index.attachment)
                 })
-                await projectServices.deleteAllByCategoryId(projectsByCategoryId.id)
+                await projectServices.deleteAllByCategoryId(projectsByCategoryId.id);
                 res.status(200).json({
                     status: 200,
                     result: `all projects with category number ${req.params.categoryId} is deleted successfully`

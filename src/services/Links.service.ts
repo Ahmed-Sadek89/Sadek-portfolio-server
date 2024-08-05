@@ -1,19 +1,15 @@
-import { Prisma, PrismaClient } from "@prisma/client";
+import { Prisma } from "@prisma/client";
+import prisma from "../libs/prisma";
 
 export class LinksServices {
-    private prisma: PrismaClient;
-
-    constructor() {
-        this.prisma = new PrismaClient()
-    }
-
+   
     async getAll() {
-        const links = await this.prisma.links.findMany({});
+        const links = await prisma.links.findMany({});
         return links
     }
 
     async getById(id: number) {
-        const link = await this.prisma.links.findUnique({
+        const link = await prisma.links.findUnique({
             where: {
                 id
             }
@@ -22,7 +18,7 @@ export class LinksServices {
     }
 
     async getByLinkType(type: string) {
-        const link = await this.prisma.links.findMany({
+        const link = await prisma.links.findMany({
             where: {
                 type
             }
@@ -30,28 +26,28 @@ export class LinksServices {
         return link
     }
 
-    async insertNewLink(data: Prisma.LinksCreateInput) {
-        const link = await this.prisma.links.create({
+    async insertNewLink(data: Prisma.linksCreateInput) {
+        const link = await prisma.links.create({
             data
         })
         return link
     }
 
-    async updateLink(id: number, data: Prisma.LinksUpdateInput) {
-        return await this.prisma.links.update({
+    async updateLink(id: number, data: Prisma.linksUpdateInput) {
+        return await prisma.links.update({
             where: { id },
             data
         })
     }
 
     async deleteById(id: number) {
-        return await this.prisma.links.delete({
+        return await prisma.links.delete({
             where: { id }
         })
     }
 
     async deleteAll() {
-        return await this.prisma.links.deleteMany({})
+        return await prisma.links.deleteMany({})
     }
 
 }
