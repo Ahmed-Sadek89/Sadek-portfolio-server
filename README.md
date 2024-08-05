@@ -23,7 +23,7 @@ and he is responsible for maneging the website that visitors can see.
 ## TECHNICALS SKILLS
 - **Node.js** -> `JavaScript Runtime`
 - **Express.js** -> `Node.js Framework`
-- **MySQL** -> `for storing relational tables`
+- **PostgreSQL** -> `for storing relational tables`
 - **Prisma** -> `ORM for database migration and SQL commands`
 - **Passport.js** -> `for 2nd party OAuth`
 - **JWT** -> `for authentication`
@@ -46,13 +46,30 @@ and he is responsible for maneging the website that visitors can see.
 -  npm run dev
 -  npx tsc --w
 -  setup .env variables
--  make prisma migration `npx prisma migrate dev name --init`
+-  make pull from prisma migration `npx prisma db pull`
+-  make generate from prisma migration `npx prisma generate`
+-  make push from prisma migration `npx prisma db push`
+
 
 ## N.of entities
 13
 
 ## Deployment
-onrender
+- API LINK -> Vercel.com
+- Database -> Neon using `ahmed.mohamed.sadek.100.com`
+
+## vercel.json
+for deploy the project in vercel `using only TypeScript code`
 
 ## API DOCUMENTATION
 https://documenter.getpostman.com/view/18043505/2sA3BszosV#c2a6c47b-42e3-40f3-b885-110a05b09ee3
+
+## notes
+- make sure that DATABASE_LINK in production mode is the `Connection string` `not the prisma DB_URL`
+- package.json -> scripts `
+"scripts": {
+    "start": "node src/index.ts",
+    "dev": "nodemon src/index.ts",
+    "postinstall": "prisma generate"
+  },
+`
