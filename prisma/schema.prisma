@@ -8,29 +8,21 @@ datasource db {
 }
 
 model awner {
-  id       Int    @id @default(autoincrement())
-  email    String @unique(map: "Awner_email_key")
-  password String
-}
-
-model awner_info {
-  id          Int    @id @default(autoincrement())
-  name        String @unique(map: "Awner_info_name_key") @db.VarChar(30)
-  email       String @unique(map: "Awner_info_email_key") @db.VarChar(40)
-  description String @unique(map: "Awner_info_description_key") @db.VarChar(255)
-  image       String @unique(map: "Awner_info_image_key") @db.VarChar(255)
-}
-
-model category_projects {
-  id            Int        @id @default(autoincrement())
-  category_name String     @unique(map: "Category_projects_category_name_key") @db.VarChar(60)
-  projects      projects[]
-}
-
-model category_skills {
-  id            Int      @id @default(autoincrement())
-  category_name String   @unique(map: "Category_skills_category_name_key") @db.VarChar(50)
-  skills        skills[]
+  id                Int                 @id @default(autoincrement())
+  email             String              @unique(map: "Awner_email_key")
+  password          String
+  description       String?             @default("") @db.VarChar(255)
+  image             String?             @default("") @db.VarChar(255)
+  name              String
+  category_projects category_projects[]
+  category_skills   category_skills[]
+  colors_setting    colors_setting?
+  job_titles        job_titles[]
+  links             links[]
+  messages          messages[]
+  phones            phones[]
+  projects          projects[]
+  visitor           visitor[]
 }
 
 model colors_setting {
@@ -38,19 +30,48 @@ model colors_setting {
   main_color String @unique @db.VarChar(20)
   color1     String @unique @db.VarChar(20)
   color2     String @unique @db.VarChar(20)
+  awner_id   Int    @unique
+  awner      awner  @relation(fields: [awner_id], references: [id], onDelete: Cascade)
 }
 
 model job_titles {
-  id    Int    @id @default(autoincrement())
-  title String @db.VarChar(30)
+  id       Int    @id @default(autoincrement())
+  title    String @db.VarChar(30)
+  awner_id Int
+  awner    awner  @relation(fields: [awner_id], references: [id], onDelete: Cascade)
+}
+
+model phones {
+  id       Int    @id @default(autoincrement())
+  phone    String @db.VarChar(30)
+  awner_id Int
+  awner    awner  @relation(fields: [awner_id], references: [id], onDelete: Cascade)
 }
 
 model links {
-  id    Int    @id @default(autoincrement())
-  title String @unique(map: "Links_title_key") @db.VarChar(30)
-  link  String @unique(map: "Links_link_key") @db.VarChar(255)
-  icon  String @db.VarChar(255)
-  type  String @db.VarChar(40)
+  id       Int    @id @default(autoincrement())
+  title    String @db.VarChar(30)
+  link     String @unique @db.VarChar(255)
+  icon     String @db.VarChar(255)
+  type     String @db.VarChar(40)
+  awner_id Int
+  awner    awner  @relation(fields: [awner_id], references: [id], onDelete: Cascade)
+}
+
+model category_projects {
+  id            Int        @id @default(autoincrement())
+  category_name String     @db.VarChar(60)
+  awner_id      Int
+  awner         awner      @relation(fields: [awner_id], references: [id], onDelete: Cascade)
+  projects      projects[]
+}
+
+model category_skills {
+  id            Int      @id @default(autoincrement())
+  category_name String   @db.VarChar(50)
+  awner_id      Int
+  awner         awner    @relation(fields: [awner_id], references: [id], onDelete: Cascade)
+  skills        skills[]
 }
 
 model messages {
@@ -58,14 +79,11 @@ model messages {
   subject    String  @db.VarChar(70)
   message    String  @db.VarChar(255)
   visitor_id String
+  awner_id   Int
+  awner      awner   @relation(fields: [awner_id], references: [id], onDelete: Cascade)
   visitor    visitor @relation(fields: [visitor_id], references: [id])
 
   @@index([visitor_id])
-}
-
-model phones {
-  id    Int    @id @default(autoincrement())
-  phone String @db.VarChar(30)
 }
 
 model project_notes {
@@ -92,7 +110,9 @@ model projects {
   ended_at            String            @db.VarChar(30)
   attachment          String            @db.VarChar(255)
   category_project_id Int
+  awner_id            Int
   project_notes       project_notes[]
+  awner               awner             @relation(fields: [awner_id], references: [id], onDelete: Cascade)
   category_projects   category_projects @relation(fields: [category_project_id], references: [id])
 
   @@index([category_project_id])
@@ -114,6 +134,8 @@ model visitor {
   email         String          @db.VarChar(40)
   image         String          @db.VarChar(255)
   login_by      String          @db.VarChar(20)
+  awner_id      Int
   messages      messages[]
   project_notes project_notes[]
+  awner         awner           @relation(fields: [awner_id], references: [id], onDelete: Cascade)
 }

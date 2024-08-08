@@ -1,8 +1,8 @@
-# SADEK PORTFOLIO SERVER - Using Node.js and MySQL
+# SADEK PORTFOLIO SERVER - Using Node.js and PostgreSQL
 # Welcome! 👋
 
 ## Database design! 👋
-![SYSTEM DESIGN FOR SADEK PORTFOLIO](./uploads/sadek_portfolio_ERP.png)
+![SYSTEM DESIGN FOR SADEK PORTFOLIO](./uploads/sadek_portfolio_database.png)
 
 ## Design Pattern! 👋
 MVC Pattern
@@ -56,7 +56,7 @@ and he is responsible for maneging the website that visitors can see.
 
 ## Deployment
 - API LINK -> Vercel.com
-- Database -> Neon using `ahmed.mohamed.sadek.100.com`
+- Database -> Neon using `ahmed.mohamed.sadek.100@gmail.com`
 
 ## vercel.json
 for deploy the project in vercel `using only TypeScript code`
