@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { AwnerServices } from "../services/Awner.service";
 import { removeFromCloudinary, uploadToCloudinary } from "../config/cloudinaryFunctions.config";
+import { AwnerWithoutPassword } from "../types";
 
 const awnerServices = new AwnerServices()
 
@@ -52,9 +53,9 @@ export class AwnerController {
     async getAllAwners(_: Request, res: Response) {
         try {
             const awners = await awnerServices.findAllAwnersService();
-            let result: { id: number, email: string }[] = [];
+            let result: AwnerWithoutPassword[] = [];
             awners.map((index) => {
-                result.push({ id: index.id, email: index.email });
+                result.push({ id: index.id, name: index.name, email: index.email, image: index.image, description: index.description });
             })
             res.status(200).json({
                 status: 200,
@@ -73,7 +74,7 @@ export class AwnerController {
         try {
             const awner = await awnerServices.findAwnerById(Number(id))
             if (awner) {
-                const {password, ...others} = awner
+                const { password, ...others } = awner
                 res.status(200).json({
                     status: 200,
                     awner: {

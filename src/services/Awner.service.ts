@@ -1,7 +1,7 @@
-import { awner } from "@prisma/client"
 import { BcryptService } from "./bcript.service";
 import { JWT } from "./JWT.service";
 import prisma from "../libs/prisma";
+import { Awner, AwnerLogin } from "../types";
 
 export class AwnerServices {
     private readonly bcrypt: BcryptService;
@@ -10,7 +10,7 @@ export class AwnerServices {
         this.bcrypt = new BcryptService();
         this.jwt = new JWT()
     }
-    async postAwnerService(data: awner) {
+    async postAwnerService(data: Awner) {
         const hashedPassword = await this.bcrypt.encryptPassword(data.password)
         const awner = await prisma.awner.create({
             data: {
@@ -30,6 +30,17 @@ export class AwnerServices {
         const awner = await prisma.awner.findUnique({
             where: {
                 id
+            },
+            include: {
+                category_projects: true,
+                category_skills: true,
+                colors_setting: true,
+                job_titles: true,
+                links: true,
+                messages: true,
+                phones: true,
+                projects: true,
+                visitor: true
             }
         });
         return awner
@@ -39,12 +50,23 @@ export class AwnerServices {
         const awner = await prisma.awner.findUnique({
             where: {
                 email
+            },
+            include: {
+                category_projects: true,
+                category_skills: true,
+                colors_setting: true,
+                job_titles: true,
+                links: true,
+                messages: true,
+                phones: true,
+                projects: true,
+                visitor: true
             }
         });
         return awner
     }
 
-    async loginAwnerService(awnerInput: awner) {
+    async loginAwnerService(awnerInput: AwnerLogin) {
         const isAwner = await this.checkIsAwner(awnerInput);
         if (isAwner) {
             const payload = {
@@ -52,15 +74,16 @@ export class AwnerServices {
                 email: isAwner.email,
             }
             const Authorization = this.jwt.generetaJWT(payload);
+            const { password, ...others } = isAwner
             return {
-                ...payload,
-                Authorization
+                ...others,
+                Authorization,
             }
         }
         return null
     }
 
-    private async checkIsAwner({ email, password }: awner) {
+    private async checkIsAwner({ email, password }: AwnerLogin) {
         const awner = await this.findAwnerByEmail(email);
         if (awner) {
             const checkPassword = await this.bcrypt.comparingPassword(password, awner.password);
@@ -83,7 +106,7 @@ export class AwnerServices {
         })
     }
 
-    async updateAwnerByIdService(id: number, data: awner) {
+    async updateAwnerByIdService(id: number, data: Awner) {
         const hashedPassword = await this.bcrypt.encryptPassword(data.password)
         return await prisma.awner.update({
             where: { id },

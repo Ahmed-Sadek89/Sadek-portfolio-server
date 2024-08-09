@@ -2,7 +2,7 @@
 # Welcome! 👋
 
 ## Database design! 👋
-![SYSTEM DESIGN FOR SADEK PORTFOLIO](./uploads/sadek_portfolio_database.png)
+![SYSTEM DESIGN FOR SADEK PORTFOLIO](./sadek_portfolio_database.png)
 
 ## Design Pattern! 👋
 MVC Pattern
