@@ -15,7 +15,7 @@ export class ColorSettingServices {
         return colors_setting;
     }
 
-    async updateColorSetting(data: Prisma.awner_infoUpdateInput) {
+    async updateColorSetting(data: Prisma.colors_settingUpdateInput) {
         return await prisma.colors_setting.update({
             where: { id: 1 },
             data

@@ -1,6 +1,5 @@
 import express from 'express';
 import AwnerRouters from './routes/Awner.routes'
-import AwnerInfoRouters from './routes/Awner_info.routes';
 import ColorsSettingRouters from './routes/Colors_setting.routes'
 import LinksRouters from './routes/Links.routes';
 import jobTitleRouters from './routes/Job_title.routes';
@@ -16,7 +15,6 @@ import projectNotesRoutes from './routes/ProjectNote.routes'
 const root = express()
 
 root.use('/awner', AwnerRouters)
-root.use('/awner_info', AwnerInfoRouters)
 root.use('/colors_setting', ColorsSettingRouters)
 root.use('/links', LinksRouters)
 root.use('/job_titles', jobTitleRouters)

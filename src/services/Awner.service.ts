@@ -1,4 +1,4 @@
-import { Prisma, PrismaClient } from "@prisma/client"
+import { awner, Prisma, PrismaClient } from "@prisma/client"
 import { BcryptService } from "./bcript.service";
 import { JWT } from "./JWT.service";
 import prisma from "../libs/prisma";
@@ -10,11 +10,11 @@ export class AwnerServices {
         this.bcrypt = new BcryptService();
         this.jwt = new JWT()
     }
-    async postAwnerService({ email, password }: Prisma.awnerCreateInput) {
-        const hashedPassword = await this.bcrypt.encryptPassword(password)
+    async postAwnerService(data: awner) {
+        const hashedPassword = await this.bcrypt.encryptPassword(data.password)
         const awner = await prisma.awner.create({
             data: {
-                email,
+                ...data,
                 password: hashedPassword
             }
         })
@@ -83,12 +83,12 @@ export class AwnerServices {
         })
     }
 
-    async updateAwnerByIdService(id: number, data: { email: string, password: string }) {
+    async updateAwnerByIdService(id: number, data: awner) {
         const hashedPassword = await this.bcrypt.encryptPassword(data.password)
         return await prisma.awner.update({
             where: { id },
             data: {
-                email: data.email,
+                ...data,
                 password: hashedPassword
             }
         })

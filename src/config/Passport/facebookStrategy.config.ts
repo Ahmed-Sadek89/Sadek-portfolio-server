@@ -2,6 +2,7 @@ import passport from "passport";
 import { VisitorService } from "../../services/Visitor.service";
 import { facebookEnv } from "./env.config";
 import { Strategy as FacebookStrategy } from 'passport-facebook';
+import { Prisma } from "@prisma/client";
 
 const visitorService = new VisitorService();
 
@@ -26,7 +27,7 @@ export const facebookStrategy = () => {
                     }
                     console.log({profile})
                     if (!visitor) {
-                        const newVisitor = await visitorService.insert(data)
+                        const newVisitor = await visitorService.insert(data as Prisma.visitorCreateInput)
                         return done(null, newVisitor);
                     } else {
                         const newVisitor = await visitorService.updateById(profile.id, data);

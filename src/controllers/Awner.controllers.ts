@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { AwnerServices } from "../services/Awner.service";
+import { removeFromCloudinary, uploadToCloudinary } from "../config/cloudinaryFunctions.config";
 
 const awnerServices = new AwnerServices()
 
@@ -7,13 +8,21 @@ export class AwnerController {
 
     async registerAwnerController(req: Request, res: Response) {
         try {
-            await awnerServices.postAwnerService(req.body)
+
+            let uploadedImageToCloudiary = { secure_url: "" }
+            if (req.file) {
+                uploadedImageToCloudiary = await uploadToCloudinary(req.file?.path as any)
+            }
+            await awnerServices.postAwnerService({
+                ...req.body,
+                image: uploadedImageToCloudiary.secure_url
+            })
             res.status(200).json({
                 status: 200,
                 result: "new awner added successfully"
             })
         } catch (error: any) {
-            console.log(error.message)
+            console.log(error)
             res.status(500).json({
                 status: 500,
                 message: "something went wrong!"
@@ -87,12 +96,24 @@ export class AwnerController {
 
     async deleteAllAwnersController(req: Request, res: Response) {
         try {
-            await awnerServices.deleteAllAwnersService();
-            res.status(200).json({
-                status: 200,
-                awner: "All awners deleted successfully"
-            })
+            const awners = await awnerServices.findAllAwnersService();
+            if (awners.length > 0) {
+                awners.map(index => {
+                    return removeFromCloudinary(index.image as string)
+                })
+                await awnerServices.deleteAllAwnersService();
+                res.status(200).json({
+                    status: 200,
+                    awner: "All awners deleted successfully"
+                })
+            } else {
+                res.status(200).json({
+                    status: 200,
+                    awner: `No Awners are found`
+                })
+            }
         } catch (error: any) {
+            console.error(error)
             res.status(500).json({
                 status: 500,
                 message: "something went wrong!"
@@ -103,11 +124,20 @@ export class AwnerController {
     async deleteAwnerByIdController(req: Request, res: Response) {
         try {
             const { id } = req.params
-            await awnerServices.deleteAwnerByIdService(Number(id));
-            res.status(200).json({
-                status: 200,
-                awner: `Awner number ${id} id deleted successfully`
-            })
+            const awner = await awnerServices.findAwnerById(Number(id))
+            if (awner) {
+                await removeFromCloudinary(awner.image as string)
+                await awnerServices.deleteAwnerByIdService(Number(id));
+                res.status(200).json({
+                    status: 200,
+                    awner: `Awner number ${id} is deleted successfully`
+                })
+            } else {
+                res.status(200).json({
+                    status: 200,
+                    awner: `Awner number ${id} is not found`
+                })
+            }
         } catch (error: any) {
             res.status(500).json({
                 status: 500,
@@ -119,12 +149,20 @@ export class AwnerController {
     async updateAwnerById(req: Request, res: Response) {
         const { id } = req.params;
         try {
-            await awnerServices.updateAwnerByIdService(Number(id), req.body);
+            let uploadedImageToCloudiary = { secure_url: "" }
+            if (req.file) {
+                uploadedImageToCloudiary = await uploadToCloudinary(req.file?.path as any)
+                await awnerServices.updateAwnerByIdService(Number(id), { ...req.body, image: uploadedImageToCloudiary.secure_url });
+            } else {
+                await awnerServices.updateAwnerByIdService(Number(id), { ...req.body });
+
+            }
             res.status(200).json({
                 status: 200,
                 awner: `Awner number ${id} id updated successfully`
             })
         } catch (error: any) {
+            console.error(error)
             res.status(500).json({
                 status: 500,
                 message: "something went wrong!"

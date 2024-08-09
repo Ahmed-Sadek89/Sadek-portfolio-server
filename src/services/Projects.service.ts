@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import prisma from "../libs/prisma";
 
 type data = {
@@ -23,7 +24,7 @@ export class ProjectServices {
         })
     }
 
-    async insert(data: data) {
+    async insert(data: Prisma.projectsCreateInput) {
         return await prisma.projects.create({
             data
         })

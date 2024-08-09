@@ -2,6 +2,7 @@ import passport, { Profile } from "passport";
 import { Strategy as GithubStrategy } from 'passport-github2';
 import { VisitorService } from "../../services/Visitor.service";
 import { githubEnv } from "./env.config";
+import { Prisma } from "@prisma/client";
 
 const visitorService = new VisitorService();
 
@@ -25,7 +26,7 @@ export const githubStrategy = () => {
                     }
                     console.log({profile})
                     if (!visitor) {
-                        const newVisitor = await visitorService.insert(data)
+                        const newVisitor = await visitorService.insert(data as Prisma.visitorCreateInput)
                         return done(null, newVisitor);
                     } else {
                         const newVisitor = await visitorService.updateById(profile.id, data);
