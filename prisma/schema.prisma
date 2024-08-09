@@ -14,6 +14,7 @@ model awner {
   description       String?             @default("") @db.VarChar(255)
   image             String?             @default("") @db.VarChar(255)
   name              String
+  isPrimeAwner      Boolean             @default(false)
   category_projects category_projects[]
   category_skills   category_skills[]
   colors_setting    colors_setting?
@@ -48,14 +49,22 @@ model phones {
   awner    awner  @relation(fields: [awner_id], references: [id], onDelete: Cascade)
 }
 
+model link_type {
+  id        Int     @id @default(autoincrement())
+  link_type String
+  links     links[]
+}
+
 model links {
-  id       Int    @id @default(autoincrement())
-  title    String @db.VarChar(30)
-  link     String @unique @db.VarChar(255)
-  icon     String @db.VarChar(255)
-  type     String @db.VarChar(40)
-  awner_id Int
-  awner    awner  @relation(fields: [awner_id], references: [id], onDelete: Cascade)
+  id           Int       @id @default(autoincrement())
+  title        String    @db.VarChar(30)
+  link         String    @unique @db.VarChar(255)
+  icon         String    @db.VarChar(255)
+  type         String    @db.VarChar(40)
+  awner_id     Int
+  awner        awner     @relation(fields: [awner_id], references: [id], onDelete: Cascade)
+  link_type    link_type @relation(fields: [link_type_Id], references: [id], onDelete: Cascade)
+  link_type_Id Int
 }
 
 model category_projects {

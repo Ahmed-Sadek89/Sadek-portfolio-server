@@ -6,9 +6,10 @@ const linksServices = new LinksServices();
 
 export class LinksController {
 
-    async getAll(req: Request, res: Response) {
+    async getByAwnerId(req: Request, res: Response) {
         try {
-            const links = await linksServices.getAll();
+            const { awner_id } = req.params;
+            const links = await linksServices.getByAwnerId(Number(awner_id));
             res.status(200).json({
                 status: 200,
                 links
@@ -127,7 +128,8 @@ export class LinksController {
 
     async deleteAll(req: Request, res: Response) {
         try {
-            const links = await linksServices.getAll();
+            const { awner_id } = req.params
+            const links = await linksServices.getByAwnerId(Number(awner_id));
             if (links.length > 0) {
                 links.map(index => {
                     return removeFromCloudinary(index.icon)

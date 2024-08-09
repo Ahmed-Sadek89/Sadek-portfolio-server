@@ -49,13 +49,36 @@ export class AwnerController {
 
         }
     }
-
+    async getPrimeAwner(req: Request, res: Response) {
+        try {
+            const awner = await awnerServices.getPrimeAwner()
+            if (awner) {
+                const { password, ...others } = awner
+                res.status(200).json({
+                    status: 200,
+                    awner: {
+                        ...others
+                    }
+                })
+            } else {
+                res.status(404).json({
+                    status: 404,
+                    awner: null
+                })
+            }
+        } catch (error: any) {
+            res.status(500).json({
+                status: 500,
+                message: "something went wrong!"
+            })
+        }
+    }
     async getAllAwners(_: Request, res: Response) {
         try {
             const awners = await awnerServices.findAllAwnersService();
             let result: AwnerWithoutPassword[] = [];
             awners.map((index) => {
-                result.push({ id: index.id, name: index.name, email: index.email, image: index.image, description: index.description });
+                result.push(index);
             })
             res.status(200).json({
                 status: 200,

@@ -7,7 +7,7 @@ const router = Router();
 const linksController = new LinksController()
 
 
-router.get('/getAll', linksController.getAll);
+router.get('/all/:awner_id', linksController.getByAwnerId);
 router.get('/getByType', linksController.getByLinkType);
 router.use(checkAuth);
 router.get('/:id', linksController.getById)

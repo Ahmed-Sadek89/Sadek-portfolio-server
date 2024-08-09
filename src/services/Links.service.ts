@@ -3,8 +3,12 @@ import prisma from "../libs/prisma";
 
 export class LinksServices {
    
-    async getAll() {
-        const links = await prisma.links.findMany({});
+    async getByAwnerId(awner_id: number) {
+        const links = await prisma.links.findMany({
+            where: {
+                awner_id
+            }
+        });
         return links
     }
 

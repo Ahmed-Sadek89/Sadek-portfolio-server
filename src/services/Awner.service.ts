@@ -10,11 +10,29 @@ export class AwnerServices {
         this.bcrypt = new BcryptService();
         this.jwt = new JWT()
     }
+
+    private async removePrimeFromAwners(isPrimeAwner: boolean) {
+        const primeAwner = await this.getPrimeAwner()
+        if (primeAwner?.isPrimeAwner === true && isPrimeAwner === true) {
+            await prisma.awner.update({
+                where: {
+                    id: primeAwner.id
+                },
+                data: {
+                    isPrimeAwner: false
+                }
+            })
+        }
+    }
+
     async postAwnerService(data: Awner) {
+        const isPrimeAwner = Boolean(data.isPrimeAwner)
+        await this.removePrimeFromAwners(isPrimeAwner)
         const hashedPassword = await this.bcrypt.encryptPassword(data.password)
         const awner = await prisma.awner.create({
             data: {
                 ...data,
+                isPrimeAwner,
                 password: hashedPassword
             }
         })
@@ -42,6 +60,14 @@ export class AwnerServices {
                 projects: true,
                 visitor: true
             }
+        });
+        return awner
+    }
+    async getPrimeAwner() {
+        const awner = await prisma.awner.findFirst({
+            where: {
+                isPrimeAwner: true
+            },
         });
         return awner
     }
@@ -107,11 +133,14 @@ export class AwnerServices {
     }
 
     async updateAwnerByIdService(id: number, data: Awner) {
+        const isPrimeAwner = Boolean(data.isPrimeAwner)
+        await this.removePrimeFromAwners(isPrimeAwner)
         const hashedPassword = await this.bcrypt.encryptPassword(data.password)
         return await prisma.awner.update({
             where: { id },
             data: {
                 ...data,
+                isPrimeAwner,
                 password: hashedPassword
             }
         })
