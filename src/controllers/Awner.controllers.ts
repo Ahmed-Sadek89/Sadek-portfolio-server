@@ -73,11 +73,11 @@ export class AwnerController {
         try {
             const awner = await awnerServices.findAwnerById(Number(id))
             if (awner) {
+                const {password, ...others} = awner
                 res.status(200).json({
                     status: 200,
                     awner: {
-                        id: awner.id,
-                        email: awner.email
+                        ...others
                     }
                 })
             } else {

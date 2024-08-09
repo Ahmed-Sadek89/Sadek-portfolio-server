@@ -15,7 +15,7 @@ router.delete('/deleteAll', linksController.deleteAll)
 router.delete('/:id', linksController.deleteById);
 router.use(upload.single('icon'))
 router.post('/', linksController.insertNewLink);
-router.put('/:id', linksController.updateLink)
+router.put('/:id', linksController.updateLink);
 
 
 export default router

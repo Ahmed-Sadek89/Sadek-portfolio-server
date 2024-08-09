@@ -1,4 +1,4 @@
-import { awner, Prisma, PrismaClient } from "@prisma/client"
+import { awner } from "@prisma/client"
 import { BcryptService } from "./bcript.service";
 import { JWT } from "./JWT.service";
 import prisma from "../libs/prisma";
@@ -44,7 +44,7 @@ export class AwnerServices {
         return awner
     }
 
-    async loginAwnerService(awnerInput: Prisma.awnerCreateInput) {
+    async loginAwnerService(awnerInput: awner) {
         const isAwner = await this.checkIsAwner(awnerInput);
         if (isAwner) {
             const payload = {
@@ -60,7 +60,7 @@ export class AwnerServices {
         return null
     }
 
-    private async checkIsAwner({ email, password }: Prisma.awnerCreateInput) {
+    private async checkIsAwner({ email, password }: awner) {
         const awner = await this.findAwnerByEmail(email);
         if (awner) {
             const checkPassword = await this.bcrypt.comparingPassword(password, awner.password);
