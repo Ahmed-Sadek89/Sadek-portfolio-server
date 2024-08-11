@@ -1,47 +1,43 @@
 import prisma from "../libs/prisma";
+import { Skills } from "../types";
 
-type data = { title: string, icon: string | undefined, category_id: number }
 
 export class SkillsServices {
     
     async getByCategoryId(category_id: number) {
-        return await prisma.skills.findMany({
+        return await prisma.skill.findMany({
             where: { category_id }
         })
     }
 
     async getById(id: number) {
-        return await prisma.skills.findUnique({
+        return await prisma.skill.findUnique({
             where: { id }
         })
     }
 
-    async insert(data: data) {
-        const newSkill = await prisma.skills.create({
-            data: {
-                title: data.title,
-                icon: data.icon || '',
-                category_id: data.category_id
-            }
+    async insert(data: Skills) {
+        const newSkill = await prisma.skill.create({
+            data
         })
         return newSkill;
     }
 
-    async updateById(id: number, data: data) {
-        return await prisma.skills.update({
+    async updateById(id: number, data: Skills) {
+        return await prisma.skill.update({
             where: { id },
             data
         })
     }
 
     async deleteById(id: number) {
-        return await prisma.skills.delete({
+        return await prisma.skill.delete({
             where: { id }
         })
     }
 
     async deleteByCategoryId(category_id: number) {
-        return await prisma.skills.deleteMany({
+        return await prisma.skill.deleteMany({
             where: { category_id }
         })
     }

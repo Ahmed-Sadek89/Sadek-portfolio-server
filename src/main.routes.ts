@@ -2,6 +2,7 @@ import express from 'express';
 import AwnerRouters from './routes/Awner.routes'
 import ColorsSettingRouters from './routes/Colors_setting.routes'
 import LinksRouters from './routes/Links.routes';
+import LinkTypeRouters from './routes/Link_type.routes';
 import jobTitleRouters from './routes/Job_title.routes';
 import phonesRouters from './routes/Phone.routes';
 import categorySkillsRouters from './routes/Category_skills.routes';
@@ -16,6 +17,7 @@ const root = express()
 
 root.use('/awner', AwnerRouters)
 root.use('/colors_setting', ColorsSettingRouters)
+root.use('/link_type', LinkTypeRouters)
 root.use('/links', LinksRouters)
 root.use('/job_titles', jobTitleRouters)
 root.use('/phones', phonesRouters)

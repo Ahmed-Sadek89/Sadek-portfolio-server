@@ -7,144 +7,209 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model awner {
-  id                Int                 @id @default(autoincrement())
-  email             String              @unique(map: "Awner_email_key")
-  password          String
-  description       String?             @default("") @db.VarChar(255)
-  image             String?             @default("") @db.VarChar(255)
-  name              String
-  isPrimeAwner      Boolean             @default(false)
-  category_projects category_projects[]
-  category_skills   category_skills[]
-  colors_setting    colors_setting?
-  job_titles        job_titles[]
-  links             links[]
-  messages          messages[]
-  phones            phones[]
-  projects          projects[]
-  visitor           visitor[]
+model Activity {
+  id         Int      @id @default(autoincrement())
+  action     ACTION
+  table_name Tabels
+  date       DateTime @db.Date
+  model      String
+  awner_id   Int
+  Awner      Awner    @relation(fields: [awner_id], references: [id])
 }
 
-model colors_setting {
+model Awner {
+  id              Int               @id @default(autoincrement())
+  name            String            @db.VarChar(30)
+  email           String            @unique @db.VarChar(40)
+  password        String            @db.VarChar(255)
+  description     String?
+  image           String?
+  isPriamry       Boolean           @default(false)
+  Activity        Activity[]
+  CategoryProject CategoryProject[]
+  CategorySkill   CategorySkill[]
+  ColorsSetting   ColorsSetting[]
+  FuturePlan      FuturePlan[]
+  JobTitle        JobTitle[]
+  Link            Link[]
+  LinkType        LinkType[]
+  Message         Message[]
+  Phone           Phone[]
+  Project         Project[]
+  ProjectNote     ProjectNote[]
+  Skill           Skill[]
+  Visitor         Visitor[]
+}
+
+model CategoryProject {
+  id            Int       @id @default(autoincrement())
+  category_name String    @db.VarChar(255)
+  awner_id      Int
+  Awner         Awner     @relation(fields: [awner_id], references: [id])
+  Project       Project[]
+}
+
+model CategorySkill {
+  id                   Int                    @id @default(autoincrement())
+  category_name        String                 @db.VarChar(255)
+  awner_id             Int
+  Awner                Awner                  @relation(fields: [awner_id], references: [id])
+  ProjectCategorySkill ProjectCategorySkill[]
+  Skill                Skill[]
+}
+
+model ColorsSetting {
   id         Int    @id @default(autoincrement())
-  main_color String @unique @db.VarChar(20)
-  color1     String @unique @db.VarChar(20)
-  color2     String @unique @db.VarChar(20)
-  awner_id   Int    @unique
-  awner      awner  @relation(fields: [awner_id], references: [id], onDelete: Cascade)
+  main_color String @db.VarChar(20)
+  color1     String @db.VarChar(20)
+  color2     String @db.VarChar(20)
+  awner_id   Int
+  Awner      Awner  @relation(fields: [awner_id], references: [id])
 }
 
-model job_titles {
+model FuturePlan {
+  id                  Int     @id @default(autoincrement())
+  plan                String
+  image               String  @default("")
+  is_new_in_dashboard Boolean @default(false)
+  awner_id            Int
+  Awner               Awner   @relation(fields: [awner_id], references: [id])
+}
+
+model JobTitle {
   id       Int    @id @default(autoincrement())
-  title    String @db.VarChar(30)
+  title    String @db.VarChar(255)
   awner_id Int
-  awner    awner  @relation(fields: [awner_id], references: [id], onDelete: Cascade)
+  Awner    Awner  @relation(fields: [awner_id], references: [id])
 }
 
-model phones {
-  id       Int    @id @default(autoincrement())
-  phone    String @db.VarChar(30)
-  awner_id Int
-  awner    awner  @relation(fields: [awner_id], references: [id], onDelete: Cascade)
-}
-
-model link_type {
-  id        Int     @id @default(autoincrement())
-  link_type String
-  links     links[]
-}
-
-model links {
-  id           Int       @id @default(autoincrement())
-  title        String    @db.VarChar(30)
-  link         String    @unique @db.VarChar(255)
-  icon         String    @db.VarChar(255)
-  type         String    @db.VarChar(40)
+model Link {
+  id           Int      @id @default(autoincrement())
+  title        String   @db.VarChar(255)
+  link         String   @db.VarChar(255)
+  icon         String?
+  link_type_id Int
   awner_id     Int
-  awner        awner     @relation(fields: [awner_id], references: [id], onDelete: Cascade)
-  link_type    link_type @relation(fields: [link_type_Id], references: [id], onDelete: Cascade)
-  link_type_Id Int
+  Awner        Awner    @relation(fields: [awner_id], references: [id])
+  LinkType     LinkType @relation(fields: [link_type_id], references: [id])
 }
 
-model category_projects {
-  id            Int        @id @default(autoincrement())
-  category_name String     @db.VarChar(60)
-  awner_id      Int
-  awner         awner      @relation(fields: [awner_id], references: [id], onDelete: Cascade)
-  projects      projects[]
+model LinkType {
+  id        Int    @id @default(autoincrement())
+  link_type String @db.VarChar(255)
+  awner_id  Int
+  Link      Link[]
+  Awner     Awner  @relation(fields: [awner_id], references: [id])
 }
 
-model category_skills {
-  id            Int      @id @default(autoincrement())
-  category_name String   @db.VarChar(50)
-  awner_id      Int
-  awner         awner    @relation(fields: [awner_id], references: [id], onDelete: Cascade)
-  skills        skills[]
-}
-
-model messages {
+model Message {
   id         Int     @id @default(autoincrement())
-  subject    String  @db.VarChar(70)
+  subject    String  @db.VarChar(255)
   message    String  @db.VarChar(255)
   visitor_id String
   awner_id   Int
-  awner      awner   @relation(fields: [awner_id], references: [id], onDelete: Cascade)
-  visitor    visitor @relation(fields: [visitor_id], references: [id])
-
-  @@index([visitor_id])
+  Awner      Awner   @relation(fields: [awner_id], references: [id])
+  Visitor    Visitor @relation(fields: [visitor_id], references: [id])
 }
 
-model project_notes {
-  id         Int      @id @default(autoincrement())
-  notes      String   @db.VarChar(255)
-  react      String   @db.VarChar(10)
+model Phone {
+  id       Int    @id @default(autoincrement())
+  phone    String @unique @db.VarChar(30)
+  awner_id Int
+  Awner    Awner  @relation(fields: [awner_id], references: [id])
+}
+
+model Project {
+  id                   Int                    @id @default(autoincrement())
+  title                String                 @db.VarChar(255)
+  description          String?
+  live_url             String?
+  repo_url             String?
+  status               String                 @db.VarChar(255)
+  created_at           DateTime               @default(now())
+  ended_at             DateTime?
+  attachment           String?
+  category_project_id  Int?
+  awner_id             Int
+  Awner                Awner                  @relation(fields: [awner_id], references: [id])
+  CategoryProject      CategoryProject?       @relation(fields: [category_project_id], references: [id])
+  ProjectCategorySkill ProjectCategorySkill[]
+  ProjectNote          ProjectNote[]
+  ProjectSkill         ProjectSkill[]
+}
+
+model ProjectCategorySkill {
+  project_id         Int
+  category_skills_id Int
+  CategorySkill      CategorySkill @relation(fields: [category_skills_id], references: [id])
+  Project            Project       @relation(fields: [project_id], references: [id])
+
+  @@id([project_id, category_skills_id])
+}
+
+model ProjectNote {
+  id         Int     @id @default(autoincrement())
+  notes      String?
   project_id Int
   visitor_id String
-  projects   projects @relation(fields: [project_id], references: [id])
-  visitor    visitor  @relation(fields: [visitor_id], references: [id])
-
-  @@index([visitor_id], map: "Project_notes_visitor_id_fkey")
-  @@index([project_id])
+  react      String  @db.VarChar(255)
+  awner_id   Int
+  Awner      Awner   @relation(fields: [awner_id], references: [id])
+  Project    Project @relation(fields: [project_id], references: [id])
+  Visitor    Visitor @relation(fields: [visitor_id], references: [id])
 }
 
-model projects {
-  id                  Int               @id @default(autoincrement())
-  title               String            @db.VarChar(30)
-  description         String            @db.VarChar(255)
-  live_url            String            @db.VarChar(255)
-  repo_url            String            @db.VarChar(255)
-  status              String            @db.VarChar(20)
-  created_at          DateTime          @default(now())
-  ended_at            String            @db.VarChar(30)
-  attachment          String            @db.VarChar(255)
-  category_project_id Int
-  awner_id            Int
-  project_notes       project_notes[]
-  awner               awner             @relation(fields: [awner_id], references: [id], onDelete: Cascade)
-  category_projects   category_projects @relation(fields: [category_project_id], references: [id])
+model ProjectSkill {
+  project_id Int
+  skill_id   Int
+  Project    Project @relation(fields: [project_id], references: [id])
+  Skill      Skill   @relation(fields: [skill_id], references: [id])
 
-  @@index([category_project_id])
+  @@id([project_id, skill_id])
 }
 
-model skills {
-  id              Int             @id @default(autoincrement())
-  title           String          @db.VarChar(20)
-  icon            String          @db.VarChar(255)
-  category_id     Int
-  category_skills category_skills @relation(fields: [category_id], references: [id])
-
-  @@index([category_id])
-}
-
-model visitor {
-  id            String          @id
-  name          String          @db.VarChar(30)
-  email         String          @db.VarChar(40)
-  image         String          @db.VarChar(255)
-  login_by      String          @db.VarChar(20)
+model Skill {
+  id            Int            @id @default(autoincrement())
+  title         String         @db.VarChar(255)
+  icon          String?
+  category_id   Int
   awner_id      Int
-  messages      messages[]
-  project_notes project_notes[]
-  awner         awner           @relation(fields: [awner_id], references: [id], onDelete: Cascade)
+  ProjectSkill  ProjectSkill[]
+  Awner         Awner          @relation(fields: [awner_id], references: [id])
+  CategorySkill CategorySkill  @relation(fields: [category_id], references: [id])
+}
+
+model Visitor {
+  id          String          @id
+  name        String        @db.VarChar(255)
+  email       String        @unique
+  image       String?
+  login_by    String        @db.VarChar(255)
+  awner_id    Int
+  Message     Message[]
+  ProjectNote ProjectNote[]
+  Awner       Awner         @relation(fields: [awner_id], references: [id])
+}
+
+enum Tabels {
+  FUTURE_PLANS
+  LINK_TYPES
+  LINKS
+  PHONES
+  JOB_TITLES
+  COLOR_SETTINGS
+  SKILLS
+  CATEGORY_SKILLS
+  PROJECTS
+  MESSAGES
+  CATEGORY_PROJECTS
+  PROJECT_NOTES
+  VISITORS
+}
+
+enum ACTION {
+  CREATE
+  UPDATE
+  DELETE
+  CLEAR
 }

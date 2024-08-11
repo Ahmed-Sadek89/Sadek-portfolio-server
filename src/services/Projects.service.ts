@@ -1,44 +1,34 @@
-import { Prisma } from "@prisma/client";
 import prisma from "../libs/prisma";
+import { Project } from "../types";
 
-type data = {
-    title: string;
-    description: string;
-    live_url: string;
-    repo_url: string;
-    status: string;
-    created_at: string | Date;
-    ended_at: string;
-    attachment: string;
-    category_project_id: number
-}
+
 export class ProjectServices {
-    
+
     async getAll() {
-        return await prisma.projects.findMany({})
+        return await prisma.project.findMany({})
     }
 
     async getById(id: number) {
-        return await prisma.projects.findUnique({
+        return await prisma.project.findUnique({
             where: { id }
         })
     }
 
-    async insert(data: Prisma.projectsCreateInput) {
-        return await prisma.projects.create({
+    async insert(data: Project) {
+        return await prisma.project.create({
             data
         })
     }
 
-    async updateById(id: number, data: data) {
-        return await prisma.projects.update({
+    async updateById(id: number, data: Project) {
+        return await prisma.project.update({
             where: { id },
             data
         })
     }
 
     async deleteById(id: number) {
-        return await prisma.projects.delete({
+        return await prisma.project.delete({
             where: { id }
         })
     }
@@ -46,16 +36,16 @@ export class ProjectServices {
 
     // join
     async deleteAllByCategoryId(category_project_id: number) {
-        return await prisma.projects.deleteMany({
+        return await prisma.project.deleteMany({
             where: { category_project_id }
         })
     }
 
     async getProjectNotesByProjectId(id: number) {
         // 
-        return await prisma.projects.findUnique({
+        return await prisma.project.findUnique({
             where: { id },
-            include: { project_notes: true }
+            include: { ProjectNote: true }
         })
     }
 }

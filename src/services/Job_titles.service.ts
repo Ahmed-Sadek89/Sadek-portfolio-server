@@ -1,15 +1,15 @@
-import { Prisma } from "@prisma/client";
 import prisma from "../libs/prisma";
+import { JobTitle } from "../types";
 
 export class JobTitlesServices {
 
     async getAll() {
-        const job_titles = await prisma.job_titles.findMany({});
+        const job_titles = await prisma.jobTitle.findMany({});
         return job_titles
     }
 
     async getById(id: number) {
-        const job_title = await prisma.job_titles.findUnique({
+        const job_title = await prisma.jobTitle.findUnique({
             where: {
                 id
             }
@@ -17,28 +17,28 @@ export class JobTitlesServices {
         return job_title
     }
 
-    async insertNewJobTitle(data: Prisma.job_titlesCreateInput) {
-        const job_title = await prisma.job_titles.create({
+    async insertNewJobTitle(data: JobTitle) {
+        const job_title = await prisma.jobTitle.create({
             data
         })
         return job_title
     }
 
-    async updateJobTitle(id: number, data: Prisma.job_titlesUpdateInput) {
-        return await prisma.job_titles.update({
+    async updateJobTitle(id: number, data: JobTitle) {
+        return await prisma.jobTitle.update({
             where: { id },
             data
         })
     }
 
     async deleteById(id: number) {
-        return await prisma.job_titles.delete({
+        return await prisma.jobTitle.delete({
             where: { id }
         })
     }
 
     async deleteAll() {
-        return await prisma.job_titles.deleteMany({})
+        return await prisma.jobTitle.deleteMany({})
     }
 
 }

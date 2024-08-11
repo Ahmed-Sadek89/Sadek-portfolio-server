@@ -2,7 +2,7 @@ import passport, { Profile } from "passport";
 import { Strategy as GithubStrategy } from 'passport-github2';
 import { VisitorService } from "../../services/Visitor.service";
 import { githubEnv } from "./env.config";
-import { Prisma } from "@prisma/client";
+import { Visitor } from "../../types";
 
 const visitorService = new VisitorService();
 
@@ -26,10 +26,10 @@ export const githubStrategy = () => {
                     }
                     console.log({profile})
                     if (!visitor) {
-                        const newVisitor = await visitorService.insert(data as Prisma.visitorCreateInput)
+                        const newVisitor = await visitorService.insert(data as Visitor)
                         return done(null, newVisitor);
                     } else {
-                        const newVisitor = await visitorService.updateById(profile.id, data);
+                        const newVisitor = await visitorService.updateById(profile.id, data as Visitor);
                         return done(null, newVisitor);
                     }
                 } catch (error: any) {

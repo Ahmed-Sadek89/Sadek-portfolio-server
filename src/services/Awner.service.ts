@@ -11,28 +11,28 @@ export class AwnerServices {
         this.jwt = new JWT()
     }
 
-    private async removePrimeFromAwners(isPrimeAwner: boolean) {
+    private async removePrimeFromAwners(isPriamry: boolean) {
         const primeAwner = await this.getPrimeAwner()
-        if (primeAwner?.isPrimeAwner === true && isPrimeAwner === true) {
+        if (primeAwner?.isPriamry === true && isPriamry === true) {
             await prisma.awner.update({
                 where: {
                     id: primeAwner.id
                 },
                 data: {
-                    isPrimeAwner: false
+                    isPriamry: false
                 }
             })
         }
     }
 
     async postAwnerService(data: Awner) {
-        const isPrimeAwner = Boolean(data.isPrimeAwner)
-        await this.removePrimeFromAwners(isPrimeAwner)
+        const isPriamry = Boolean(data.isPriamry)
+        await this.removePrimeFromAwners(isPriamry)
         const hashedPassword = await this.bcrypt.encryptPassword(data.password)
         const awner = await prisma.awner.create({
             data: {
                 ...data,
-                isPrimeAwner,
+                isPriamry,
                 password: hashedPassword
             }
         })
@@ -48,17 +48,6 @@ export class AwnerServices {
         const awner = await prisma.awner.findUnique({
             where: {
                 id
-            },
-            include: {
-                category_projects: true,
-                category_skills: true,
-                colors_setting: true,
-                job_titles: true,
-                links: true,
-                messages: true,
-                phones: true,
-                projects: true,
-                visitor: true
             }
         });
         return awner
@@ -66,7 +55,7 @@ export class AwnerServices {
     async getPrimeAwner() {
         const awner = await prisma.awner.findFirst({
             where: {
-                isPrimeAwner: true
+                isPriamry: true
             },
         });
         return awner
@@ -78,15 +67,20 @@ export class AwnerServices {
                 email
             },
             include: {
-                category_projects: true,
-                category_skills: true,
-                colors_setting: true,
-                job_titles: true,
-                links: true,
-                messages: true,
-                phones: true,
-                projects: true,
-                visitor: true
+                CategoryProject: true,
+                CategorySkill: true,
+                ColorsSetting: true,
+                JobTitle: true,
+                Link: true,
+                Message: true,
+                Phone: true,
+                Project: true,
+                Visitor: true,
+                Activity: true,
+                FuturePlan: true,
+                LinkType: true,
+                ProjectNote: true,
+                Skill: true
             }
         });
         return awner
@@ -133,14 +127,14 @@ export class AwnerServices {
     }
 
     async updateAwnerByIdService(id: number, data: Awner) {
-        const isPrimeAwner = Boolean(data.isPrimeAwner)
-        await this.removePrimeFromAwners(isPrimeAwner)
+        const isPriamry = Boolean(data.isPriamry)
+        await this.removePrimeFromAwners(isPriamry)
         const hashedPassword = await this.bcrypt.encryptPassword(data.password)
         return await prisma.awner.update({
             where: { id },
             data: {
                 ...data,
-                isPrimeAwner,
+                isPriamry,
                 password: hashedPassword
             }
         })

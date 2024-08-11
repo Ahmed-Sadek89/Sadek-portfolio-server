@@ -2,7 +2,7 @@ import passport from "passport";
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import { VisitorService } from "../../services/Visitor.service";
 import { googleEnv } from "./env.config";
-import { Prisma } from "@prisma/client";
+import { Visitor } from "../../types";
 
 const visitorService = new VisitorService();
 
@@ -27,10 +27,10 @@ export const googleStrategy = () => {
                     }
                     console.log({profile})
                     if (!visitor) {
-                        const newVisitor = await visitorService.insert(data as Prisma.visitorCreateInput)
+                        const newVisitor = await visitorService.insert(data as Visitor)
                         return done(null, newVisitor);
                     } else {
-                        const newVisitor = await visitorService.updateById(profile.id, data);
+                        const newVisitor = await visitorService.updateById(profile.id, data as Visitor);
                         return done(null, newVisitor);
                     }
                 } catch (error: any) {

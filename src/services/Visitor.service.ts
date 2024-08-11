@@ -1,10 +1,10 @@
-import { Prisma } from "@prisma/client";
 import prisma from "../libs/prisma";
+import { Visitor } from "../types";
 
 
 export class VisitorService {
-    
-    async insert(data: Prisma.visitorCreateInput) {
+
+    async insert(data: Visitor) {
         return await prisma.visitor.create({
             data
         })
@@ -20,7 +20,7 @@ export class VisitorService {
         })
     }
 
-    async updateById(id: string, data: Prisma.visitorUpdateInput) {
+    async updateById(id: string, data: Visitor) {
         return await prisma.visitor.update({
             where: { id },
             data
@@ -40,14 +40,14 @@ export class VisitorService {
     async getMessagesByVisitorId(id: string) {
         return await prisma.visitor.findUnique({
             where: { id },
-            include: { messages: true }
+            include: { Message: true }
         })
     }
 
     async getNotesByVisitorId(id: string) {
         return await prisma.visitor.findUnique({
             where: { id },
-            include: { project_notes: true }
+            include: { ProjectNote: true }
         })
     }
 }

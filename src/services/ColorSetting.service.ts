@@ -1,22 +1,22 @@
-import { Prisma } from "@prisma/client";
 import prisma from "../libs/prisma";
+import { ColorsSetting } from "../types";
 
 export class ColorSettingServices {
 
-    async insertColorSetting(data: Prisma.colors_settingCreateInput) {
-        const colors_setting = await prisma.colors_setting.create({
+    async insertColorSetting(data: ColorsSetting) {
+        const colors_setting = await prisma.colorsSetting.create({
             data
         })
         return colors_setting
     }
 
     async getColorSetting() {
-        const colors_setting = await prisma.colors_setting.findFirst({});
+        const colors_setting = await prisma.colorsSetting.findFirst({});
         return colors_setting;
     }
 
-    async updateColorSetting(data: Prisma.colors_settingUpdateInput) {
-        return await prisma.colors_setting.update({
+    async updateColorSetting(data: ColorsSetting) {
+        return await prisma.colorsSetting.update({
             where: { id: 1 },
             data
         })

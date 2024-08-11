@@ -2,7 +2,7 @@ import passport from "passport";
 import { VisitorService } from "../../services/Visitor.service";
 import { facebookEnv } from "./env.config";
 import { Strategy as FacebookStrategy } from 'passport-facebook';
-import { Prisma } from "@prisma/client";
+import { Visitor } from "../../types";
 
 const visitorService = new VisitorService();
 
@@ -27,10 +27,10 @@ export const facebookStrategy = () => {
                     }
                     console.log({profile})
                     if (!visitor) {
-                        const newVisitor = await visitorService.insert(data as Prisma.visitorCreateInput)
+                        const newVisitor = await visitorService.insert(data as Visitor)
                         return done(null, newVisitor);
                     } else {
-                        const newVisitor = await visitorService.updateById(profile.id, data);
+                        const newVisitor = await visitorService.updateById(profile.id, data as Visitor);
                         return done(null, newVisitor);
                     }
                 } catch (error: any) {

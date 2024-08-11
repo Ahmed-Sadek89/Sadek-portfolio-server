@@ -32,14 +32,14 @@ export class SkillsController {
     }
 
     async insert(req: Request, res: Response) {
-        const title = req.body.title
         const category_id = Number(req.body.category_id);
+        const awner_id = Number(req.body.awner_id);
         try {
             if (!req.file) {
                 throw new Error("path not found")
             }
             const uploadedImage = await uploadToCloudinary(req.file?.path)
-            await skillsServices.insert({ title, icon: uploadedImage.secure_url, category_id });
+            await skillsServices.insert({ ...req.body, icon: uploadedImage.secure_url, awner_id, category_id});
             res.status(200).json({
                 status: 200,
                 result: `new skill added successfully`
@@ -55,8 +55,9 @@ export class SkillsController {
     }
 
     async updateById(req: Request, res: Response) {
-        const title = req.body.title
         const category_id = Number(req.body.category_id);
+        const awner_id = Number(req.body.awner_id);
+
         try {
             const skill = await skillsServices.getById(Number(req.params.id));
             if (skill) {
@@ -64,7 +65,7 @@ export class SkillsController {
                     throw new Error("path not found")
                 }
                 const uploadedImage = await uploadToCloudinary(req.file?.path)
-                await skillsServices.updateById(skill.id, { title, icon: uploadedImage.secure_url, category_id })
+                await skillsServices.updateById(skill.id, { ...req.body, icon: uploadedImage.secure_url, awner_id, category_id})
                 res.status(200).json({
                     status: 200,
                     result: `skill number ${req.params.id} is updated successfully`
@@ -88,7 +89,7 @@ export class SkillsController {
         try {
             const skill = await skillsServices.getById(Number(req.params.id));
             if (skill) {
-                await removeFromCloudinary(skill.icon)
+                await removeFromCloudinary(skill.icon as string)
                 await skillsServices.deleteById(skill.id)
                 res.status(200).json({
                     status: 200,
@@ -112,8 +113,8 @@ export class SkillsController {
         try {
             const categoryskills = await categoryskillsServices.getByIdWithSkills(Number(req.params.category_id));
             if (categoryskills) {
-                categoryskills.skills.map(index => {
-                    return removeFromCloudinary(index.icon)
+                categoryskills.Skill.map(index => {
+                    return removeFromCloudinary(index.icon as string)
                 })
                 await skillsServices.deleteByCategoryId(Number(categoryskills.id))
                 res.status(200).json({
