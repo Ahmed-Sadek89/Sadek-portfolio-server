@@ -13,7 +13,8 @@ export class AwnerServices {
 
     private async removePrimeFromAwners(isPriamry: boolean) {
         const primeAwner = await this.getPrimeAwner()
-        if (primeAwner?.isPriamry === true && isPriamry === true) {
+
+        if (primeAwner && primeAwner?.isPriamry === true && isPriamry === true) {
             await prisma.awner.update({
                 where: {
                     id: primeAwner.id
@@ -25,7 +26,18 @@ export class AwnerServices {
         }
     }
 
+    async getPrimeAwner() {
+        const awner = await prisma.awner.findFirst({
+            where: {
+                isPriamry: true
+            },
+
+        });
+        return awner && awner
+    }
+
     async postAwnerService(data: Awner) {
+
         const isPriamry = Boolean(data.isPriamry)
         await this.removePrimeFromAwners(isPriamry)
         const hashedPassword = await this.bcrypt.encryptPassword(data.password)
@@ -49,14 +61,6 @@ export class AwnerServices {
             where: {
                 id
             }
-        });
-        return awner
-    }
-    async getPrimeAwner() {
-        const awner = await prisma.awner.findFirst({
-            where: {
-                isPriamry: true
-            },
         });
         return awner
     }

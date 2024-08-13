@@ -19,12 +19,12 @@ model Activity {
 
 model Awner {
   id              Int               @id @default(autoincrement())
-  name            String            @db.VarChar(30)
-  email           String            @unique @db.VarChar(40)
-  password        String            @db.VarChar(255)
-  description     String?
-  image           String?
-  isPriamry       Boolean           @default(false)
+  name            String
+  email           String            @unique
+  password        String
+  description     String?           @default("")
+  image           String?           @default("")
+  isPriamry       Boolean?           @default(false)
   Activity        Activity[]
   CategoryProject CategoryProject[]
   CategorySkill   CategorySkill[]
@@ -180,7 +180,7 @@ model Skill {
 }
 
 model Visitor {
-  id          String          @id
+  id          String        @id
   name        String        @db.VarChar(255)
   email       String        @unique
   image       String?

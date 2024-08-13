@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { AwnerServices } from "../services/Awner.service";
 import { removeFromCloudinary, uploadToCloudinary } from "../config/cloudinaryFunctions.config";
 import { AwnerWithoutPassword } from "../types";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
 const awnerServices = new AwnerServices()
 
@@ -14,20 +15,28 @@ export class AwnerController {
             if (req.file) {
                 uploadedImageToCloudiary = await uploadToCloudinary(req.file?.path as any)
             }
+
             await awnerServices.postAwnerService({
                 ...req.body,
                 image: uploadedImageToCloudiary.secure_url
             })
             res.status(200).json({
                 status: 200,
-                result: "new awner added successfully"
+                message: "new awner added successfully"
             })
         } catch (error: any) {
             console.log(error)
-            res.status(500).json({
-                status: 500,
-                message: "something went wrong!"
-            })
+            if (error instanceof PrismaClientKnownRequestError && error.code === 'P2002') {
+                res.status(409).json({
+                    status: 409,
+                    message: 'Awner with this email already exists.',
+                });
+            } else {
+                res.status(500).json({
+                    status: 200,
+                    message: 'Internal Server Error',
+                });
+            }
         }
     }
 
