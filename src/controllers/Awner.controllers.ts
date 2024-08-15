@@ -42,20 +42,25 @@ export class AwnerController {
 
     async loginAwnerController(req: Request, res: Response) {
         try {
+            console.log(req.body)
             const awner = await awnerServices.loginAwnerService(req.body);
             if (awner) {
                 res.status(200).json({
                     status: 200,
-                    awner
+                    result: awner
                 })
             } else {
                 res.status(404).json({
                     status: 404,
-                    message: "invalid email or password"
+                    result: "invalid email or password"
                 })
             }
         } catch (error: any) {
-
+            console.log({error: error.message})
+            res.status(500).json({
+                status: 500,
+                result: error.message
+            })
         }
     }
     async getPrimeAwner(req: Request, res: Response) {
