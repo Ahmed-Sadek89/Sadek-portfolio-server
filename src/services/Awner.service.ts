@@ -60,8 +60,32 @@ export class AwnerServices {
         const awner = await prisma.awner.findUnique({
             where: {
                 id
+            },
+            include: {
+                Project: true,
+                FuturePlan: true,
+                Activity: true,
+                _count: {
+                    select: {
+                        Visitor: true,
+                        Project: true,
+                        ProjectNote: true,
+                        CategoryProject: true,
+                        Message: true,
+                        Phone: true,
+                        LinkType: true,
+                        Link: true,
+                        JobTitle: true,
+                        CategorySkill: true,
+                        Skill: true,
+                        FuturePlan: true,
+                        Activity: true,
+                    }
+                },
+
             }
         });
+
         return awner
     }
 
@@ -70,23 +94,8 @@ export class AwnerServices {
             where: {
                 email
             },
-            include: {
-                CategoryProject: true,
-                CategorySkill: true,
-                ColorsSetting: true,
-                JobTitle: true,
-                Link: true,
-                Message: true,
-                Phone: true,
-                Project: true,
-                Visitor: true,
-                Activity: true,
-                FuturePlan: true,
-                LinkType: true,
-                ProjectNote: true,
-                Skill: true
-            }
         });
+
         return awner
     }
 
