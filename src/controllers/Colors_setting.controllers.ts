@@ -24,8 +24,8 @@ export class ColorSettingController {
         try {
             const colorSetting = await colorSettingServices.getColorSetting();
             if (colorSetting) {
-                res.status(401).json({
-                    status: 401,
+                res.status(409).json({
+                    status: 409,
                     message: "you have already your color setting"
                 })
             } else {

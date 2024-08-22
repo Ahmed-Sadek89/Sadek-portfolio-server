@@ -14,9 +14,9 @@ export const checkAuth = (req: Request, res: Response, next: NextFunction) => {
     } else{
         jwt.verify(token, secretKey, (error) => {
             if (error) {
-                res.status(404).json({
-                    status: 404,
-                    result: "you are unauthorized !",
+                res.status(401).json({
+                    status: 401,
+                    result: error.message,
                 })
             } else {
                 // console.log(decoded) // decrypted jwt
