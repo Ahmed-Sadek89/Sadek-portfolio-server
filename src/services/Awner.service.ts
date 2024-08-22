@@ -78,8 +78,6 @@ export class AwnerServices {
                         JobTitle: true,
                         CategorySkill: true,
                         Skill: true,
-                        FuturePlan: true,
-                        Activity: true,
                     }
                 },
 
