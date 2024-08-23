@@ -63,8 +63,16 @@ export class AwnerServices {
             },
             include: {
                 Project: true,
-                FuturePlan: true,
-                Activity: true,
+                FuturePlan: {
+                    orderBy: {
+                        id: 'desc'
+                    }
+                },
+                Activity: {
+                    orderBy: {
+                        id: 'desc'
+                    }
+                },
                 _count: {
                     select: {
                         Visitor: true,
