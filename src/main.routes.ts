@@ -12,6 +12,8 @@ import projectsRouters from './routes/Projects.routes';
 import visitorRoutes from './routes/Visitors.routes';
 import messageRoutes from './routes/Message.routes'
 import projectNotesRoutes from './routes/ProjectNote.routes'
+import plansRoutes from './routes/Plans.routes'
+
 
 const root = express()
 
@@ -28,5 +30,6 @@ root.use('/projects', projectsRouters)
 root.use('/visitors', visitorRoutes)
 root.use('/messages', messageRoutes)
 root.use('/project_notes', projectNotesRoutes);
+root.use('/plan', plansRoutes);
 
 export default root

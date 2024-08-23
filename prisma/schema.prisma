@@ -24,7 +24,7 @@ model Awner {
   password        String
   description     String?           @default("")
   image           String?           @default("")
-  isPriamry       Boolean?           @default(false)
+  isPriamry       Boolean?          @default(false)
   Activity        Activity[]
   CategoryProject CategoryProject[]
   CategorySkill   CategorySkill[]
@@ -68,12 +68,11 @@ model ColorsSetting {
 }
 
 model FuturePlan {
-  id                  Int     @id @default(autoincrement())
-  plan                String
-  image               String  @default("")
-  is_new_in_dashboard Boolean @default(false)
-  awner_id            Int
-  Awner               Awner   @relation(fields: [awner_id], references: [id])
+  id           Int     @id @default(autoincrement())
+  plan         String
+  is_completed Boolean @default(false)
+  awner_id     Int
+  Awner        Awner   @relation(fields: [awner_id], references: [id])
 }
 
 model JobTitle {
