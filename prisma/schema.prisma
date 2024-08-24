@@ -8,13 +8,13 @@ datasource db {
 }
 
 model Activity {
-  id         Int      @id @default(autoincrement())
-  action     ACTION
-  table_name Tabels
-  date       DateTime @db.Date
-  model      String
-  awner_id   Int
-  Awner      Awner    @relation(fields: [awner_id], references: [id])
+  id            Int      @id @default(autoincrement())
+  action        ACTION
+  date          DateTime @default(now())
+  awner_id      Int
+  table_name_id String?  @default("")
+  table_name    TABLE
+  Awner         Awner    @relation(fields: [awner_id], references: [id])
 }
 
 model Awner {
@@ -70,8 +70,8 @@ model ColorsSetting {
 model FuturePlan {
   id           Int     @id @default(autoincrement())
   plan         String
-  is_completed Boolean @default(false)
   awner_id     Int
+  is_completed Boolean @default(false)
   Awner        Awner   @relation(fields: [awner_id], references: [id])
 }
 
@@ -190,7 +190,8 @@ model Visitor {
   Awner       Awner         @relation(fields: [awner_id], references: [id])
 }
 
-enum Tabels {
+enum TABLE {
+  AWNER
   FUTURE_PLANS
   LINK_TYPES
   LINKS
@@ -210,5 +211,6 @@ enum ACTION {
   CREATE
   UPDATE
   DELETE
-  CLEAR
+  LOGIN
+  LOGOUT
 }

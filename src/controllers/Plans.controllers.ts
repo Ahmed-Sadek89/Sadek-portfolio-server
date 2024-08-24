@@ -26,6 +26,7 @@ export class PlansController {
     async editPlanById(req: Request, res: Response) {
         const data = req.body as FuturePlan
         const id = Number(req.params.id)
+        
         try {
             await planService.editPlanById(id, data);
             res.status(200).json({
@@ -43,8 +44,9 @@ export class PlansController {
 
     async deletePlanById(req: Request, res: Response) {
         const id = Number(req.params.id)
+        const awner_id = Number(req.body.awner_id)
         try {
-            await planService.deletePlanById(id);
+            await planService.deletePlanById(id, awner_id);
             res.status(200).json({
                 status: 200,
                 result: `Plan num #${id} deleted successfully!`

@@ -25,6 +25,7 @@ export type Visitor = visitor
 export type Project = project
 
 export type Activity = activity
+export type ActivityCreation = Omit<activity, 'date'|"id">;
 
 export type CategoryProject = categoryProject
 

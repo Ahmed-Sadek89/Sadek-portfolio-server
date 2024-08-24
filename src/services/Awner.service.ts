@@ -2,6 +2,8 @@ import { BcryptService } from "./bcript.service";
 import { JWT } from "./JWT.service";
 import prisma from "../libs/prisma";
 import { Awner, AwnerLogin } from "../types";
+import { ACTION, TABLE } from "@prisma/client";
+import { createActivity } from "../libs/create-activity";
 
 export class AwnerServices {
     private readonly bcrypt: BcryptService;
@@ -114,6 +116,14 @@ export class AwnerServices {
             }
             const Authorization = this.jwt.generetaJWT(payload);
             const { password, ...others } = isAwner
+
+            await createActivity({
+                action: ACTION.LOGIN,
+                table_name: TABLE.AWNER,
+                awner_id: isAwner.id,
+                table_name_id: ''
+            })
+
             return {
                 ...others,
                 Authorization,
