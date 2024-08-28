@@ -112,10 +112,10 @@ model Message {
 }
 
 model Phone {
-  id       Int    @id @default(autoincrement())
-  phone    String @unique @db.VarChar(30)
-  awner_id Int
-  Awner    Awner  @relation(fields: [awner_id], references: [id])
+  id           Int    @id @default(autoincrement())
+  phone_number String @unique @db.VarChar(30)
+  awner_id     Int
+  Awner        Awner  @relation(fields: [awner_id], references: [id])
 }
 
 model Project {

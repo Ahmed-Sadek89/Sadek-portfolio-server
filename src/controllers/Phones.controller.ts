@@ -1,13 +1,15 @@
 import { Request, Response } from "express";
 import { PhonesServices } from "../services/Phones.service";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
 const phonesServices = new PhonesServices();
 
 export class PhonesController {
 
     async getAll(req: Request, res: Response) {
+        const awner_id = Number(req.params.awner_id)
         try {
-            const phones = await phonesServices.getAll();
+            const phones = await phonesServices.getAll(awner_id);
             res.status(200).json({
                 status: 200,
                 phones
@@ -46,10 +48,17 @@ export class PhonesController {
             })
         } catch (error: any) {
             console.log({ error: error.message })
-            res.status(500).json({
-                status: 500,
-                message: "something went wrong"
-            })
+            if (error instanceof PrismaClientKnownRequestError && error.code === 'P2002') {
+                res.status(409).json({
+                    status: 409,
+                    message: 'This phone number is already exists.',
+                });
+            } else {
+                res.status(500).json({
+                    status: 200,
+                    message: "something went wrong",
+                });
+            }
         }
     }
 

@@ -77,17 +77,17 @@ export class AwnerServices {
                 },
                 _count: {
                     select: {
-                        Visitor: true,
-                        Project: true,
-                        ProjectNote: true,
-                        CategoryProject: true,
-                        Message: true,
                         Phone: true,
+                        JobTitle: true,
                         LinkType: true,
                         Link: true,
-                        JobTitle: true,
                         CategorySkill: true,
                         Skill: true,
+                        CategoryProject: true,
+                        Project: true,
+                        ProjectNote: true,
+                        Visitor: true,
+                        Message: true,
                     }
                 },
 

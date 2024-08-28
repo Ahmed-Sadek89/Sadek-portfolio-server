@@ -1,10 +1,18 @@
+import { ACTION, TABLE } from "@prisma/client";
+import { createActivity } from "../libs/create-activity";
 import prisma from "../libs/prisma";
 import { Phone } from "../types";
 
 export class PhonesServices {
-    
-    async getAll() {
-        const phones = await prisma.phone.findMany({});
+
+    async getAll(awner_id: number) {
+        const phones = await prisma.phone.findMany({
+            where: { awner_id },
+            select: {
+                id: true,
+                phone_number: true,
+            },
+        });
         return phones
     }
 
@@ -21,6 +29,13 @@ export class PhonesServices {
         const phone = await prisma.phone.create({
             data
         })
+        await createActivity({
+            action: ACTION.CREATE,
+            table_name: TABLE.PHONES,
+            awner_id: data.awner_id,
+            table_name_id: ""
+        })
+
         return phone
     }
 
