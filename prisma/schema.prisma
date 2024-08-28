@@ -77,9 +77,11 @@ model FuturePlan {
 
 model JobTitle {
   id       Int    @id @default(autoincrement())
-  title    String @db.VarChar(255)
+  title    String @db.VarChar(50)
   awner_id Int
   Awner    Awner  @relation(fields: [awner_id], references: [id])
+
+  @@unique([title, awner_id]) // Composite unique constraint
 }
 
 model Link {
@@ -95,10 +97,12 @@ model Link {
 
 model LinkType {
   id        Int    @id @default(autoincrement())
-  link_type String @db.VarChar(255)
+  link_type String @db.VarChar(30)
   awner_id  Int
   Link      Link[]
   Awner     Awner  @relation(fields: [awner_id], references: [id])
+
+  @@unique([link_type, awner_id])
 }
 
 model Message {

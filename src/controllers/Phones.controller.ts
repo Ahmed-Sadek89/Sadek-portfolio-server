@@ -23,22 +23,6 @@ export class PhonesController {
         }
     }
 
-    async getById(req: Request, res: Response) {
-        try {
-            const { id } = req.params;
-            const phone = await phonesServices.getById(Number(id));
-            res.status(200).json({
-                status: 200,
-                phone
-            })
-        } catch (error: any) {
-            res.status(500).json({
-                status: 500,
-                message: "something went wrong"
-            })
-        }
-    }
-
     async insertNewPhone(req: Request, res: Response) {
         try {
             await phonesServices.insertNewPhone(req.body)
@@ -63,18 +47,31 @@ export class PhonesController {
     }
 
     async updatePhone(req: Request, res: Response) {
+        const { id } = req.params
         try {
-            const { id } = req.params
             await phonesServices.updatePhone(Number(id), req.body)
             res.status(200).json({
                 status: 200,
                 message: `the phone number ${id} updated successfully`
             })
         } catch (error: any) {
-            res.status(500).json({
-                status: 500,
-                message: "something went wrong"
-            })
+            console.log({ error: error.message })
+            if (error.code === 'P2025') { // Prisma error for "Record to update does not exist"
+                res.status(404).json({
+                    status: 404,
+                    message: `Phone number ${id} is not found`,
+                });
+            } else if (error.code === 'P2002') { // Prisma error code for unique constraint violation
+                res.status(409).json({
+                    status: 409,
+                    message: 'This phone number already exists.',
+                });
+            } else {
+                res.status(500).json({
+                    status: 500,
+                    message: 'Internal server error',
+                });
+            }
         }
     }
 

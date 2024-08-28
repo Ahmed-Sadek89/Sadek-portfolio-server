@@ -16,15 +16,6 @@ export class PhonesServices {
         return phones
     }
 
-    async getById(id: number) {
-        const phone = await prisma.phone.findUnique({
-            where: {
-                id
-            }
-        })
-        return phone
-    }
-
     async insertNewPhone(data: Phone) {
         const phone = await prisma.phone.create({
             data

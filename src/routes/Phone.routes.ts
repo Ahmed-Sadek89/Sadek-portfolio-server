@@ -7,7 +7,6 @@ const phonesController = new PhonesController()
 
 router.use(checkAuth);
 router.get('/all/:awner_id', phonesController.getAll);
-router.get('/:id', phonesController.getById)
 router.delete('/all', phonesController.deleteAll)
 router.delete('/:id', phonesController.deleteById);
 router.post('/', phonesController.insertNewPhone);
