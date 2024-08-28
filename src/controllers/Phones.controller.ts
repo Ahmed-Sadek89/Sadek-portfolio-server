@@ -79,18 +79,27 @@ export class PhonesController {
     }
 
     async deleteById(req: Request, res: Response) {
+        const { id } = req.params
+        const awner_id = Number(req.body.awner_id)
         try {
-            const { id } = req.params
-            await phonesServices.deleteById(Number(id))
+            await phonesServices.deleteById(Number(id), awner_id)
             res.status(200).json({
                 status: 200,
-                message: `the phone number ${id} deleted successfully`
+                message: `The phone number ${id} deleted successfully`
             })
         } catch (error: any) {
-            res.status(500).json({
-                status: 500,
-                message: "something went wrong"
-            })
+            console.log({ error: error.message })
+            if (error.code === 'P2025') {  // P2025 is the Prisma error code for "Record to delete does not exist."
+                res.status(404).json({
+                    status: 404,
+                    message: `The phone number ${id} is not found`,
+                });
+            } else {
+                res.status(500).json({
+                    status: 500,
+                    message: 'Internal server error',
+                });
+            }
         }
     }
 

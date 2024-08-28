@@ -40,16 +40,32 @@ export class PhonesServices {
     }
 
     async updatePhone(id: number, data: Phone) {
-        return await prisma.phone.update({
+        const phone = await prisma.phone.update({
             where: { id },
             data
         })
+        await createActivity({
+            action: ACTION.UPDATE,
+            table_name: TABLE.PHONES,
+            awner_id: data.awner_id,
+            table_name_id: id.toString()
+        })
+
+        return phone
     }
 
-    async deleteById(id: number) {
-        return await prisma.phone.delete({
-            where: { id }
+    async deleteById(id: number, awner_id: number) {
+        const phone = await prisma.phone.delete({
+            where: { id, awner_id },
         })
+        await createActivity({
+            action: ACTION.DELETE,
+            table_name: TABLE.PHONES,
+            awner_id,
+            table_name_id: id.toString()
+        })
+
+        return phone
     }
 
     async deleteAll() {
