@@ -81,7 +81,7 @@ model JobTitle {
   awner_id Int
   Awner    Awner  @relation(fields: [awner_id], references: [id])
 
-  @@unique([title, awner_id]) // Composite unique constraint
+  @@unique([title, awner_id])
 }
 
 model Link {

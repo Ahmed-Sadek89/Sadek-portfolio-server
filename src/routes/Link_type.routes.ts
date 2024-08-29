@@ -1,19 +1,17 @@
 import { Router } from "express";
-import { LinksController } from "../controllers/Links.controller";
 import { checkAuth } from "../guards/checkAuth.guard";
+import { LinkTypeController } from "../controllers/link_type.controller";
 
 const router = Router();
-const linksController = new LinksController()
+const linkTypeController = new LinkTypeController()
 
 // fix this page
 
-router.get('/all', linksController.getByAwnerId);
 router.use(checkAuth);
-router.get('/:id', linksController.getById)
-router.delete('/deleteAll', linksController.deleteAll)
-router.delete('/:id', linksController.deleteById);
-router.post('/', linksController.insertNewLink);
-router.put('/:id', linksController.updateLink);
+router.get('/all/:awner_id', linkTypeController.getAllByAwnerId);
+router.post('/', linkTypeController.insertLinkType);
+router.delete('/:id', linkTypeController.deleteById);
+router.put('/:id', linkTypeController.updateLinkType);
 
 
 export default router
