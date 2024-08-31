@@ -6,7 +6,7 @@ import { LinkType } from "../types";
 export class LinkTypeService {
 
     async getAllByAwnerId(awner_id: number) {
-        return prisma.linkType.findMany({
+        return await prisma.linkType.findMany({
             where: {
                 awner_id
             }

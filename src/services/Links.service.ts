@@ -1,8 +1,10 @@
+import { ACTION, TABLE } from "@prisma/client";
+import { createActivity } from "../libs/create-activity";
 import prisma from "../libs/prisma";
 import { Link } from "../types";
 
 export class LinksServices {
-   
+
     async getByAwnerId(awner_id: number) {
         const links = await prisma.link.findMany({
             where: {
@@ -21,10 +23,18 @@ export class LinksServices {
         return link
     }
 
-    async getByLinkType(type: string) {
+    async getByLinkTypeAndAwnerId(link_type_id: number, awner_id: number) {
         const link = await prisma.link.findMany({
             where: {
-                id: 1
+                link_type_id,
+                awner_id
+            },
+            include: {
+                LinkType: {
+                    select: {
+                        link_type: true
+                    }
+                }
             }
         })
         return link
@@ -34,24 +44,43 @@ export class LinksServices {
         const link = await prisma.link.create({
             data
         })
+        await createActivity({
+            action: ACTION.CREATE,
+            table_name: TABLE.LINKS,
+            awner_id: data.awner_id,
+            table_name_id: ""
+        })
+
         return link
     }
 
     async updateLink(id: number, data: Link) {
-        return await prisma.link.update({
+        const link = await prisma.link.update({
             where: { id },
             data
         })
+        await createActivity({
+            action: ACTION.UPDATE,
+            table_name: TABLE.LINKS,
+            awner_id: data.awner_id,
+            table_name_id: id.toString()
+        })
+
+        return link
     }
 
-    async deleteById(id: number) {
-        return await prisma.link.delete({
+    async deleteById(id: number, awner_id: number) {
+        const link = await prisma.link.delete({
             where: { id }
         })
-    }
+        await createActivity({
+            action: ACTION.DELETE,
+            table_name: TABLE.LINKS,
+            awner_id,
+            table_name_id: id.toString()
+        })
 
-    async deleteAll() {
-        return await prisma.link.deleteMany({})
+        return link
     }
 
 }

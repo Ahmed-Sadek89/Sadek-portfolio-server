@@ -93,6 +93,9 @@ model Link {
   awner_id     Int
   Awner        Awner    @relation(fields: [awner_id], references: [id])
   LinkType     LinkType @relation(fields: [link_type_id], references: [id])
+
+  @@unique([title, awner_id])
+  @@unique([link, awner_id])
 }
 
 model LinkType {
@@ -100,7 +103,7 @@ model LinkType {
   link_type String @db.VarChar(30)
   awner_id  Int
   Link      Link[]
-  Awner     Awner  @relation(fields: [awner_id], references: [id])
+  Awner     Awner  @relation(fields: [awner_id], references: [id], onDelete: Cascade)
 
   @@unique([link_type, awner_id])
 }

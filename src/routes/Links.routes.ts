@@ -7,15 +7,13 @@ const router = Router();
 const linksController = new LinksController()
 
 
-router.get('/all/:awner_id', linksController.getByAwnerId);
-router.get('/getByType', linksController.getByLinkType);
 router.use(checkAuth);
+router.get('/all/:awner_id', linksController.getByAwnerId);
+router.get('/:link_type_id', linksController.getByLinkTypeAndAwnerId);
 router.get('/:id', linksController.getById)
-router.delete('/deleteAll', linksController.deleteAll)
 router.delete('/:id', linksController.deleteById);
-router.use(upload.single('icon'))
-router.post('/', linksController.insertNewLink);
-router.put('/:id', linksController.updateLink);
+router.post('/', upload.single('icon'), linksController.insertNewLink);
+router.put('/:id', upload.single('icon'), linksController.updateLink);
 
 
 export default router
