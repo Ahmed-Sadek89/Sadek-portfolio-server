@@ -70,6 +70,8 @@ export class LinksController {
     }
 
     async insertNewLink(req: Request, res: Response) {
+        console.log({file: req.file?.mimetype.split('/')[0]})
+        console.log({ req: req.body, file: req.file })
         const link_type_id = Number(req.body.link_type_id);
         const awner_id = Number(req.body.awner_id);
         try {
@@ -82,14 +84,21 @@ export class LinksController {
 
             res.status(200).json({
                 status: 200,
-                message: "new link inserted successfully"
+                message: "New link inserted successfully"
             })
         } catch (error: any) {
             console.log({ error: error.message })
-            res.status(500).json({
-                status: 500,
-                message: "something went wrong"
-            })
+            if (error.code === 'P2002') { // Handle the unique constraint error
+                res.status(400).json({
+                    statusCode: 400,
+                    message: `The title or the link already exists`
+                });
+            } else {
+                res.status(500).json({
+                    status: 500,
+                    message: error
+                })
+            }
         }
     }
 

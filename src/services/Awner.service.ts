@@ -115,7 +115,6 @@ export class AwnerServices {
                 email: isAwner.email,
             }
             const Authorization = this.jwt.generetaJWT(payload);
-            const { password, ...others } = isAwner
 
             await createActivity({
                 action: ACTION.LOGIN,
@@ -125,7 +124,7 @@ export class AwnerServices {
             })
 
             return {
-                ...others,
+                id: isAwner.id,
                 Authorization,
             }
         }
