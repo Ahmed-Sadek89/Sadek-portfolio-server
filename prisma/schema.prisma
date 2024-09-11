@@ -14,7 +14,7 @@ model Activity {
   awner_id      Int
   table_name_id String?  @default("")
   table_name    TABLE
-  Awner         Awner    @relation(fields: [awner_id], references: [id])
+  Awner         Awner    @relation(fields: [awner_id], references: [id], onDelete: Cascade)
 }
 
 model Awner {
@@ -45,7 +45,7 @@ model CategoryProject {
   id            Int       @id @default(autoincrement())
   category_name String    @db.VarChar(255)
   awner_id      Int
-  Awner         Awner     @relation(fields: [awner_id], references: [id])
+  Awner         Awner     @relation(fields: [awner_id], references: [id], onDelete: Cascade)
   Project       Project[]
 }
 
@@ -53,7 +53,7 @@ model CategorySkill {
   id                   Int                    @id @default(autoincrement())
   category_name        String                 @db.VarChar(255)
   awner_id             Int
-  Awner                Awner                  @relation(fields: [awner_id], references: [id])
+  Awner                Awner                  @relation(fields: [awner_id], references: [id], onDelete: Cascade)
   ProjectCategorySkill ProjectCategorySkill[]
   Skill                Skill[]
 }
@@ -64,7 +64,7 @@ model ColorsSetting {
   color1     String @db.VarChar(20)
   color2     String @db.VarChar(20)
   awner_id   Int
-  Awner      Awner  @relation(fields: [awner_id], references: [id])
+  Awner      Awner  @relation(fields: [awner_id], references: [id], onDelete: Cascade)
 }
 
 model FuturePlan {
@@ -72,14 +72,14 @@ model FuturePlan {
   plan         String
   awner_id     Int
   is_completed Boolean @default(false)
-  Awner        Awner   @relation(fields: [awner_id], references: [id])
+  Awner        Awner   @relation(fields: [awner_id], references: [id], onDelete: Cascade)
 }
 
 model JobTitle {
   id       Int    @id @default(autoincrement())
   title    String @db.VarChar(50)
   awner_id Int
-  Awner    Awner  @relation(fields: [awner_id], references: [id])
+  Awner    Awner  @relation(fields: [awner_id], references: [id], onDelete: Cascade)
 
   @@unique([title, awner_id])
 }
@@ -91,8 +91,8 @@ model Link {
   icon         String?
   link_type_id Int
   awner_id     Int
-  Awner        Awner    @relation(fields: [awner_id], references: [id])
-  LinkType     LinkType @relation(fields: [link_type_id], references: [id])
+  Awner        Awner    @relation(fields: [awner_id], references: [id], onDelete: Cascade)
+  LinkType     LinkType @relation(fields: [link_type_id], references: [id], onDelete: Cascade)
 
   @@unique([title, awner_id])
   @@unique([link, awner_id])
@@ -114,15 +114,15 @@ model Message {
   message    String  @db.VarChar(255)
   visitor_id String
   awner_id   Int
-  Awner      Awner   @relation(fields: [awner_id], references: [id])
-  Visitor    Visitor @relation(fields: [visitor_id], references: [id])
+  Awner      Awner   @relation(fields: [awner_id], references: [id], onDelete: Cascade)
+  Visitor    Visitor @relation(fields: [visitor_id], references: [id], onDelete: Cascade)
 }
 
 model Phone {
   id           Int    @id @default(autoincrement())
   phone_number String @unique @db.VarChar(30)
   awner_id     Int
-  Awner        Awner  @relation(fields: [awner_id], references: [id])
+  Awner        Awner  @relation(fields: [awner_id], references: [id], onDelete: Cascade)
 }
 
 model Project {
@@ -137,8 +137,8 @@ model Project {
   attachment           String?
   category_project_id  Int?
   awner_id             Int
-  Awner                Awner                  @relation(fields: [awner_id], references: [id])
-  CategoryProject      CategoryProject?       @relation(fields: [category_project_id], references: [id])
+  Awner                Awner                  @relation(fields: [awner_id], references: [id], onDelete: Cascade)
+  CategoryProject      CategoryProject?       @relation(fields: [category_project_id], references: [id], onDelete: Cascade)
   ProjectCategorySkill ProjectCategorySkill[]
   ProjectNote          ProjectNote[]
   ProjectSkill         ProjectSkill[]
@@ -147,8 +147,8 @@ model Project {
 model ProjectCategorySkill {
   project_id         Int
   category_skills_id Int
-  CategorySkill      CategorySkill @relation(fields: [category_skills_id], references: [id])
-  Project            Project       @relation(fields: [project_id], references: [id])
+  CategorySkill      CategorySkill @relation(fields: [category_skills_id], references: [id], onDelete: Cascade)
+  Project            Project       @relation(fields: [project_id], references: [id], onDelete: Cascade)
 
   @@id([project_id, category_skills_id])
 }
@@ -160,16 +160,16 @@ model ProjectNote {
   visitor_id String
   react      String  @db.VarChar(255)
   awner_id   Int
-  Awner      Awner   @relation(fields: [awner_id], references: [id])
-  Project    Project @relation(fields: [project_id], references: [id])
-  Visitor    Visitor @relation(fields: [visitor_id], references: [id])
+  Awner      Awner   @relation(fields: [awner_id], references: [id], onDelete: Cascade)
+  Project    Project @relation(fields: [project_id], references: [id], onDelete: Cascade)
+  Visitor    Visitor @relation(fields: [visitor_id], references: [id], onDelete: Cascade)
 }
 
 model ProjectSkill {
   project_id Int
   skill_id   Int
-  Project    Project @relation(fields: [project_id], references: [id])
-  Skill      Skill   @relation(fields: [skill_id], references: [id])
+  Project    Project @relation(fields: [project_id], references: [id], onDelete: Cascade)
+  Skill      Skill   @relation(fields: [skill_id], references: [id], onDelete: Cascade)
 
   @@id([project_id, skill_id])
 }
@@ -181,8 +181,8 @@ model Skill {
   category_id   Int
   awner_id      Int
   ProjectSkill  ProjectSkill[]
-  Awner         Awner          @relation(fields: [awner_id], references: [id])
-  CategorySkill CategorySkill  @relation(fields: [category_id], references: [id])
+  Awner         Awner          @relation(fields: [awner_id], references: [id], onDelete: Cascade)
+  CategorySkill CategorySkill  @relation(fields: [category_id], references: [id], onDelete: Cascade)
 }
 
 model Visitor {
@@ -194,7 +194,7 @@ model Visitor {
   awner_id    Int
   Message     Message[]
   ProjectNote ProjectNote[]
-  Awner       Awner         @relation(fields: [awner_id], references: [id])
+  Awner       Awner         @relation(fields: [awner_id], references: [id], onDelete: Cascade)
 }
 
 enum TABLE {
