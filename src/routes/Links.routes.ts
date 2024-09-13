@@ -10,7 +10,6 @@ const linksController = new LinksController()
 router.use(checkAuth);
 router.get('/all/:awner_id', linksController.getByAwnerId);
 router.get('/:link_type_id', linksController.getByLinkTypeAndAwnerId);
-router.get('/:id', linksController.getById)
 router.delete('/:id', linksController.deleteById);
 router.post('/', upload.single('icon'), linksController.insertNewLink);
 router.put('/:id', upload.single('icon'), linksController.updateLink);

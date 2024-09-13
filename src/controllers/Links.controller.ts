@@ -59,23 +59,7 @@ export class LinksController {
         }
     }
 
-    async getById(req: Request, res: Response) {
-        try {
-            const { id } = req.params;
-            const link = await linksServices.getById(Number(id));
-            res.status(200).json({
-                status: 200,
-                link: link && {
-                    ...link,
-                }
-            })
-        } catch (error: any) {
-            res.status(500).json({
-                status: 500,
-                message: "something went wrong"
-            })
-        }
-    }
+    
 
     async insertNewLink(req: Request, res: Response) {
         const link_type_id = Number(req.body.link_type_id);

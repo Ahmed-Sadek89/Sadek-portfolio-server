@@ -6,15 +6,10 @@ const router = Router();
 const categorySkillsController = new CategorySkillsController();
 
 
-router.get('/all', checkAuth, categorySkillsController.getAll)
-router.delete('/all', checkAuth, categorySkillsController.deleteAll);
-
-router.post('/', checkAuth, categorySkillsController.insert);
-
-router.get('/:id', checkAuth, categorySkillsController.getById)
-router.put('/:id', checkAuth, categorySkillsController.updateById)
-router.delete('/:id', checkAuth, categorySkillsController.deleteById);
-
-router.get('/withItsSkills/:id', categorySkillsController.getByIdWithSkills);
+router.use(checkAuth)
+router.get('/all', categorySkillsController.getAll)
+router.post('/', categorySkillsController.insert);
+router.put('/:id', categorySkillsController.updateById)
+router.delete('/:id', categorySkillsController.deleteById);
 
 export default router

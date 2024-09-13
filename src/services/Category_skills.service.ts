@@ -1,49 +1,57 @@
+import { ACTION, TABLE } from "@prisma/client";
+import { createActivity } from "../libs/create-activity";
 import prisma from "../libs/prisma";
 import { CategorySkill } from "../types";
 
 export class CategorySkillsServices {
 
-    async getAll() {
+    async getAll(awner_id: number) {
         return (await prisma.categorySkill.findMany({
             orderBy: {
                 id: 'asc'
-            }
+            },
+            where: { awner_id }
         }));
     }
 
-    async deleteAll() {
-        return await prisma.categorySkill.deleteMany({});
-    }
-
     async insert(data: CategorySkill) {
-        return await prisma.categorySkill.create({
+        const category = await prisma.categorySkill.create({
             data
         })
+        await createActivity({
+            action: ACTION.CREATE,
+            table_name: TABLE.CATEGORY_SKILLS,
+            awner_id: data.awner_id,
+            table_name_id: ""
+        })
+
+        return category
     }
 
-    async getById(id: number) {
-        return await prisma.categorySkill.findUnique({
+    async deleteById(id: number, awner_id: number) {
+        const category = await prisma.categorySkill.delete({
             where: { id }
         })
-    }
-
-    async deleteById(id: number) {
-        return await prisma.categorySkill.delete({
-            where: { id }
+        await createActivity({
+            action: ACTION.DELETE,
+            table_name: TABLE.CATEGORY_SKILLS,
+            awner_id,
+            table_name_id: id.toString()
         })
+        return category
     }
 
     async updateById(id: number, data: CategorySkill) {
-        return await prisma.categorySkill.update({
+        const category = await prisma.categorySkill.update({
             where: { id },
             data
         })
-    }
-
-    async getByIdWithSkills(id: number) {
-        return await prisma.categorySkill.findUnique({
-            where: { id },
-            include: { Skill: true }
+        await createActivity({
+            action: ACTION.UPDATE,
+            table_name: TABLE.CATEGORY_SKILLS,
+            awner_id: data.awner_id,
+            table_name_id: id.toString()
         })
+        return category
     }
 }

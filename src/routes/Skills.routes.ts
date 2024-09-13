@@ -8,10 +8,10 @@ const skillsController = new SkillsController()
 
 router.use(checkAuth)
 
+router.get('/all/:awner_id', skillsController.getByAwnerId)
+router.get('/:category_id', skillsController.getByCategoryId)
 router.post('/', upload.single("icon"), skillsController.insert)
-router.get('/:id', skillsController.getById)
 router.put('/:id', upload.single("icon"), skillsController.updateById)
 router.delete('/:id', skillsController.deleteById)
-router.delete('/all/:category_id', skillsController.deleteByCategoryId)
 
 export default router
