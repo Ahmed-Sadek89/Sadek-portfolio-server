@@ -11,15 +11,7 @@ export class AwnerController {
     async registerAwnerController(req: Request, res: Response) {
         try {
 
-            let uploadedImageToCloudiary = { secure_url: "" }
-            if (req.file) {
-                uploadedImageToCloudiary = await uploadToCloudinary(req.file?.path as any)
-            }
-
-            await awnerServices.postAwnerService({
-                ...req.body,
-                image: uploadedImageToCloudiary.secure_url
-            })
+            await awnerServices.postAwnerService(req.body)
             res.status(200).json({
                 status: 200,
                 message: "new awner added successfully"
@@ -42,7 +34,6 @@ export class AwnerController {
 
     async loginAwnerController(req: Request, res: Response) {
         try {
-            console.log(req.body)
             const awner = await awnerServices.loginAwnerService(req.body);
             if (awner) {
                 res.status(200).json({
@@ -187,10 +178,9 @@ export class AwnerController {
     async updateAwnerById(req: Request, res: Response) {
         const { id } = req.params;
         try {
-            let uploadedImageToCloudiary = { secure_url: "" }
             if (req.file) {
-                uploadedImageToCloudiary = await uploadToCloudinary(req.file?.path as any)
-                await awnerServices.updateAwnerByIdService(Number(id), { ...req.body, image: uploadedImageToCloudiary.secure_url });
+                let uploadedImageToCloudiary  = await uploadToCloudinary(req.file?.path as any)
+                await awnerServices.updateAwnerByIdService(Number(id), { ...req.body, image: uploadedImageToCloudiary?.secure_url });
             } else {
                 await awnerServices.updateAwnerByIdService(Number(id), { ...req.body });
 

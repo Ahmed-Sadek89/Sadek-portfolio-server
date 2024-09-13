@@ -9,6 +9,14 @@ export class LinksServices {
         const links = await prisma.link.findMany({
             where: {
                 awner_id
+            },
+            include: {
+                LinkType: {
+                    select: {
+                        id: true,
+                        link_type: true
+                    }
+                }
             }
         });
         return links
@@ -32,6 +40,7 @@ export class LinksServices {
             include: {
                 LinkType: {
                     select: {
+                        id: true,
                         link_type: true
                     }
                 }
