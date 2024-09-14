@@ -7,14 +7,18 @@ const router = Router();
 const projectController = new ProjectController();
 //
 
-router.get('/', projectController.getAll);
-router.get('/:id', projectController.getById);
 router.use(checkAuth);
-router.post('/', upload.single("attachment"), projectController.insert);
-router.put('/:id', upload.single("attachment"), projectController.updateById);
+router.get('/all', projectController.all);
+router.get('/:id', projectController.getById);
+router.get('/category_skill/:category_skill_id', projectController.getByCategorySkillId);
+router.get('/skill/:skill_id', projectController.getBySkillId);
+router.get('/category_project/:category_project_id', projectController.getByCategoryProjectId);
+// router.get("/notesByProjectId/:id", projectController.getProjectNotesByProjectId)
+
 router.delete("/:id", projectController.deleteById);
 router.delete("/categoryId/:categoryId", projectController.deleteAllByCategoryId)
-router.get("/notesByProjectId/:id", projectController.getProjectNotesByProjectId)
+router.post('/', upload.single("attachment"), projectController.insert);
+router.put('/:id', upload.single("attachment"), projectController.updateById);
 
 
 export default router;
