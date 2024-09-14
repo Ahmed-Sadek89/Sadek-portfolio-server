@@ -29,11 +29,19 @@ export class CategorySkillsController {
                 status: 200,
                 result: "new category_skills created successfully"
             })
-        } catch (error) {
-            res.status(500).json({
-                status: 500,
-                message: "something went wrong"
-            })
+        } catch (error: any) {
+            console.log({ error: error.message })
+            if (error.code === 'P2002') {
+                res.status(409).json({
+                    status: 409,
+                    message: 'This category skill is already exists.',
+                });
+            } else {
+                res.status(500).json({
+                    status: 200,
+                    message: "something went wrong",
+                });
+            }
         }
     }
 
@@ -48,10 +56,18 @@ export class CategorySkillsController {
 
         } catch (error: any) {
             console.log({ error: error.message })
-            res.status(500).json({
-                status: 500,
-                message: "something went wrong"
-            })
+            console.log({ error: error.message })
+            if (error.code === 'P2002') {
+                res.status(409).json({
+                    status: 409,
+                    message: 'This category skill is already exists.',
+                });
+            } else {
+                res.status(500).json({
+                    status: 200,
+                    message: "something went wrong",
+                });
+            }
         }
     }
 

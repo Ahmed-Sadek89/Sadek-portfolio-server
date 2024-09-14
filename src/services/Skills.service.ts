@@ -1,11 +1,21 @@
 import { ACTION, TABLE } from "@prisma/client";
 import { createActivity } from "../libs/create-activity";
 import prisma from "../libs/prisma";
-import { Skills } from "../types";
+import { ModifiedSkills, Skills } from "../types";
 
 
 export class SkillsServices {
 
+    getModifiedSkills(skills: ModifiedSkills[]) {
+        const modifiedSkills = skills.map(skill => ({
+            id: skill.id,
+            title: skill.title,
+            icon: skill.icon,
+            category_id: skill.category_id,
+            category_name: skill.CategorySkill?.category_name,
+        }));
+        return modifiedSkills
+    }
     async getByCategoryId(category_id: number) {
         return await prisma.skill.findMany({
             where: { category_id },

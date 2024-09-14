@@ -25,7 +25,7 @@ export type Visitor = visitor
 export type Project = project
 
 export type Activity = activity
-export type ActivityCreation = Omit<activity, 'date'|"id">;
+export type ActivityCreation = Omit<activity, 'date' | "id">;
 
 export type CategoryProject = categoryProject
 
@@ -46,5 +46,11 @@ export type Message = message
 export type Phone = phone
 
 export type Skills = skills
+
+export type ModifiedSkills = skills & {
+    CategorySkill: {
+        category_name: string
+    }
+}
 
 export type ProjectNote = projectNote

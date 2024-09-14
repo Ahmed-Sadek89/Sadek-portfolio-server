@@ -6,17 +6,20 @@ const skillsServices = new SkillsServices();
 
 export class SkillsController {
 
+    private async getUploadedIcon(req: Request, existedIcon: string): Promise<{ secure_url: string; }> {
+        let uploadedImage
+        if (req.file && req.file.size !== 0) {
+            uploadedImage = await uploadToCloudinary(req.file?.path)
+        } else {
+            uploadedImage = { secure_url: existedIcon }
+        }
+        return uploadedImage
+    }
+
     async getByAwnerId(req: Request, res: Response) {
         try {
-            const { awner_id } = req.params;
-            const skills = await skillsServices.getByAwnerId(Number(awner_id));
-            const modifiedSkills = skills.map(skill => ({
-                id: skill.id,
-                title: skill.title,
-                icon: skill.icon,
-                category_id: skill.category_id,
-                category_name: skill.CategorySkill?.category_name,
-            }));
+            const skills = await skillsServices.getByAwnerId(Number(req.params.awner_id));
+            const modifiedSkills = skillsServices.getModifiedSkills(skills)
             res.status(200).json({
                 status: 200,
                 skills: modifiedSkills
@@ -33,13 +36,7 @@ export class SkillsController {
     async getByCategoryId(req: Request, res: Response) {
         try {
             const skills = await skillsServices.getByCategoryId(Number(req.params.category_id));
-            const modifiedSkills = skills.map(skill => ({
-                id: skill.id,
-                title: skill.title,
-                icon: skill.icon,
-                category_id: skill.category_id,
-                category_name: skill.CategorySkill?.category_name,
-            }));
+            const modifiedSkills = skillsServices.getModifiedSkills(skills)
             res.status(200).json({
                 status: 200,
                 skills: modifiedSkills
@@ -62,7 +59,12 @@ export class SkillsController {
                 throw new Error("path not found")
             }
             const uploadedImage = await uploadToCloudinary(req.file?.path)
-            await skillsServices.insert({ ...req.body, icon: uploadedImage.secure_url, awner_id, category_id });
+            await skillsServices.insert({
+                ...req.body,
+                icon: uploadedImage.secure_url,
+                awner_id,
+                category_id
+            });
             res.status(200).json({
                 status: 200,
                 result: `new skill added successfully`
@@ -70,10 +72,18 @@ export class SkillsController {
 
         } catch (error: any) {
             console.log(error.message)
-            res.status(500).json({
-                status: 500,
-                message: "something went wrong"
-            })
+            console.log({ error: error.message })
+            if (error.code === 'P2002') {
+                res.status(409).json({
+                    status: 409,
+                    message: 'This skill is already exists.',
+                });
+            } else {
+                res.status(500).json({
+                    status: 200,
+                    message: "something went wrong",
+                });
+            }
         }
     }
 
@@ -83,12 +93,7 @@ export class SkillsController {
         const category_id = Number(body.category_id)
         const id = Number(req.params.id)
         try {
-            let uploadedImage
-            if (req.file && req.file.size !== 0) {
-                uploadedImage = await uploadToCloudinary(req.file?.path)
-            } else {
-                uploadedImage = { secure_url: existedIcon }
-            }
+            let uploadedImage = await this.getUploadedIcon(req, existedIcon)
 
             await skillsServices.updateById(id, { ...body, icon: uploadedImage.secure_url, awner_id, category_id })
             res.status(200).json({
@@ -98,10 +103,17 @@ export class SkillsController {
         }
         catch (error: any) {
             console.log({ error: error.message })
-            res.status(500).json({
-                status: 500,
-                message: "something went wrong"
-            })
+            if (error.code === 'P2002') {
+                res.status(409).json({
+                    status: 409,
+                    message: 'This skill is already exists.',
+                });
+            } else {
+                res.status(500).json({
+                    status: 200,
+                    message: "something went wrong",
+                });
+            }
         }
     }
 
