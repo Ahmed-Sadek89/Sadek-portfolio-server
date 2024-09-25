@@ -6,7 +6,19 @@ export class ProjectServices {
 
     async all(awner_id: number) {
         return await prisma.project.findMany({
-            where: { awner_id }
+            where: { awner_id },
+            include: {
+                ProjectCategorySkill: {
+                    select: {
+                        CategorySkill: true,
+                    }
+                },
+                ProjectSkill: {
+                    select: {
+                        Skill: true,
+                    }
+                }
+            }
         })
     }
 
@@ -56,14 +68,32 @@ export class ProjectServices {
 
     async getById(id: number) {
         return await prisma.project.findUnique({
-            where: { id }
+            where: { id },
         })
     }
 
-    async insert(data: Project) {
-        return await prisma.project.create({
-            data
+    async insert(data: any, category_skill_ids: string[], skill_ids: string[]) {
+        const newProject = await prisma.project.create({
+            data,
+        });
+
+
+        const projectCategorySkillData = category_skill_ids.map(key => {
+            return { project_id: newProject.id, category_skills_id: Number(key) }
         })
+        await prisma.projectCategorySkill.createMany({
+            data: projectCategorySkillData,
+        });
+
+        const projectSkillData = skill_ids.map(key => {
+            return { project_id: newProject.id, skill_id: Number(key) }
+        })
+
+        await prisma.projectSkill.createMany({
+            data: projectSkillData,
+        });
+
+        return newProject
     }
 
     async updateById(id: number, data: Project) {

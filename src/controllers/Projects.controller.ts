@@ -13,7 +13,6 @@ export class ProjectController {
             const projects = await projectServices.all(Number(req.query.awner_id))
             res.status(200).json({
                 status: 200,
-                count: projects.length,
                 projects
             })
 
@@ -105,16 +104,34 @@ export class ProjectController {
     }
 
     async insert(req: Request, res: Response) {
+        const projectBody = {
+            awner_id: Number(req.body.awner_id),
+            title: req.body.title_desktop ? req.body.title_desktop : req.body.title_mobile,
+            description: req.body.description,
+            status: req.body.status,
+            created_at: req.body.created_at,
+            ended_at: req.body.ended_at,
+            category_project_id: Number(req.body.category_project_id),
+            live_url: req.body.live_url,
+            repo_url: req.body.repo_url,
+        }
+        const category_skills_ids = req.body.category_skills_id.toString().split(",");
+        const skills_ids = req.body.skills_id.toString().split(",");
+        // console.log({ ...projectBody, category_skills_id, skills_id })
+        // console.log({ file: req.file })
         try {
             if (!req.file) {
                 throw new Error("Path not found")
             }
             const uploadedImage = await uploadToCloudinary(req.file?.path)
-            await projectServices.insert({
-                ...req.body,
-                attachment: uploadedImage.secure_url,
-                category_project_id: Number(req.body.category_project_id)
-            });
+            await projectServices.insert(
+                {
+                    ...projectBody,
+                    attachment: uploadedImage.secure_url,
+                },
+                category_skills_ids,
+                skills_ids
+            );
             res.status(200).json({
                 status: 200,
                 result: "new project is created successfully"
