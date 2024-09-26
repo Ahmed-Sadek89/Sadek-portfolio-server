@@ -28,18 +28,12 @@ export class ProjectController {
     async getById(req: Request, res: Response) {
         try {
             const project = await projectServices.getById(Number(req.params.id));
-            if (project) {
-                res.status(200).json({
-                    status: 200,
-                    project
-                })
-            } else {
-                res.status(404).json({
-                    status: 404,
-                    project: {},
-                    message: `project number ${req.params.id} is not found`
-                })
-            }
+            
+            res.status(200).json({
+                status: 200,
+                project
+            })
+
         } catch (error: any) {
             console.log(error.message)
             res.status(500).json({
@@ -153,7 +147,7 @@ export class ProjectController {
                     throw new Error("path not found")
                 }
                 const uploadedImage = await uploadToCloudinary(req.file.path)
-                await projectServices.updateById(project.id, {
+                await projectServices.updateById(Number(project.id), {
                     ...req.body,
                     attachment: uploadedImage.secure_url,
                     category_project_id: Number(req.body.category_project_id)
@@ -182,7 +176,7 @@ export class ProjectController {
             const project = await projectServices.getById(Number(req.params.id));
             if (project) {
                 await removeFromCloudinary(project.attachment as string)
-                await projectServices.deleteById(project.id);
+                await projectServices.deleteById(Number(project.id));
                 res.status(200).json({
                     status: 200,
                     result: `project number ${project.id} is deleted successfully`
@@ -235,7 +229,7 @@ export class ProjectController {
         try {
             const project = await projectServices.getById(Number(req.params.id))
             if (project) {
-                const notesByProject = await projectServices.getProjectNotesByProjectId(project.id)
+                const notesByProject = await projectServices.getProjectNotesByProjectId(Number(project.id))
                 res.status(200).json({
                     status: 200,
                     notesByProject

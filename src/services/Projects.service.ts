@@ -4,20 +4,78 @@ import { Project } from "../types";
 
 export class ProjectServices {
 
+    private selectProjectFormate = () => {
+        return {
+            id: true,
+            title: true,
+            description: true,
+            live_url: true,
+            repo_url: true,
+            status: true,
+            created_at: true,
+            ended_at: true,
+            attachment: true,
+            category_project_id: true,
+            awner_id: true,
+            CategoryProject: {
+                select: {
+                    category_name: true,
+                },
+            },
+            ProjectCategorySkill: {
+                select: {
+                    CategorySkill: {
+                        select: {
+                            category_name: true,
+                        },
+                    },
+                },
+            },
+            ProjectSkill: {
+                select: {
+                    Skill: {
+                        select: {
+                            title: true,
+                        },
+                    },
+                },
+            },
+        }
+    }
+
+    private formateProjectObject = (rawProject: any) => {
+        const project = {
+            id: rawProject?.id,
+            title: rawProject?.title,
+            description: rawProject?.description,
+            live_url: rawProject?.live_url,
+            repo_url: rawProject?.repo_url,
+            status: rawProject?.status,
+            created_at: rawProject?.created_at,
+            ended_at: rawProject?.ended_at,
+            attachment: rawProject?.attachment,
+            awner_id: rawProject?.awner_id,
+            category_project: {
+                id: rawProject?.category_project_id,
+                name: rawProject?.CategoryProject.category_name
+            },
+            categorySkills: rawProject?.ProjectCategorySkill.map((cs: any) => cs.CategorySkill.category_name),
+            skills: rawProject?.ProjectSkill.map((s: any) => s.Skill.title),
+        };
+
+        return project;
+    }
+
+
+
     async all(awner_id: number) {
         return await prisma.project.findMany({
             where: { awner_id },
-            include: {
-                ProjectCategorySkill: {
-                    select: {
-                        CategorySkill: true,
-                    }
-                },
-                ProjectSkill: {
-                    select: {
-                        Skill: true,
-                    }
-                }
+            select: {
+                id: true,
+                title: true,
+                attachment: true,
+                status: true,
             }
         })
     }
@@ -67,9 +125,14 @@ export class ProjectServices {
     }
 
     async getById(id: number) {
-        return await prisma.project.findUnique({
-            where: { id },
-        })
+        const rawProject = await prisma.project.findUnique({
+            where: {
+                id,
+            },
+            select: this.selectProjectFormate(),
+        });
+
+        return this.formateProjectObject(rawProject);
     }
 
     async insert(data: any, category_skill_ids: string[], skill_ids: string[]) {
@@ -104,9 +167,19 @@ export class ProjectServices {
     }
 
     async deleteById(id: number) {
-        return await prisma.project.delete({
+        const deleteById = await prisma.project.delete({
             where: { id }
         })
+        await prisma.projectCategorySkill.deleteMany({
+            where: { project_id: id },
+        });
+
+        // Delete related records in `ProjectSkill` for the project_id
+        await prisma.projectSkill.deleteMany({
+            where: { project_id: id },
+        });
+
+        return deleteById
     }
 
 
