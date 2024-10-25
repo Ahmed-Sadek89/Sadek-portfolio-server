@@ -66,8 +66,6 @@ export class ProjectServices {
         return project;
     }
 
-
-
     async all(awner_id: number) {
         return await prisma.project.findMany({
             where: { awner_id },
@@ -174,7 +172,6 @@ export class ProjectServices {
             where: { project_id: id },
         });
 
-        // Delete related records in `ProjectSkill` for the project_id
         await prisma.projectSkill.deleteMany({
             where: { project_id: id },
         });

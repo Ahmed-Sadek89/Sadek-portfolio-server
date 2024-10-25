@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
 import { removeFromCloudinary, uploadToCloudinary } from "../config/cloudinaryFunctions.config";
 import { ProjectServices } from "../services/Projects.service";
+import { ProjectVaidate } from "../validation/project.validation";
 
 
 const projectServices = new ProjectServices();
 
 export class ProjectController {
-
 
     async all(req: Request, res: Response) {
         try {
@@ -28,7 +28,7 @@ export class ProjectController {
     async getById(req: Request, res: Response) {
         try {
             const project = await projectServices.getById(Number(req.params.id));
-            
+
             res.status(200).json({
                 status: 200,
                 project
@@ -118,6 +118,12 @@ export class ProjectController {
                 throw new Error("Path not found")
             }
             const uploadedImage = await uploadToCloudinary(req.file?.path)
+            ProjectVaidate.parse({
+                ...projectBody,
+                category_skills_ids,
+                skills_ids,
+                attachment: uploadedImage.secure_url,
+            })
             await projectServices.insert(
                 {
                     ...projectBody,
@@ -180,11 +186,6 @@ export class ProjectController {
                 res.status(200).json({
                     status: 200,
                     result: `project number ${project.id} is deleted successfully`
-                })
-            } else {
-                res.status(404).json({
-                    status: 404,
-                    result: `project number ${req.params.id} is not found`
                 })
             }
         } catch (error: any) {
