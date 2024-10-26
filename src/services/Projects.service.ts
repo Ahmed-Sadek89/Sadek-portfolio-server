@@ -179,14 +179,6 @@ export class ProjectServices {
         return deleteById
     }
 
-
-    // join
-    async deleteAllByCategoryId(category_project_id: number) {
-        return await prisma.project.deleteMany({
-            where: { category_project_id }
-        })
-    }
-
     async getProjectNotesByProjectId(id: number) {
         // 
         return await prisma.project.findUnique({

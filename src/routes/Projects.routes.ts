@@ -16,7 +16,6 @@ router.get('/category_project/:category_project_id', projectController.getByCate
 // router.get("/notesByProjectId/:id", projectController.getProjectNotesByProjectId)
 
 router.delete("/:id", projectController.deleteById);
-router.delete("/categoryId/:categoryId", projectController.deleteAllByCategoryId)
 router.post('/', upload.single("attachment"), projectController.insert);
 router.put('/:id', upload.single("attachment"), projectController.updateById);
 

@@ -11,6 +11,6 @@ export const ProjectVaidate = z.object({
     attachment: z.string(),
     category_project_id: z.number().int(),
     awner_id: z.number().int(),
-    category_skills_ids: z.array(z.string()).length(1, "Project must has at least one category skill"),
-    skills_ids: z.array(z.string()).length(1, "Project must has at least one skill")
+    category_skills_ids: z.array(z.string()),
+    skills_ids: z.array(z.string())
 });

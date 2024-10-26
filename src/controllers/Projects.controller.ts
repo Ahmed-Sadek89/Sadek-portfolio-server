@@ -111,8 +111,6 @@ export class ProjectController {
         }
         const category_skills_ids = req.body.category_skills_id.toString().split(",");
         const skills_ids = req.body.skills_id.toString().split(",");
-        // console.log({ ...projectBody, category_skills_id, skills_id })
-        // console.log({ file: req.file })
         try {
             if (!req.file) {
                 throw new Error("Path not found")
@@ -195,35 +193,6 @@ export class ProjectController {
                 message: "something went wrong"
             })
         }
-    }
-
-
-    // join
-    async deleteAllByCategoryId(req: Request, res: Response) {
-        // try {
-        //     const projectsByCategoryId = await categoryprojectsServices.getWithProjects(Number(req.params.categoryId));
-        //     if (projectsByCategoryId) {
-        //         projectsByCategoryId.Project.map(index => {
-        //             return removeFromCloudinary(index.attachment as string)
-        //         })
-        //         await projectServices.deleteAllByCategoryId(projectsByCategoryId.id);
-        //         res.status(200).json({
-        //             status: 200,
-        //             result: `all projects with category number ${req.params.categoryId} is deleted successfully`
-        //         })
-        //     } else {
-        //         res.status(404).json({
-        //             status: 404,
-        //             result: `category number ${req.params.categoryId} is not found`
-        //         })
-        //     }
-        // } catch (error: any) {
-        //     console.log(error.message)
-        //     res.status(500).json({
-        //         status: 500,
-        //         message: "something went wrong"
-        //     })
-        // }
     }
 
     async getProjectNotesByProjectId(req: Request, res: Response) {
